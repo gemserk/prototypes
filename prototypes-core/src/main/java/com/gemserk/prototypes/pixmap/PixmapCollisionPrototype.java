@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -118,6 +119,8 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 
 		float angle;
 		Sprite sprite;
+		
+		long soundHandle;
 
 		PixmapCollisionPrototype.PixmapHelper pixmapHelper;
 		Color color = new Color();
@@ -175,6 +178,10 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 
 	ArrayList<PixmapCollisionPrototype.Bomb> bombs = new ArrayList<PixmapCollisionPrototype.Bomb>();
 	ArrayList<PixmapCollisionPrototype.Bomb> bombsToDelete = new ArrayList<PixmapCollisionPrototype.Bomb>();
+	
+	Texture bombTexture;
+	private Sound bombSound;
+	private Sound bombExplosionSound;
 
 	@Override
 	public void init() {
@@ -183,6 +190,11 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 		spriteBatch = new SpriteBatch();
 
 		orthographicCamera = new OrthographicCamera();
+		
+		bombTexture = new Texture(Gdx.files.internal("pixmap/collisions/bazooka.png"));
+		bombSound = Gdx.audio.newSound(Gdx.files.internal("pixmap/collisions/sounds/bomb-falling.wav"));
+		
+		bombExplosionSound = Gdx.audio.newSound(Gdx.files.internal("pixmap/collisions/sounds/bomb-explosion.ogg"));
 
 		Pixmap pixmap1 = new Pixmap(Gdx.files.internal("pixmap/collisions/platform-01_rgba8_l.png"));
 		Pixmap pixmap2 = new Pixmap(56, 46, Format.RGBA8888);
@@ -246,26 +258,19 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 		if (rotate)
 			pixmapHelper1.sprite.rotate(0.1f);
 
-		// if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-		// pixmapHelper1.project(position, x, y);
-		// pixmapHelper1.drawPixel(position.x, position.y, 1f, 1f, 1f, 1f, 5f);
-		// } else if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
-		// pixmapHelper1.project(position, x, y);
-		// pixmapHelper1.eraseCircle(position.x, position.y, 15f);
-		// }
-
 		if (inputDevicesMonitor.getButton("releaseBomb").isReleased()) {
 			PixmapCollisionPrototype.Bomb bomb = new Bomb();
+			
+			bomb.soundHandle = bombSound.play();
 
-			Texture bazookaTexture = new Texture(Gdx.files.internal("pixmap/collisions/bazooka.png"));
-			bazookaTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+			bombTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 			bomb.position.set(x, y);
 			bomb.velocity.set(0f, -25f);
 			bomb.angle = 270;
 			bomb.pixmapHelper = pixmapHelper1;
 
-			bomb.setSprite(new Sprite(bazookaTexture));
+			bomb.setSprite(new Sprite(bombTexture));
 
 			bombs.add(bomb);
 		}
@@ -274,7 +279,9 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 			PixmapCollisionPrototype.Bomb bomb = bombs.get(i);
 			bomb.update();
 			if (bomb.deleted) {
+				bombSound.stop(bomb.soundHandle);
 				bombsToDelete.add(bomb);
+				bombExplosionSound.play();
 				System.out.println("removing bomb");
 			}
 		}
@@ -301,6 +308,14 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 		}
 
 		spriteBatch.end();
+	}
+	
+	@Override
+	public void dispose() {
+		spriteBatch.dispose();
+		bombTexture.dispose();
+		pixmapHelper1.texture.dispose();
+		pixmapHelper1.pixmap.dispose();
 	}
 
 }
