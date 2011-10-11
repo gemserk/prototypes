@@ -1,0 +1,3 @@
+featured.png - 1024x500
+highres.png - 512x512
+promo.png - 180x120

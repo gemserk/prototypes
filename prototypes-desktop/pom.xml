@@ -1,0 +1,227 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.gemserk.prototypes.prototypes</groupId>
+		<artifactId>prototypes</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.gemserk.games.prototypes</groupId>
+	<artifactId>prototypes-desktop</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>Gemserk's Prototypes - PC</name>
+	<description>Gemserk's Prototypes - PC</description>
+
+	<url>http://blog.gemserk.com</url>
+
+	<properties>
+		<webstartName>Gemserk's Prototypes</webstartName>
+		<webstartDescription>Gemserk's Prototypes</webstartDescription>
+		<webstartCodebase>http://www.gemserk.com/prototipos/${project.parent.artifactId}-latest/</webstartCodebase>
+
+		<!-- finalName>${project.artifactId}-${project.version}</finalName -->
+		<finalName>${project.artifactId}-${project.version}</finalName>
+
+		<webstartMain>com.gemserk.games.prototypes.DesktopApplication</webstartMain>
+		<appletMain>com.gemserk.games.prototypes.Applet</appletMain>
+
+		<appletGameParameter>com.gemserk.games.prototypes.Applet</appletGameParameter>
+
+		<mainClass>${webstartMain}</mainClass>
+
+		<jnlp.applet.mainClass>com.gemserk.games.prototypes.Applet</jnlp.applet.mainClass>
+
+		<natives>${basedir}/target/natives/</natives>
+
+		<!-- Properties for keystore generation -->
+		<gemserk.keystore>/tmp/keystore-gemserk</gemserk.keystore>
+		<gemserk.keypass>m2m2m2</gemserk.keypass>
+		<gemserk.storepass>m2m2m2</gemserk.storepass>
+
+		<gemserk.alias>gemserk.com</gemserk.alias>
+
+		<gemserk.keystore.delete>true</gemserk.keystore.delete>
+		<gemserk.keystore.gen>true</gemserk.keystore.gen>
+	</properties>
+
+	<build>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>version.properties</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>com.googlecode.mavennatives</groupId>
+				<artifactId>maven-nativedependencies-plugin</artifactId>
+				<version>0.0.5</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>prototypes-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gemserk.commons.gdx</groupId>
+			<artifactId>commons-gdx-desktop</artifactId>
+			<version>${commons.gdx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.badlogic.gdx</groupId>
+			<artifactId>gdx-backend-lwjgl</artifactId>
+			<version>${gdx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gemserk.datastore</groupId>
+			<artifactId>datastore-desktop</artifactId>
+			<version>${datastore.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gemserk.analytics.googleanalytics</groupId>
+			<artifactId>jgoogleanalyticstracker-desktop</artifactId>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>webstart</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo.webstart</groupId>
+						<artifactId>webstart-maven-plugin</artifactId>
+						<version>1.0-alpha-2-gemserk-4</version>
+
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>jnlp-inline</goal>
+								</goals>
+							</execution>
+						</executions>
+
+						<configuration>
+							<artifactWithMainClass>${finalName}</artifactWithMainClass>
+
+							<pack200>true</pack200>
+							<gzip>true</gzip>
+
+							<jnlp>
+								<j2seVersion>${compiler.version}+</j2seVersion>
+								<inputTemplateResourcePath>${project.basedir}/src/main/jnlp</inputTemplateResourcePath>
+								<inputTemplate>jnlptemplate.vm</inputTemplate>
+								<outputFile>launch.jnlp</outputFile>
+								<mainClass>${jnlp.applet.mainClass}</mainClass>
+							</jnlp>
+
+							<!-- SIGNING -->
+							<!-- defining this will automatically sign the jar and its dependencies -->
+							<sign>
+
+								<keystore>${gemserk.keystore}</keystore>
+								<keypass>${gemserk.keypass}</keypass>
+								<storepass>${gemserk.storepass}</storepass>
+								<alias>${gemserk.alias}</alias>
+
+								<validity>3560</validity>
+								<dnameCn>Gemserk</dnameCn>
+								<dnameOu>Gemserk</dnameOu>
+								<dnameO>Gemserk</dnameO>
+								<dnameL>Montevideo</dnameL>
+								<dnameSt>Montevideo</dnameSt>
+								<dnameC>UY</dnameC>
+
+								<verify>true</verify>
+
+								<keystoreConfig>
+									<delete>${gemserk.keystore.delete}</delete>
+									<gen>${gemserk.keystore.gen}</gen>
+								</keystoreConfig>
+							</sign>
+
+							<verbose>false</verbose>
+
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>assembly</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.googlecode.mavennatives</groupId>
+						<artifactId>maven-nativedependencies-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>copy</goal>
+								</goals>
+							</execution>
+						</executions>
+
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+						<configuration>
+							<archive>
+								<manifest>
+									<addClasspath>true</addClasspath>
+									<mainClass>${webstartMain}</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<version>2.2-beta-5</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/distribution.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

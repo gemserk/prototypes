@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<jnlp spec="$jnlpspec" codebase="$webstartCodebase" href="JNLPFILE">
+  	<information>
+    <title>$webstartName</title>
+    <vendor>$project.Organization.Name</vendor>
+    <homepage href="$project.Url"/>
+    <description>$webstartDescription</description>
+#if($offlineAllowed)
+    <offline-allowed/>
+#end
+  </information>
+#if($allPermissions)
+  <security>
+     <all-permissions/>
+  </security>
+#end
+	<resources>
+	    <j2se version="$j2seVersion"/>
+	     #foreach( $dependency in $fulldependencies )
+			#if ( !$dependency.classifier)
+				<jar href="${dependency.artifactId}-${dependency.baseVersion}.jar" />
+			#end
+		#end
+	    #foreach( $dependency in $fulldependencies )
+			#if ( $dependency.classifier && !$dependency.classifier.startsWith('natives-'))
+				<jar href="${dependency.artifactId}-${dependency.baseVersion}-${dependency.classifier}.jar" />
+			#end
+		#end
+	</resources>
+
+	<resources os="Windows">
+		#foreach( $dependency in $fulldependencies )
+			#if ( $dependency.classifier == 'natives-win' || $dependency.classifier == 'natives-windows')
+				<nativelib href="${dependency.artifactId}-${dependency.baseVersion}-${dependency.classifier}.jar" />
+			#end
+		#end
+	</resources>
+
+	<resources os="Linux">
+		#foreach( $dependency in $fulldependencies )
+			#if ( $dependency.classifier == 'natives-linux' )
+				<nativelib href="${dependency.artifactId}-${dependency.baseVersion}-${dependency.classifier}.jar" />
+			#end
+		#end
+	</resources>
+
+	<resources os="Mac OS">
+		#foreach( $dependency in $fulldependencies )
+			#if ( $dependency.classifier == 'natives-mac' || $dependency.classifier == 'natives-osx' )
+				<nativelib href="${dependency.artifactId}-${dependency.baseVersion}-${dependency.classifier}.jar" />
+			#end
+		#end
+	</resources>
+  
+    <applet-desc name="$webstartName" main-class="$appletMain" width="800" height="600"> <!-- JNLPAPPLET -->
+    	<param name="game" value="$project.Properties.appletGameParameter"/> <!-- JNLPAPPLET -->
+  	</applet-desc> <!-- JNLPAPPLET -->
+  	
+  	<application-desc main-class="$project.Properties.webstartMain" /> <!-- JNLPWEBSTART -->  
+  
+</jnlp>
