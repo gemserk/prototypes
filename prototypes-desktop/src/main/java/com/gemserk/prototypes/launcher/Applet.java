@@ -7,7 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.gemserk.commons.utils.gdx.LwjglLibgdxLibraryUtils;
-import com.gemserk.prototypes.Game;
+import com.gemserk.prototypes.Launcher;
 
 public class Applet extends java.applet.Applet {
 
@@ -43,7 +43,7 @@ public class Applet extends java.applet.Applet {
 				public final void addNotify() {
 					super.addNotify();
 
-					Game game = new Game() {
+					Launcher launcher = new Launcher() {
 						@Override
 						public void create() {
 							Gdx.graphics.setVSync(true);
@@ -51,7 +51,7 @@ public class Applet extends java.applet.Applet {
 						};
 					};
 
-					application = new LwjglApplication(game, false, this) {
+					application = new LwjglApplication(launcher, false, this) {
 						public com.badlogic.gdx.Application.ApplicationType getType() {
 							return ApplicationType.Applet;
 						};

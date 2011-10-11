@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.gemserk.commons.gdx.Game;
-import com.gemserk.prototypes.pixmap.PixmapFromTextureAtlasPrototype;
+import com.gemserk.prototypes.Launcher;
 
 public class DesktopApplication {
 
@@ -55,8 +55,10 @@ public class DesktopApplication {
 		config.vSyncEnabled = true;
 
 //		Game game = new LightingPrototype();
-		Game game = new PixmapFromTextureAtlasPrototype();
+//		Game game = new PixmapFromTextureAtlasPrototype();
 //		Game game = new PixmapCollisionPrototype();
+		
+		Game game = new Launcher();
 
 		// boolean runningInDebug = System.getProperty("runningInDebug") != null;
 

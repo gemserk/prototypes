@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.gemserk.commons.gdx.Game;
-import com.gemserk.prototypes.pixmap.PixmapCollisionPrototype;
+import com.gemserk.prototypes.Launcher;
 
 public class AndroidApplication extends com.badlogic.gdx.backends.android.AndroidApplication {
 
@@ -30,7 +30,7 @@ public class AndroidApplication extends com.badlogic.gdx.backends.android.Androi
 		config.useWakelock = true;
 
 		// Game game = new LightingPrototype();
-		Game game = new PixmapCollisionPrototype();
+		Game game = new Launcher();
 
 		View gameView = initializeForView(game, config);
 
