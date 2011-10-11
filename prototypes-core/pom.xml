@@ -55,15 +55,6 @@
 			<artifactId>commons-gdx-resources</artifactId>
 			<version>${commons.gdx.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.gemserk.datastore</groupId>
-			<artifactId>datastore-core</artifactId>
-			<version>${datastore.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dmurph</groupId>
-			<artifactId>JGoogleAnalyticsTracker</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>

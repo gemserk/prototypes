@@ -5,7 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.gemserk.prototypes.Game;
+import com.gemserk.commons.gdx.Game;
+import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
 
 public class DesktopApplication {
 
@@ -22,7 +23,7 @@ public class DesktopApplication {
 
 			String displayString = argv[0];
 			String[] displayValues = displayString.split("x");
-			
+
 			if (displayValues.length < 2)
 				return;
 
@@ -53,9 +54,9 @@ public class DesktopApplication {
 		config.forceExit = true;
 		config.vSyncEnabled = true;
 
-		Game game = new Game();
+		Game game = new LightingPrototype();
 
-		boolean runningInDebug = System.getProperty("runningInDebug") != null;
+		// boolean runningInDebug = System.getProperty("runningInDebug") != null;
 
 		new LwjglApplication(game, config);
 	}

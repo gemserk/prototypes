@@ -228,14 +228,5 @@
 			<artifactId>gdx-backend-android</artifactId>
 			<version>${gdx.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.gemserk.datastore</groupId>
-			<artifactId>datastore-android</artifactId>
-			<version>${datastore.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.gemserk.analytics.googleanalytics</groupId>
-			<artifactId>jgoogleanalyticstracker-android</artifactId>
-		</dependency>
 	</dependencies>
 </project>
