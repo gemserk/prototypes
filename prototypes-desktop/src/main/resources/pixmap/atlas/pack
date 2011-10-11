@@ -1,0 +1,33 @@
+
+buttons1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+button-settings-glow
+  rotate: false
+  xy: 0, 0
+  size: 150, 69
+  orig: 150, 69
+  offset: 0, 0
+  index: -1
+button-play-glow
+  rotate: false
+  xy: 152, 0
+  size: 90, 69
+  orig: 90, 69
+  offset: 0, 0
+  index: -1
+button-play
+  rotate: false
+  xy: 244, 0
+  size: 81, 63
+  orig: 81, 63
+  offset: 0, 0
+  index: -1
+button-settings
+  rotate: false
+  xy: 327, 0
+  size: 142, 61
+  orig: 142, 61
+  offset: 0, 0
+  index: -1
