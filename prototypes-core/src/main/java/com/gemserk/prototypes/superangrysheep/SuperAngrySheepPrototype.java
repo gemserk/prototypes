@@ -272,8 +272,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 	ArrayList<SuperAngrySheepPrototype.Bomb> bombsToDelete = new ArrayList<SuperAngrySheepPrototype.Bomb>();
 
 	ArrayList<BombExplosion> bombExplosions = new ArrayList<BombExplosion>();
+	ArrayList<BombExplosion> bombExplosionsToDelete = new ArrayList<BombExplosion>();
 
-	Texture bombTexture;
 	private Sound bombSound;
 	private Sound bombExplosionSound;
 
@@ -308,11 +308,11 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 				texture("BombExplosionSpriteSheet", "superangrysheep/bomb-explosion-animation.png");
 				animation("BombExplosionAnimation", "BombExplosionSpriteSheet", 0, 0, 128, 128, 15, false, 35);
 
+				texture("BombTexture", "superangrysheep/bomb.png", true);
+				sprite("BombSprite", "BombTexture");
+
 			}
 		};
-
-		bombTexture = new Texture(Gdx.files.internal("pixmap/collisions/bazooka.png"));
-		bombTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		bombSound = Gdx.audio.newSound(Gdx.files.internal("pixmap/collisions/sounds/bomb-falling.wav"));
 
@@ -366,6 +366,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		};
 
 		bombs = new ArrayList<SuperAngrySheepPrototype.Bomb>();
+		bombExplosions = new ArrayList<BombExplosion>();
 
 		leftButton = new LeftButton(controller);
 		rightButton = new RightButton(controller);
@@ -419,9 +420,11 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 			bomb.controller = controller;
 			bomb.explosionRadius = 30f;
 
-			Sprite bombSprite = new Sprite(bombTexture);
+			Sprite bombSprite = resourceManager.getResourceValue("BombSprite");
 
-			bombSprite.setSize(64f, 64f);
+			// Sprite bombSprite = new Sprite(bombTexture);
+
+			bombSprite.setSize(32f, 32f);
 
 			bomb.setSprite(bombSprite);
 
@@ -451,9 +454,12 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 			midpointx += bomb.position.x;
 			midpointy += bomb.position.y;
 		}
-		
+
 		for (int i = 0; i < bombExplosions.size(); i++) {
-			bombExplosions.get(i).update();
+			BombExplosion bombExplosion = bombExplosions.get(i);
+			bombExplosion.update();
+			if (bombExplosion.animation.isFinished()) 
+				bombExplosionsToDelete.add(bombExplosion);
 		}
 
 		if (bombs.size() == 1) {
@@ -469,6 +475,9 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		bombs.removeAll(bombsToDelete);
 		bombsToDelete.clear();
+		
+		bombExplosions.removeAll(bombExplosionsToDelete);
+		bombExplosionsToDelete.clear();
 
 		backgroundCamera.zoom(backgroundFollowCamera.getZoom());
 		backgroundCamera.move(backgroundFollowCamera.getX(), backgroundFollowCamera.getY());
@@ -514,12 +523,12 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 	@Override
 	public void dispose() {
 		spriteBatch.dispose();
-		bombTexture.dispose();
 		pixmapTerrain.texture.dispose();
 		pixmapTerrain.pixmap.dispose();
 		bombSound.dispose();
 		bombExplosionSound.dispose();
 		backgroundTexture.dispose();
+		resourceManager.unloadAll();
 	}
 
 }
