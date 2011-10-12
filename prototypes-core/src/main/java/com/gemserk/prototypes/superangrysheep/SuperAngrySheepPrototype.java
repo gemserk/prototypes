@@ -20,7 +20,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.graphics.ColorUtils;
-import com.gemserk.commons.gdx.graphics.ImmediateModeRendererUtils;
 import com.gemserk.commons.gdx.graphics.SpriteUtils;
 import com.gemserk.componentsengine.input.ButtonMonitor;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
@@ -187,41 +186,6 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	}
 
-	static class LeftButton {
-
-		Controller controller;
-		Sprite sprite;
-		Rectangle bounds;
-
-		public LeftButton(Controller controller) {
-			this.controller = controller;
-			this.sprite = new Sprite(new Texture(Gdx.files.internal("superangrysheep/button-turn-left.png")));
-			this.sprite.setSize(90, 90);
-			SpriteUtils.centerOn(this.sprite, Gdx.graphics.getWidth() * 0.075f, Gdx.graphics.getHeight() * 0.125f);
-			bounds = new Rectangle(this.sprite.getX(), //
-					this.sprite.getY(), //
-					this.sprite.getWidth(), //
-					this.sprite.getHeight());
-		}
-
-		void update() {
-			controller.left = false;
-
-			if (!Gdx.input.isTouched())
-				return;
-
-			float x = Gdx.input.getX();
-			float y = Gdx.graphics.getHeight() - Gdx.input.getY();
-
-			controller.left = bounds.contains(x, y);
-		}
-
-		void draw(SpriteBatch spriteBatch) {
-			sprite.draw(spriteBatch);
-		}
-
-	}
-
 	static class GraphicButtonMonitor extends ButtonMonitor {
 
 		Sprite sprite;
@@ -248,12 +212,38 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	}
 
+	static class LeftButton {
+
+		Controller controller;
+		Sprite sprite;
+
+		ButtonMonitor buttonMonitor;
+
+		public LeftButton(Controller controller) {
+			this.controller = controller;
+			this.sprite = new Sprite(new Texture(Gdx.files.internal("superangrysheep/button-turn-left.png")));
+			this.sprite.setSize(90, 90);
+			SpriteUtils.centerOn(this.sprite, Gdx.graphics.getWidth() * 0.075f, Gdx.graphics.getHeight() * 0.125f);
+			this.buttonMonitor = new GraphicButtonMonitor(sprite);
+		}
+
+		void update() {
+			buttonMonitor.update();
+			controller.left = buttonMonitor.isHolded();
+		}
+
+		void draw(SpriteBatch spriteBatch) {
+			sprite.draw(spriteBatch);
+		}
+
+	}
+
 	static class RightButton {
 
 		Controller controller;
 		Sprite sprite;
 
-		GraphicButtonMonitor buttonMonitor;
+		ButtonMonitor buttonMonitor;
 
 		public RightButton(Controller controller) {
 			this.controller = controller;
@@ -266,6 +256,32 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		void update() {
 			buttonMonitor.update();
 			controller.right = buttonMonitor.isHolded();
+		}
+
+		void draw(SpriteBatch spriteBatch) {
+			sprite.draw(spriteBatch);
+		}
+
+	}
+
+	static class FireButton {
+
+		Controller controller;
+		Sprite sprite;
+
+		ButtonMonitor buttonMonitor;
+
+		public FireButton(Controller controller) {
+			this.controller = controller;
+			this.sprite = new Sprite(new Texture(Gdx.files.internal("superangrysheep/button-fire.png")));
+			this.sprite.setSize(90, 90);
+			SpriteUtils.centerOn(this.sprite, Gdx.graphics.getWidth() * (1f - 0.2f), Gdx.graphics.getHeight() * 0.125f);
+			this.buttonMonitor = new GraphicButtonMonitor(sprite);
+		}
+
+		void update() {
+			buttonMonitor.update();
+			controller.fire = buttonMonitor.isReleased();
 		}
 
 		void draw(SpriteBatch spriteBatch) {
@@ -298,6 +314,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	LeftButton leftButton;
 	RightButton rightButton;
+	FireButton fireButton;
 
 	@Override
 	public void init() {
@@ -350,6 +367,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		leftButton = new LeftButton(controller);
 		rightButton = new RightButton(controller);
+		fireButton = new FireButton(controller);
 
 	}
 
@@ -377,15 +395,14 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		// update controller
 
-		leftButton.update();
-		rightButton.update();
-
 		if (Gdx.app.getType() == ApplicationType.Android) {
-
+			leftButton.update();
+			rightButton.update();
+			fireButton.update();
 		} else {
 			controller.fire = inputDevicesMonitor.getButton("releaseBomb").isReleased();
-			// controller.left = Gdx.input.isKeyPressed(Keys.LEFT);
-			// controller.right = Gdx.input.isKeyPressed(Keys.RIGHT);
+			controller.left = Gdx.input.isKeyPressed(Keys.LEFT);
+			controller.right = Gdx.input.isKeyPressed(Keys.RIGHT);
 		}
 
 		if (controller.fire) {
@@ -438,15 +455,19 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 			bombs.get(i).draw(spriteBatch);
 		}
 
-		leftButton.draw(spriteBatch);
-		rightButton.draw(spriteBatch);
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			leftButton.draw(spriteBatch);
+			rightButton.draw(spriteBatch);
+			fireButton.draw(spriteBatch);
+		}
 
 		spriteBatch.end();
 
 		// if (Gdx.app.getType() == ApplicationType.Android) {
 
-		ImmediateModeRendererUtils.getProjectionMatrix().set(orthographicCamera.combined);
-		ImmediateModeRendererUtils.drawRectangle(leftButton.bounds, Color.BLACK);
+		// ImmediateModeRendererUtils.getProjectionMatrix().set(orthographicCamera.combined);
+
+		// ImmediateModeRendererUtils.drawRectangle(leftButton.bounds, Color.BLACK);
 		// ImmediateModeRendererUtils.drawRectangle(rightButton.bounds, Color.BLACK);
 
 		// ImmediateModeRendererUtils.drawSolidCircle(Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.1f, Gdx.graphics.getWidth() * 0.05f, Color.BLACK);

@@ -29,7 +29,6 @@ public class AndroidApplication extends com.badlogic.gdx.backends.android.Androi
 		config.useCompass = true;
 		config.useWakelock = true;
 
-		// Game game = new LightingPrototype();
 		Game game = new Launcher();
 
 		View gameView = initializeForView(game, config);
