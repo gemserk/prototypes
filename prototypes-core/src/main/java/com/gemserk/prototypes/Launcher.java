@@ -30,6 +30,7 @@ import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
 import com.gemserk.prototypes.pixmap.PixmapCollisionPrototype;
+import com.gemserk.prototypes.superangrysheep.SuperAngrySheepPrototype;
 
 public class Launcher extends com.gemserk.commons.gdx.Game {
 
@@ -50,6 +51,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 				{
 					put("Lighting", new LightingPrototype());
 					put("PixmapCollision", new PixmapCollisionPrototype());
+					put("SuperAngrySheep", new SuperAngrySheepPrototype());
 				}
 			};
 

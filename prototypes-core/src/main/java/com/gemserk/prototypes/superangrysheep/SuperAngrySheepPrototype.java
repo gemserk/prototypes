@@ -1,4 +1,4 @@
-package com.gemserk.prototypes.pixmap;
+package com.gemserk.prototypes.superangrysheep;
 
 import java.util.ArrayList;
 
@@ -15,15 +15,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.graphics.ColorUtils;
+import com.gemserk.commons.gdx.graphics.ImmediateModeRendererUtils;
 import com.gemserk.commons.gdx.graphics.SpriteUtils;
+import com.gemserk.componentsengine.input.ButtonMonitor;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 
-public class PixmapCollisionPrototype extends GameStateImpl {
+public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	static class PixmapHelper {
 
@@ -107,6 +110,16 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 
 	}
 
+	static class Controller {
+
+		boolean fire;
+
+		boolean left;
+
+		boolean right;
+
+	}
+
 	static class Bomb {
 
 		Vector2 position = new Vector2();
@@ -118,14 +131,16 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 
 		float angle;
 		Sprite sprite;
-		
+
 		long soundHandle;
 
-		PixmapCollisionPrototype.PixmapHelper pixmapHelper;
+		SuperAngrySheepPrototype.PixmapHelper pixmapHelper;
 		Color color = new Color();
 		Vector2 projectedPosition = new Vector2();
 
 		boolean deleted = false;
+
+		Controller controller;
 
 		public void setSprite(Sprite sprite) {
 			this.sprite = sprite;
@@ -135,7 +150,7 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 
 		void update() {
 
-			velocity.y += -1 * 100f * GlobalTime.getDelta();
+			// velocity.y += -1 * 100f * GlobalTime.getDelta();
 
 			position.x += velocity.x * GlobalTime.getDelta();
 			position.y += velocity.y * GlobalTime.getDelta();
@@ -154,6 +169,103 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 				deleted = true;
 				// remove this bomb...
 			}
+
+			float rotationAngle = 360f * GlobalTime.getDelta();
+
+			if (controller.left) {
+				this.angle += rotationAngle;
+				velocity.rotate(rotationAngle);
+			} else if (controller.right) {
+				this.angle -= rotationAngle;
+				velocity.rotate(-rotationAngle);
+			}
+		}
+
+		void draw(SpriteBatch spriteBatch) {
+			sprite.draw(spriteBatch);
+		}
+
+	}
+
+	static class LeftButton {
+
+		Controller controller;
+		Sprite sprite;
+		Rectangle bounds;
+
+		public LeftButton(Controller controller) {
+			this.controller = controller;
+			this.sprite = new Sprite(new Texture(Gdx.files.internal("superangrysheep/button-turn-left.png")));
+			this.sprite.setSize(90, 90);
+			SpriteUtils.centerOn(this.sprite, Gdx.graphics.getWidth() * 0.075f, Gdx.graphics.getHeight() * 0.125f);
+			bounds = new Rectangle(this.sprite.getX(), //
+					this.sprite.getY(), //
+					this.sprite.getWidth(), //
+					this.sprite.getHeight());
+		}
+
+		void update() {
+			controller.left = false;
+
+			if (!Gdx.input.isTouched())
+				return;
+
+			float x = Gdx.input.getX();
+			float y = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+			controller.left = bounds.contains(x, y);
+		}
+
+		void draw(SpriteBatch spriteBatch) {
+			sprite.draw(spriteBatch);
+		}
+
+	}
+
+	static class GraphicButtonMonitor extends ButtonMonitor {
+
+		Sprite sprite;
+		Rectangle bounds;
+
+		public GraphicButtonMonitor(Sprite sprite) {
+			this.sprite = sprite;
+			bounds = new Rectangle(this.sprite.getX(), //
+					this.sprite.getY(), //
+					this.sprite.getWidth(), //
+					this.sprite.getHeight());
+		}
+
+		@Override
+		protected boolean isDown() {
+			if (!Gdx.input.isTouched())
+				return false;
+
+			float x = Gdx.input.getX();
+			float y = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+			return bounds.contains(x, y);
+		}
+
+	}
+
+	static class RightButton {
+
+		Controller controller;
+		Sprite sprite;
+
+		GraphicButtonMonitor buttonMonitor;
+
+		public RightButton(Controller controller) {
+			this.controller = controller;
+			this.sprite = new Sprite(new Texture(Gdx.files.internal("superangrysheep/button-turn-right.png")));
+			this.sprite.setSize(90, 90);
+			SpriteUtils.centerOn(this.sprite, Gdx.graphics.getWidth() * (1f - 0.075f), Gdx.graphics.getHeight() * 0.125f);
+			this.buttonMonitor = new GraphicButtonMonitor(sprite);
+		}
+
+		void update() {
+			buttonMonitor.update();
+			controller.right = buttonMonitor.isHolded();
 		}
 
 		void draw(SpriteBatch spriteBatch) {
@@ -168,19 +280,24 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 
 	private Color color = new Color();
 
-	private PixmapCollisionPrototype.PixmapHelper pixmapHelper1;
+	private SuperAngrySheepPrototype.PixmapHelper pixmapHelper1;
 
 	private final Vector2 position = new Vector2();
 	private InputDevicesMonitorImpl inputDevicesMonitor;
 
 	boolean rotate = false;
 
-	ArrayList<PixmapCollisionPrototype.Bomb> bombs = new ArrayList<PixmapCollisionPrototype.Bomb>();
-	ArrayList<PixmapCollisionPrototype.Bomb> bombsToDelete = new ArrayList<PixmapCollisionPrototype.Bomb>();
-	
+	ArrayList<SuperAngrySheepPrototype.Bomb> bombs = new ArrayList<SuperAngrySheepPrototype.Bomb>();
+	ArrayList<SuperAngrySheepPrototype.Bomb> bombsToDelete = new ArrayList<SuperAngrySheepPrototype.Bomb>();
+
 	Texture bombTexture;
-	private Sound bombFallingSound;
+	private Sound bombSound;
 	private Sound bombExplosionSound;
+
+	Controller controller;
+
+	LeftButton leftButton;
+	RightButton rightButton;
 
 	@Override
 	public void init() {
@@ -189,44 +306,51 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 		spriteBatch = new SpriteBatch();
 
 		orthographicCamera = new OrthographicCamera();
-		
+
 		bombTexture = new Texture(Gdx.files.internal("pixmap/collisions/bazooka.png"));
-		bombFallingSound = Gdx.audio.newSound(Gdx.files.internal("pixmap/collisions/sounds/bomb-falling.wav"));
-		
+		bombSound = Gdx.audio.newSound(Gdx.files.internal("pixmap/collisions/sounds/bomb-falling.wav"));
+
 		bombExplosionSound = Gdx.audio.newSound(Gdx.files.internal("pixmap/collisions/sounds/bomb-explosion.ogg"));
 
-		Pixmap pixmap = new Pixmap(Gdx.files.internal("pixmap/collisions/platform-01_rgba8_l.png"));
+		Pixmap pixmap = new Pixmap(Gdx.files.internal("superangrysheep/superangrysheep-level.png"));
 
 		Texture texture = new Texture(pixmap);
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		Sprite sprite = new Sprite(texture);
 
-		SpriteUtils.resize(sprite, pixmap.getWidth() * 1f);
-		SpriteUtils.centerOn(sprite, Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.25f);
+		sprite.setPosition(0, 0);
 
-		sprite.setOrigin(sprite.getWidth() * 0.5f, sprite.getHeight() * 0.5f);
+		// SpriteUtils.resize(sprite, pixmap.getWidth() * 1f);
+		// SpriteUtils.centerOn(sprite, Gdx.graphics.getWidth() * 0f, Gdx.graphics.getHeight() * 0f);
+
+		// sprite.setOrigin(sprite.getWidth() * 0f, sprite.getHeight() * 0f);
 
 		orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		orthographicCamera.update();
 
 		pixmapHelper1 = new PixmapHelper(pixmap, sprite, texture);
 
-		Gdx.graphics.getGL10().glClearColor(0f, 0f, 1f, 0f);
+		Gdx.graphics.getGL10().glClearColor(0.5f, 0.5f, 0.5f, 0f);
+
+		controller = new Controller();
 
 		inputDevicesMonitor = new InputDevicesMonitorImpl<String>();
 		new LibgdxInputMappingBuilder<String>(inputDevicesMonitor, Gdx.input) {
 			{
-				monitorKeys("toggleRotate", Keys.S);
-				
 				if (Gdx.app.getType() == ApplicationType.Android)
 					monitorPointerDown("releaseBomb", 0);
-				else
-					monitorMouseLeftButton("releaseBomb");
+				else {
+					monitorKey("releaseBomb", Keys.SPACE);
+				}
 			}
 		};
 
-		bombs = new ArrayList<PixmapCollisionPrototype.Bomb>();
+		bombs = new ArrayList<SuperAngrySheepPrototype.Bomb>();
+
+		leftButton = new LeftButton(controller);
+		rightButton = new RightButton(controller);
+
 	}
 
 	@Override
@@ -248,23 +372,34 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 
 		// System.out.println("" + x + "," + y + ": " + color + ", " + Integer.toHexString(pixel));
 
-		if (inputDevicesMonitor.getButton("toggleRotate").isReleased())
-			rotate = !rotate;
-
 		if (rotate)
 			pixmapHelper1.sprite.rotate(0.1f);
 
-		if (inputDevicesMonitor.getButton("releaseBomb").isReleased()) {
-			PixmapCollisionPrototype.Bomb bomb = new Bomb();
-			
-			bomb.soundHandle = bombFallingSound.play();
+		// update controller
+
+		leftButton.update();
+		rightButton.update();
+
+		if (Gdx.app.getType() == ApplicationType.Android) {
+
+		} else {
+			controller.fire = inputDevicesMonitor.getButton("releaseBomb").isReleased();
+			// controller.left = Gdx.input.isKeyPressed(Keys.LEFT);
+			// controller.right = Gdx.input.isKeyPressed(Keys.RIGHT);
+		}
+
+		if (controller.fire) {
+			SuperAngrySheepPrototype.Bomb bomb = new Bomb();
+
+			// bomb.soundHandle = bombSound.play();
 
 			bombTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
-			bomb.position.set(x, y);
-			bomb.velocity.set(0f, -25f);
-			bomb.angle = 270;
+			bomb.position.set(20, Gdx.graphics.getHeight() * 0.5f);
+			bomb.velocity.set(200f, 0f);
+			bomb.angle = 0;
 			bomb.pixmapHelper = pixmapHelper1;
+			bomb.controller = controller;
 
 			bomb.setSprite(new Sprite(bombTexture));
 
@@ -272,10 +407,10 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 		}
 
 		for (int i = 0; i < bombs.size(); i++) {
-			PixmapCollisionPrototype.Bomb bomb = bombs.get(i);
+			SuperAngrySheepPrototype.Bomb bomb = bombs.get(i);
 			bomb.update();
 			if (bomb.deleted) {
-				bombFallingSound.stop(bomb.soundHandle);
+				// bombSound.stop(bomb.soundHandle);
 				bombsToDelete.add(bomb);
 				bombExplosionSound.play();
 				System.out.println("removing bomb");
@@ -303,16 +438,30 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 			bombs.get(i).draw(spriteBatch);
 		}
 
+		leftButton.draw(spriteBatch);
+		rightButton.draw(spriteBatch);
+
 		spriteBatch.end();
+
+		// if (Gdx.app.getType() == ApplicationType.Android) {
+
+		ImmediateModeRendererUtils.getProjectionMatrix().set(orthographicCamera.combined);
+		ImmediateModeRendererUtils.drawRectangle(leftButton.bounds, Color.BLACK);
+		// ImmediateModeRendererUtils.drawRectangle(rightButton.bounds, Color.BLACK);
+
+		// ImmediateModeRendererUtils.drawSolidCircle(Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.1f, Gdx.graphics.getWidth() * 0.05f, Color.BLACK);
+		// ImmediateModeRendererUtils.drawRectangle(Gdx.graphics.getWidth() * 0.075f, Gdx.graphics.getHeight() * 0.125f, 50, 50, Color.BLACK);
+
+		// }
 	}
-	
+
 	@Override
 	public void dispose() {
 		spriteBatch.dispose();
 		bombTexture.dispose();
 		pixmapHelper1.texture.dispose();
 		pixmapHelper1.pixmap.dispose();
-		bombFallingSound.dispose();
+		bombSound.dispose();
 		bombExplosionSound.dispose();
 	}
 
