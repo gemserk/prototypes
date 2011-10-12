@@ -315,6 +315,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 	LeftButton leftButton;
 	RightButton rightButton;
 	FireButton fireButton;
+	private Texture backgroundTexture;
+	private Sprite backgroundSprite;
 
 	@Override
 	public void init() {
@@ -337,6 +339,9 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		Sprite sprite = new Sprite(texture);
 
 		sprite.setPosition(0, 0);
+		
+		backgroundTexture = new Texture(Gdx.files.internal("superangrysheep/superangrysheep-background.png"));
+		backgroundSprite = new Sprite(backgroundTexture);
 
 		// SpriteUtils.resize(sprite, pixmap.getWidth() * 1f);
 		// SpriteUtils.centerOn(sprite, Gdx.graphics.getWidth() * 0f, Gdx.graphics.getHeight() * 0f);
@@ -449,6 +454,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		spriteBatch.setTransformMatrix(orthographicCamera.view);
 
 		spriteBatch.begin();
+		
+		backgroundSprite.draw(spriteBatch);
 		pixmapHelper1.sprite.draw(spriteBatch);
 
 		for (int i = 0; i < bombs.size(); i++) {
@@ -484,6 +491,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		pixmapHelper1.pixmap.dispose();
 		bombSound.dispose();
 		bombExplosionSound.dispose();
+		backgroundTexture.dispose();
 	}
 
 }

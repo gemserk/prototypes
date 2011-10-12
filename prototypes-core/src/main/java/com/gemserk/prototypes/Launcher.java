@@ -1,5 +1,6 @@
 package com.gemserk.prototypes;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -74,8 +76,10 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			// String[] items = { "Lighting", "Lighting" };
 
 			String[] items = new String[gameStates.keySet().size()];
-
+			
 			gameStates.keySet().toArray(items);
+			
+			Arrays.sort(items);
 
 			ComboBoxStyle style = skin.getStyle(ComboBoxStyle.class);
 
@@ -146,6 +150,8 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 	private InputDevicesMonitorImpl<String> inputDevicesMonitor;
 	private GameState launcherGameState;
 	private GameState currentGameState;
+	
+	private BitmapFont bitmapFont;
 
 	@Override
 	public void create() {
@@ -154,6 +160,8 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 		Converters.register(Vector2.class, LibgdxConverters.vector2());
 
 		spriteBatch = new SpriteBatch();
+		
+		bitmapFont = new BitmapFont();
 
 		Injector injector = new InjectorImpl();
 
@@ -201,12 +209,16 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			}
 		}
 
+		spriteBatch.begin();
+		bitmapFont.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), Gdx.graphics.getWidth() * 0.02f, Gdx.graphics.getHeight() * 0.95f);
+		spriteBatch.end();
 	}
 
 	@Override
 	public void dispose() {
 		super.dispose();
 		spriteBatch.dispose();
+		bitmapFont.dispose();
 	}
 
 }
