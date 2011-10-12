@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.gemserk.animation4j.gdx.Animation;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.camera.Camera;
@@ -23,10 +24,13 @@ import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
 import com.gemserk.commons.gdx.graphics.ColorUtils;
 import com.gemserk.commons.gdx.graphics.SpriteUtils;
+import com.gemserk.commons.gdx.resources.LibgdxResourceBuilder;
 import com.gemserk.componentsengine.input.ButtonMonitor;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.prototypes.pixmap.PixmapHelper;
+import com.gemserk.resources.ResourceManager;
+import com.gemserk.resources.ResourceManagerImpl;
 
 public class SuperAngrySheepPrototype extends GameStateImpl {
 
@@ -212,6 +216,45 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	}
 
+	static class BombExplosion {
+
+		Sprite sprite;
+		Vector2 position = new Vector2();
+		float angle;
+		Animation animation;
+
+		Vector2 center = new Vector2(0.5f, 0.5f);
+
+		float width;
+		float height;
+
+		public BombExplosion(Animation animation) {
+			this.animation = animation;
+
+			sprite = animation.getCurrentFrame();
+
+			this.width = sprite.getWidth();
+			this.height = sprite.getHeight();
+		}
+
+		void update() {
+
+			animation.update(GlobalTime.getDelta());
+			sprite = animation.getCurrentFrame();
+
+			sprite.setRotation(angle);
+			sprite.setOrigin(width * center.x, height * center.y);
+			sprite.setSize(width, height);
+			sprite.setPosition(position.x - sprite.getOriginX(), position.y - sprite.getOriginY());
+
+		}
+
+		void draw(SpriteBatch spriteBatch) {
+			sprite.draw(spriteBatch);
+		}
+
+	}
+
 	private GL10 gl;
 	private SpriteBatch spriteBatch;
 	// private OrthographicCamera orthographicCamera;
@@ -227,6 +270,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	ArrayList<SuperAngrySheepPrototype.Bomb> bombs = new ArrayList<SuperAngrySheepPrototype.Bomb>();
 	ArrayList<SuperAngrySheepPrototype.Bomb> bombsToDelete = new ArrayList<SuperAngrySheepPrototype.Bomb>();
+
+	ArrayList<BombExplosion> bombExplosions = new ArrayList<BombExplosion>();
 
 	Texture bombTexture;
 	private Sound bombSound;
@@ -245,6 +290,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 	Libgdx2dCamera guiCamera;
 	private Camera backgroundFollowCamera;
 
+	ResourceManager<String> resourceManager;
+
 	@Override
 	public void init() {
 		gl = Gdx.graphics.getGL10();
@@ -252,6 +299,17 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		spriteBatch = new SpriteBatch();
 
 		// orthographicCamera = new OrthographicCamera();
+
+		resourceManager = new ResourceManagerImpl<String>();
+
+		new LibgdxResourceBuilder(resourceManager) {
+			{
+
+				texture("BombExplosionSpriteSheet", "superangrysheep/bomb-explosion-animation.png");
+				animation("BombExplosionAnimation", "BombExplosionSpriteSheet", 0, 0, 128, 128, 15, false, 35);
+
+			}
+		};
 
 		bombTexture = new Texture(Gdx.files.internal("pixmap/collisions/bazooka.png"));
 		bombTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -283,9 +341,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		worldCamera.move(Gdx.graphics.getWidth() * 0.25f, Gdx.graphics.getHeight() * 0.5f);
 		worldCamera.zoom(1f);
-		
-		backgroundFollowCamera = new CameraRestrictedImpl(0f, 0f, 1f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 
-				new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+
+		backgroundFollowCamera = new CameraRestrictedImpl(0f, 0f, 1f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
 		// orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		// orthographicCamera.update();
@@ -360,7 +417,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 			bomb.angle = 0;
 			bomb.pixmapHelper = pixmapTerrain;
 			bomb.controller = controller;
-			bomb.explosionRadius = 60f;
+			bomb.explosionRadius = 30f;
 
 			Sprite bombSprite = new Sprite(bombTexture);
 
@@ -382,16 +439,28 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 				bombsToDelete.add(bomb);
 				bombExplosionSound.play();
 				System.out.println("removing bomb");
+
+				Animation animation = resourceManager.getResourceValue("BombExplosionAnimation");
+
+				BombExplosion bombExplosion = new BombExplosion(animation);
+				bombExplosion.position.set(bomb.position);
+
+				bombExplosions.add(bombExplosion);
+
 			}
 			midpointx += bomb.position.x;
 			midpointy += bomb.position.y;
+		}
+		
+		for (int i = 0; i < bombExplosions.size(); i++) {
+			bombExplosions.get(i).update();
 		}
 
 		if (bombs.size() == 1) {
 			midpointx /= bombs.size();
 			midpointy /= bombs.size();
 			worldCamera.move(midpointx, midpointy);
-			
+
 			backgroundFollowCamera.setPosition(midpointx / backgroundFollowCamera.getZoom(), midpointy / backgroundFollowCamera.getZoom());
 		} else {
 			// midpointx = Gdx.graphics.getWidth() * 0.5f;
@@ -426,6 +495,9 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		pixmapTerrain.sprite.draw(spriteBatch);
 		for (int i = 0; i < bombs.size(); i++) {
 			bombs.get(i).draw(spriteBatch);
+		}
+		for (int i = 0; i < bombExplosions.size(); i++) {
+			bombExplosions.get(i).draw(spriteBatch);
 		}
 		spriteBatch.end();
 
