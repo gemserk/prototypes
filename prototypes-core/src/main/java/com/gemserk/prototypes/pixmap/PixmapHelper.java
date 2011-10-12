@@ -26,7 +26,7 @@ public class PixmapHelper {
 	
 	public PixmapHelper(Pixmap pixmap) {
 		this.pixmap = pixmap;
-		this.texture = new Texture(pixmap);
+		this.texture = new Texture(new PixmapTextureData(pixmap, pixmap.getFormat(), false, false));
 		this.texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		this.sprite = new Sprite(texture);
 	}

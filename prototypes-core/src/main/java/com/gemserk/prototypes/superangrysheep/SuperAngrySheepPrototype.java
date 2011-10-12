@@ -8,9 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -19,95 +17,18 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.GlobalTime;
+import com.gemserk.commons.gdx.camera.Camera;
+import com.gemserk.commons.gdx.camera.CameraRestrictedImpl;
+import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
+import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
 import com.gemserk.commons.gdx.graphics.ColorUtils;
 import com.gemserk.commons.gdx.graphics.SpriteUtils;
 import com.gemserk.componentsengine.input.ButtonMonitor;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
+import com.gemserk.prototypes.pixmap.PixmapHelper;
 
 public class SuperAngrySheepPrototype extends GameStateImpl {
-
-	static class PixmapHelper {
-
-		Pixmap pixmap;
-		Sprite sprite;
-		Texture texture;
-
-		final Color color = new Color();
-
-		public PixmapHelper(Pixmap pixmap, Sprite sprite, Texture texture) {
-			this.pixmap = pixmap;
-			this.sprite = sprite;
-			this.texture = texture;
-		}
-
-		/**
-		 * Projects the coordinates (x, y) to the Pixmap coordinates system and store the result in the specified Vector2.
-		 * 
-		 * @param position
-		 *            The Vector2 to store the transformed coordinates.
-		 * @param x
-		 *            The x coordinate to be projected.
-		 * @param y
-		 *            The y coordinate to be prjected
-		 */
-		public void project(Vector2 position, float x, float y) {
-			position.set(x, y);
-
-			float centerX = sprite.getX() + sprite.getOriginX();
-			float centerY = sprite.getY() + sprite.getOriginY();
-
-			position.add(-centerX, -centerY);
-
-			position.rotate(-sprite.getRotation());
-
-			float scaleX = pixmap.getWidth() / sprite.getWidth();
-			float scaleY = pixmap.getHeight() / sprite.getHeight();
-
-			position.x *= scaleX;
-			position.y *= scaleY;
-
-			position.add( //
-					pixmap.getWidth() * 0.5f, //
-					-pixmap.getHeight() * 0.5f //
-			);
-
-			position.y *= -1f;
-		}
-
-		public int getPixel(Vector2 position) {
-			return getPixel(position.x, position.y);
-		}
-
-		public int getPixel(float x, float y) {
-			return pixmap.getPixel((int) x, (int) y);
-		}
-
-		public void setPixel(float x, float y, int value) {
-			ColorUtils.rgba8888ToColor(color, value);
-			pixmap.setColor(color);
-		}
-
-		public void drawPixel(float x, float y, float r, float g, float b, float a, float radius) {
-			pixmap.setColor(r, g, b, a);
-			pixmap.fillCircle(Math.round(x), Math.round(y), Math.round(radius));
-			texture.draw(pixmap, 0, 0);
-		}
-
-		public void eraseCircle(float x, float y, float radius) {
-			Blending blending = Pixmap.getBlending();
-			pixmap.setColor(0f, 0f, 0f, 0f);
-			Pixmap.setBlending(Blending.None);
-
-			float scaleX = pixmap.getWidth() / sprite.getWidth();
-			System.out.println(scaleX);
-
-			pixmap.fillCircle(Math.round(x), Math.round(y), Math.round(radius * scaleX));
-			texture.draw(pixmap, 0, 0);
-			Pixmap.setBlending(blending);
-		}
-
-	}
 
 	static class Controller {
 
@@ -127,13 +48,14 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		float width;
 		float height;
+		float explosionRadius;
 
 		float angle;
 		Sprite sprite;
 
 		long soundHandle;
 
-		SuperAngrySheepPrototype.PixmapHelper pixmapHelper;
+		PixmapHelper pixmapHelper;
 		Color color = new Color();
 		Vector2 projectedPosition = new Vector2();
 
@@ -164,7 +86,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 			ColorUtils.rgba8888ToColor(color, pixmapHelper.getPixel(projectedPosition.x, projectedPosition.y));
 
 			if (color.a != 0) {
-				pixmapHelper.eraseCircle(projectedPosition.x, projectedPosition.y, 40f);
+				pixmapHelper.eraseCircle(projectedPosition.x, projectedPosition.y, explosionRadius);
 				deleted = true;
 				// remove this bomb...
 			}
@@ -292,11 +214,11 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	private GL10 gl;
 	private SpriteBatch spriteBatch;
-	private OrthographicCamera orthographicCamera;
+	// private OrthographicCamera orthographicCamera;
 
 	private Color color = new Color();
 
-	private SuperAngrySheepPrototype.PixmapHelper pixmapHelper1;
+	private PixmapHelper pixmapTerrain;
 
 	private final Vector2 position = new Vector2();
 	private InputDevicesMonitorImpl inputDevicesMonitor;
@@ -318,15 +240,22 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 	private Texture backgroundTexture;
 	private Sprite backgroundSprite;
 
+	Libgdx2dCamera backgroundCamera;
+	Libgdx2dCamera worldCamera;
+	Libgdx2dCamera guiCamera;
+	private Camera backgroundFollowCamera;
+
 	@Override
 	public void init() {
 		gl = Gdx.graphics.getGL10();
 
 		spriteBatch = new SpriteBatch();
 
-		orthographicCamera = new OrthographicCamera();
+		// orthographicCamera = new OrthographicCamera();
 
 		bombTexture = new Texture(Gdx.files.internal("pixmap/collisions/bazooka.png"));
+		bombTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
 		bombSound = Gdx.audio.newSound(Gdx.files.internal("pixmap/collisions/sounds/bomb-falling.wav"));
 
 		bombExplosionSound = Gdx.audio.newSound(Gdx.files.internal("pixmap/collisions/sounds/bomb-explosion.ogg"));
@@ -339,7 +268,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		Sprite sprite = new Sprite(texture);
 
 		sprite.setPosition(0, 0);
-		
+
 		backgroundTexture = new Texture(Gdx.files.internal("superangrysheep/superangrysheep-background.png"));
 		backgroundSprite = new Sprite(backgroundTexture);
 
@@ -348,10 +277,21 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		// sprite.setOrigin(sprite.getWidth() * 0f, sprite.getHeight() * 0f);
 
-		orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		orthographicCamera.update();
+		backgroundCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
+		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.25f, Gdx.graphics.getHeight() * 0.5f);
+		guiCamera = new Libgdx2dCameraTransformImpl();
 
-		pixmapHelper1 = new PixmapHelper(pixmap, sprite, texture);
+		worldCamera.move(Gdx.graphics.getWidth() * 0.25f, Gdx.graphics.getHeight() * 0.5f);
+		worldCamera.zoom(1f);
+		
+		backgroundFollowCamera = new CameraRestrictedImpl(0f, 0f, 1f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 
+				new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+
+		// orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		// orthographicCamera.update();
+
+		pixmapTerrain = new PixmapHelper(pixmap);
+		// pixmapTerrain.sprite.setSize(pixmapTerrain.sprite.getWidth() * 0.5f, pixmapTerrain.sprite.getHeight() * 0.5f);
 
 		Gdx.graphics.getGL10().glClearColor(0.5f, 0.5f, 0.5f, 0f);
 
@@ -385,9 +325,9 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		int x = Gdx.input.getX();
 		int y = (Gdx.graphics.getHeight() - Gdx.input.getY());
 
-		pixmapHelper1.project(position, x, y);
+		pixmapTerrain.project(position, x, y);
 
-		int pixel = pixmapHelper1.getPixel(position.x, position.y);
+		int pixel = pixmapTerrain.getPixel(position.x, position.y);
 
 		ColorUtils.rgba8888ToColor(color, pixel);
 
@@ -396,7 +336,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		// System.out.println("" + x + "," + y + ": " + color + ", " + Integer.toHexString(pixel));
 
 		if (rotate)
-			pixmapHelper1.sprite.rotate(0.1f);
+			pixmapTerrain.sprite.rotate(0.1f);
 
 		// update controller
 
@@ -415,18 +355,24 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 			// bomb.soundHandle = bombSound.play();
 
-			bombTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
 			bomb.position.set(20, Gdx.graphics.getHeight() * 0.5f);
 			bomb.velocity.set(200f, 0f);
 			bomb.angle = 0;
-			bomb.pixmapHelper = pixmapHelper1;
+			bomb.pixmapHelper = pixmapTerrain;
 			bomb.controller = controller;
+			bomb.explosionRadius = 60f;
 
-			bomb.setSprite(new Sprite(bombTexture));
+			Sprite bombSprite = new Sprite(bombTexture);
+
+			bombSprite.setSize(64f, 64f);
+
+			bomb.setSprite(bombSprite);
 
 			bombs.add(bomb);
 		}
+
+		float midpointx = 0f;
+		float midpointy = 0f;
 
 		for (int i = 0; i < bombs.size(); i++) {
 			SuperAngrySheepPrototype.Bomb bomb = bombs.get(i);
@@ -437,10 +383,26 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 				bombExplosionSound.play();
 				System.out.println("removing bomb");
 			}
+			midpointx += bomb.position.x;
+			midpointy += bomb.position.y;
+		}
+
+		if (bombs.size() == 1) {
+			midpointx /= bombs.size();
+			midpointy /= bombs.size();
+			worldCamera.move(midpointx, midpointy);
+			
+			backgroundFollowCamera.setPosition(midpointx / backgroundFollowCamera.getZoom(), midpointy / backgroundFollowCamera.getZoom());
+		} else {
+			// midpointx = Gdx.graphics.getWidth() * 0.5f;
+			// midpointy = Gdx.graphics.getHeight() * 0.5f;
 		}
 
 		bombs.removeAll(bombsToDelete);
 		bombsToDelete.clear();
+
+		backgroundCamera.zoom(backgroundFollowCamera.getZoom());
+		backgroundCamera.move(backgroundFollowCamera.getX(), backgroundFollowCamera.getY());
 
 	}
 
@@ -448,47 +410,41 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 	public void render() {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-		orthographicCamera.apply(gl);
+		// orthographicCamera.apply(gl);
+		//
+		// spriteBatch.setProjectionMatrix(orthographicCamera.projection);
+		// spriteBatch.setTransformMatrix(orthographicCamera.view);
 
-		spriteBatch.setProjectionMatrix(orthographicCamera.projection);
-		spriteBatch.setTransformMatrix(orthographicCamera.view);
-
+		backgroundCamera.apply(spriteBatch);
 		spriteBatch.begin();
-		
 		backgroundSprite.draw(spriteBatch);
-		pixmapHelper1.sprite.draw(spriteBatch);
+		spriteBatch.end();
 
+		worldCamera.apply(spriteBatch);
+		spriteBatch.begin();
+		// backgroundSprite.draw(spriteBatch);
+		pixmapTerrain.sprite.draw(spriteBatch);
 		for (int i = 0; i < bombs.size(); i++) {
 			bombs.get(i).draw(spriteBatch);
 		}
-
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			leftButton.draw(spriteBatch);
-			rightButton.draw(spriteBatch);
-			fireButton.draw(spriteBatch);
-		}
-
 		spriteBatch.end();
 
+		guiCamera.apply(spriteBatch);
+		spriteBatch.begin();
 		// if (Gdx.app.getType() == ApplicationType.Android) {
-
-		// ImmediateModeRendererUtils.getProjectionMatrix().set(orthographicCamera.combined);
-
-		// ImmediateModeRendererUtils.drawRectangle(leftButton.bounds, Color.BLACK);
-		// ImmediateModeRendererUtils.drawRectangle(rightButton.bounds, Color.BLACK);
-
-		// ImmediateModeRendererUtils.drawSolidCircle(Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.1f, Gdx.graphics.getWidth() * 0.05f, Color.BLACK);
-		// ImmediateModeRendererUtils.drawRectangle(Gdx.graphics.getWidth() * 0.075f, Gdx.graphics.getHeight() * 0.125f, 50, 50, Color.BLACK);
-
+		leftButton.draw(spriteBatch);
+		rightButton.draw(spriteBatch);
+		fireButton.draw(spriteBatch);
 		// }
+		spriteBatch.end();
 	}
 
 	@Override
 	public void dispose() {
 		spriteBatch.dispose();
 		bombTexture.dispose();
-		pixmapHelper1.texture.dispose();
-		pixmapHelper1.pixmap.dispose();
+		pixmapTerrain.texture.dispose();
+		pixmapTerrain.pixmap.dispose();
 		bombSound.dispose();
 		bombExplosionSound.dispose();
 		backgroundTexture.dispose();
