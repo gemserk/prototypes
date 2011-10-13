@@ -8,9 +8,10 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Disposable;
 import com.gemserk.commons.gdx.graphics.ColorUtils;
 
-public class PixmapHelper {
+public class PixmapHelper implements Disposable {
 
 	public Pixmap pixmap;
 	public Sprite sprite;
@@ -99,6 +100,12 @@ public class PixmapHelper {
 
 	public void reloadTexture() {
 		texture.load(new PixmapTextureData(pixmap, pixmap.getFormat(), false, false));
+	}
+
+	@Override
+	public void dispose() {
+		this.pixmap.dispose();
+		this.texture.dispose();
 	}
 
 }

@@ -37,9 +37,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 	static class Controller {
 
 		boolean fire;
-
 		boolean left;
-
 		boolean right;
 
 	}
@@ -138,7 +136,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	}
 
-	static class LeftButton {
+	class LeftButton {
 
 		Controller controller;
 		Sprite sprite;
@@ -147,9 +145,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		public LeftButton(Controller controller) {
 			this.controller = controller;
-			this.sprite = new Sprite(new Texture(Gdx.files.internal("superangrysheep/button-turn-left.png")));
-			this.sprite.setSize(90, 90);
-			SpriteUtils.centerOn(this.sprite, Gdx.graphics.getWidth() * 0.075f, Gdx.graphics.getHeight() * 0.125f);
+			this.sprite = resourceManager.getResourceValue("ButtonTurnLeftSprite");
+			SpriteUtils.centerOn(this.sprite, Gdx.graphics.getWidth() * 0.085f, Gdx.graphics.getHeight() * 0.15f);
 			this.buttonMonitor = new GraphicButtonMonitor(sprite);
 		}
 
@@ -164,7 +161,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	}
 
-	static class RightButton {
+	class RightButton {
 
 		Controller controller;
 		Sprite sprite;
@@ -173,9 +170,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		public RightButton(Controller controller) {
 			this.controller = controller;
-			this.sprite = new Sprite(new Texture(Gdx.files.internal("superangrysheep/button-turn-right.png")));
-			this.sprite.setSize(90, 90);
-			SpriteUtils.centerOn(this.sprite, Gdx.graphics.getWidth() * (1f - 0.075f), Gdx.graphics.getHeight() * 0.125f);
+			this.sprite = resourceManager.getResourceValue("ButtonTurnRightSprite");
+			SpriteUtils.centerOn(this.sprite, Gdx.graphics.getWidth() * (1f - 0.085f), Gdx.graphics.getHeight() * 0.15f);
 			this.buttonMonitor = new GraphicButtonMonitor(sprite);
 		}
 
@@ -190,7 +186,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	}
 
-	static class FireButton {
+	class FireButton {
 
 		Controller controller;
 		Sprite sprite;
@@ -199,9 +195,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		public FireButton(Controller controller) {
 			this.controller = controller;
-			this.sprite = new Sprite(new Texture(Gdx.files.internal("superangrysheep/button-fire.png")));
-			this.sprite.setSize(90, 90);
-			SpriteUtils.centerOn(this.sprite, Gdx.graphics.getWidth() * (1f - 0.2f), Gdx.graphics.getHeight() * 0.125f);
+			this.sprite = resourceManager.getResourceValue("ButtonFireSprite");
+			SpriteUtils.centerOn(this.sprite, Gdx.graphics.getWidth() * (1f - 0.25f), Gdx.graphics.getHeight() * 0.15f);
 			this.buttonMonitor = new GraphicButtonMonitor(sprite);
 		}
 
@@ -233,8 +228,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 			sprite = animation.getCurrentFrame();
 
-			this.width = sprite.getWidth();
-			this.height = sprite.getHeight();
+			this.width = sprite.getWidth() * 1.5f;
+			this.height = sprite.getHeight() * 1.5f;
 		}
 
 		void update() {
@@ -282,17 +277,21 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 	LeftButton leftButton;
 	RightButton rightButton;
 	FireButton fireButton;
-	private Texture backgroundTexture;
-	private Sprite backgroundSprite;
+	Sprite backgroundSprite;
 
 	Libgdx2dCamera backgroundCamera;
+	Libgdx2dCamera secondBackgroundCamera;
+
 	Libgdx2dCamera worldCamera;
 	Libgdx2dCamera guiCamera;
-	private Camera backgroundFollowCamera;
+
+	Camera backgroundFollowCamera;
+	Camera secondBackgroundFollowCamera;
 
 	ResourceManager<String> resourceManager;
 
 	Rectangle worldBounds;
+	private Sprite secondBackgroundSprite;
 
 	@Override
 	public void init() {
@@ -309,11 +308,23 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 				texture("BackgroundTexture", "superangrysheep/superangrysheep-background.png", true);
 				sprite("BackgroundSprite", "BackgroundTexture");
 
+				texture("SecondBackgroundTexture", "superangrysheep/superangrysheep-background2.png", true);
+				sprite("SecondBackgroundSprite", "SecondBackgroundTexture");
+
 				texture("BombExplosionSpriteSheet", "superangrysheep/bomb-explosion-animation.png");
 				animation("BombExplosionAnimation", "BombExplosionSpriteSheet", 0, 0, 128, 128, 15, false, 35);
 
 				texture("BombTexture", "superangrysheep/bomb.png", true);
 				sprite("BombSprite", "BombTexture");
+
+				texture("ButtonFireTexture", "superangrysheep/button-fire.png", true);
+				sprite("ButtonFireSprite", "ButtonFireTexture");
+
+				texture("ButtonTurnLeftTexture", "superangrysheep/button-turn-left.png", true);
+				sprite("ButtonTurnLeftSprite", "ButtonTurnLeftTexture");
+				
+				texture("ButtonTurnRightTexture", "superangrysheep/button-turn-right.png", true);
+				sprite("ButtonTurnRightSprite", "ButtonTurnRightTexture");
 
 			}
 		};
@@ -331,13 +342,14 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		sprite.setPosition(0, 0);
 
-//		backgroundTexture = new Texture(Gdx.files.internal("superangrysheep/superangrysheep-background.png"));
+		// backgroundTexture = new Texture(Gdx.files.internal("superangrysheep/superangrysheep-background.png"));
 		backgroundSprite = resourceManager.getResourceValue("BackgroundSprite");
+		secondBackgroundSprite = resourceManager.getResourceValue("SecondBackgroundSprite");
 
 		float worldScaleFactor = 1.5f;
-		
+
 		worldBounds = new Rectangle(-1024f * worldScaleFactor * 0.5f, -512 * worldScaleFactor * 0.5f, 1024f * worldScaleFactor, 512f * worldScaleFactor);
-		
+
 		System.out.println(worldBounds);
 
 		// SpriteUtils.resize(backgroundSprite, worldBounds.getWidth());
@@ -353,6 +365,10 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		backgroundSprite.setSize(worldBounds.getWidth(), worldBounds.getHeight());
 		backgroundSprite.setPosition(0f - backgroundSprite.getOriginX(), 0f - backgroundSprite.getOriginY());
 
+		secondBackgroundSprite.setOrigin(worldBounds.getWidth() * 0.5f, worldBounds.getHeight() * 0.5f);
+		secondBackgroundSprite.setSize(worldBounds.getWidth(), worldBounds.getHeight());
+		secondBackgroundSprite.setPosition(0f - secondBackgroundSprite.getOriginX(), 0f - secondBackgroundSprite.getOriginY());
+
 		// SpriteUtils.resize(backgroundSprite, 64f);
 
 		// SpriteUtils.resize(sprite, pixmap.getWidth() * 1f);
@@ -361,6 +377,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		// sprite.setOrigin(sprite.getWidth() * 0f, sprite.getHeight() * 0f);
 
 		backgroundCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
+		secondBackgroundCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
+
 		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.25f, Gdx.graphics.getHeight() * 0.5f);
 		guiCamera = new Libgdx2dCameraTransformImpl();
 
@@ -368,6 +386,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		worldCamera.zoom(1f);
 
 		backgroundFollowCamera = new CameraRestrictedImpl(0f, 0f, 1f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), worldBounds);
+		secondBackgroundFollowCamera = new CameraRestrictedImpl(0f, 0f, 1f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), worldBounds);
 
 		// orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		// orthographicCamera.update();
@@ -492,7 +511,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 			midpointy /= bombs.size();
 			worldCamera.move(midpointx, midpointy);
 
-			backgroundFollowCamera.setPosition(midpointx / 6f, midpointy / 6f);
+			backgroundFollowCamera.setPosition(midpointx / 12f, midpointy / 12f);
+			secondBackgroundFollowCamera.setPosition(midpointx / 4f, midpointy / 4f);
 		} else {
 			// midpointx = Gdx.graphics.getWidth() * 0.5f;
 			// midpointy = Gdx.graphics.getHeight() * 0.5f;
@@ -506,6 +526,9 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		backgroundCamera.zoom(backgroundFollowCamera.getZoom());
 		backgroundCamera.move(backgroundFollowCamera.getX(), backgroundFollowCamera.getY());
+
+		secondBackgroundCamera.zoom(secondBackgroundFollowCamera.getZoom());
+		secondBackgroundCamera.move(secondBackgroundFollowCamera.getX(), secondBackgroundFollowCamera.getY());
 
 	}
 
@@ -521,6 +544,11 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		backgroundCamera.apply(spriteBatch);
 		spriteBatch.begin();
 		backgroundSprite.draw(spriteBatch);
+		spriteBatch.end();
+
+		secondBackgroundCamera.apply(spriteBatch);
+		spriteBatch.begin();
+		secondBackgroundSprite.draw(spriteBatch);
 		spriteBatch.end();
 
 		worldCamera.apply(spriteBatch);
@@ -546,13 +574,16 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 	}
 
 	@Override
+	public void resume() {
+		pixmapTerrain.reloadTexture();
+	}
+
+	@Override
 	public void dispose() {
 		spriteBatch.dispose();
-		pixmapTerrain.texture.dispose();
-		pixmapTerrain.pixmap.dispose();
+		pixmapTerrain.dispose();
 		bombSound.dispose();
 		bombExplosionSound.dispose();
-		backgroundTexture.dispose();
 		resourceManager.unloadAll();
 	}
 
