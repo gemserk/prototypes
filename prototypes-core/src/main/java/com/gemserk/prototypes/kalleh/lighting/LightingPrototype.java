@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -34,7 +33,6 @@ public class LightingPrototype extends GameStateImpl {
 
 	Box2DDebugRenderer box2dDebugRenderer;
 	private Light light;
-	private BitmapFont bitmapFont;
 
 	@Override
 	public void init() {
@@ -50,8 +48,6 @@ public class LightingPrototype extends GameStateImpl {
 		guiCamera = new OrthographicCamera();
 		guiCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		guiCamera.update();
-
-		bitmapFont = new BitmapFont();
 
 		inputDevicesMonitor = new InputDevicesMonitorImpl<String>();
 		new LibgdxInputMappingBuilder<String>(inputDevicesMonitor, Gdx.input) {
@@ -196,8 +192,6 @@ public class LightingPrototype extends GameStateImpl {
 		spriteBatch.setProjectionMatrix(guiCamera.projection);
 		spriteBatch.setTransformMatrix(guiCamera.view);
 		spriteBatch.begin();
-		bitmapFont.setColor(1f, 1f, 1f, 1f);
-		bitmapFont.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * 0.95f);
 		spriteBatch.end();
 
 	}

@@ -136,6 +136,18 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 		public void update() {
 			stage.act(getDelta());
 		}
+		
+		@Override
+		public void pause() {
+			super.pause();
+			Gdx.input.setInputProcessor(null);
+		}
+		
+		@Override
+		public void resume() {
+			super.resume();
+			Gdx.input.setInputProcessor(stage);
+		}
 
 		@Override
 		public void render() {

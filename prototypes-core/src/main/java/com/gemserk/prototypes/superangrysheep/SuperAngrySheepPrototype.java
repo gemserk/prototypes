@@ -292,6 +292,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	ResourceManager<String> resourceManager;
 
+	Rectangle worldBounds;
+
 	@Override
 	public void init() {
 		gl = Gdx.graphics.getGL10();
@@ -304,6 +306,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		new LibgdxResourceBuilder(resourceManager) {
 			{
+				texture("BackgroundTexture", "superangrysheep/superangrysheep-background.png", true);
+				sprite("BackgroundSprite", "BackgroundTexture");
 
 				texture("BombExplosionSpriteSheet", "superangrysheep/bomb-explosion-animation.png");
 				animation("BombExplosionAnimation", "BombExplosionSpriteSheet", 0, 0, 128, 128, 15, false, 35);
@@ -327,8 +331,29 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		sprite.setPosition(0, 0);
 
-		backgroundTexture = new Texture(Gdx.files.internal("superangrysheep/superangrysheep-background.png"));
-		backgroundSprite = new Sprite(backgroundTexture);
+//		backgroundTexture = new Texture(Gdx.files.internal("superangrysheep/superangrysheep-background.png"));
+		backgroundSprite = resourceManager.getResourceValue("BackgroundSprite");
+
+		float worldScaleFactor = 1.5f;
+		
+		worldBounds = new Rectangle(-1024f * worldScaleFactor * 0.5f, -512 * worldScaleFactor * 0.5f, 1024f * worldScaleFactor, 512f * worldScaleFactor);
+		
+		System.out.println(worldBounds);
+
+		// SpriteUtils.resize(backgroundSprite, worldBounds.getWidth());
+		// SpriteUtils.centerOn(backgroundSprite, worldBounds.getX() + worldBounds.getWidth() * 0.5f, 0);
+
+		// sprite.setRotation(angle);
+
+		// sprite.setOrigin(spatial.getWidth() * center.x, spatial.getHeight() * center.y);
+		// sprite.setSize(spatial.getWidth(), spatial.getHeight());
+		// sprite.setPosition(newX - sprite.getOriginX(), newY - sprite.getOriginY());
+
+		backgroundSprite.setOrigin(worldBounds.getWidth() * 0.5f, worldBounds.getHeight() * 0.5f);
+		backgroundSprite.setSize(worldBounds.getWidth(), worldBounds.getHeight());
+		backgroundSprite.setPosition(0f - backgroundSprite.getOriginX(), 0f - backgroundSprite.getOriginY());
+
+		// SpriteUtils.resize(backgroundSprite, 64f);
 
 		// SpriteUtils.resize(sprite, pixmap.getWidth() * 1f);
 		// SpriteUtils.centerOn(sprite, Gdx.graphics.getWidth() * 0f, Gdx.graphics.getHeight() * 0f);
@@ -342,7 +367,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		worldCamera.move(Gdx.graphics.getWidth() * 0.25f, Gdx.graphics.getHeight() * 0.5f);
 		worldCamera.zoom(1f);
 
-		backgroundFollowCamera = new CameraRestrictedImpl(0f, 0f, 1f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+		backgroundFollowCamera = new CameraRestrictedImpl(0f, 0f, 1f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), worldBounds);
 
 		// orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		// orthographicCamera.update();
@@ -413,7 +438,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 			// bomb.soundHandle = bombSound.play();
 
-			bomb.position.set(20, Gdx.graphics.getHeight() * 0.5f);
+			bomb.position.set(-200f, Gdx.graphics.getHeight() * 0.5f);
 			bomb.velocity.set(200f, 0f);
 			bomb.angle = 0;
 			bomb.pixmapHelper = pixmapTerrain;
@@ -458,16 +483,16 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		for (int i = 0; i < bombExplosions.size(); i++) {
 			BombExplosion bombExplosion = bombExplosions.get(i);
 			bombExplosion.update();
-			if (bombExplosion.animation.isFinished()) 
+			if (bombExplosion.animation.isFinished())
 				bombExplosionsToDelete.add(bombExplosion);
 		}
 
-		if (bombs.size() == 1) {
+		if (bombs.size() >= 1) {
 			midpointx /= bombs.size();
 			midpointy /= bombs.size();
 			worldCamera.move(midpointx, midpointy);
 
-			backgroundFollowCamera.setPosition(midpointx / backgroundFollowCamera.getZoom(), midpointy / backgroundFollowCamera.getZoom());
+			backgroundFollowCamera.setPosition(midpointx / 6f, midpointy / 6f);
 		} else {
 			// midpointx = Gdx.graphics.getWidth() * 0.5f;
 			// midpointy = Gdx.graphics.getHeight() * 0.5f;
@@ -475,7 +500,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		bombs.removeAll(bombsToDelete);
 		bombsToDelete.clear();
-		
+
 		bombExplosions.removeAll(bombExplosionsToDelete);
 		bombExplosionsToDelete.clear();
 
