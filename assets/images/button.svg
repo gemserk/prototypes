@@ -12,7 +12,7 @@
  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
  inkscape:export-ydpi="180"
  inkscape:export-xdpi="180"
- inkscape:export-filename="/home/acoppes/workspace/prototypes/prototypes-desktop/src/main/resources/superangrysheep/button-base.png"
+ inkscape:export-filename="/home/acoppes/workspace/prototypes/prototypes-desktop/src/main/resources/superangrysheep/button-fire.png"
  sodipodi:docname="button.svg"
  inkscape:version="0.48.1 r9760"
  version="1.1"
@@ -210,9 +210,9 @@
  borderopacity="1.0"
  inkscape:pageopacity="0.0"
  inkscape:pageshadow="2"
- inkscape:zoom="2.70313"
- inkscape:cx="-15.2841"
- inkscape:cy="34.3559"
+ inkscape:zoom="5.40626"
+ inkscape:cx="42.0826"
+ inkscape:cy="20.112"
  inkscape:current-layer="layer1"
  showgrid="false"
  inkscape:document-units="px"
@@ -235,7 +235,7 @@
 <dc:format>image/svg+xml</dc:format>
 <dc:type
  rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-<dc:title />
+<dc:title></dc:title>
 </cc:Work>
 </rdf:RDF>
 </metadata>
@@ -284,7 +284,7 @@
  id="layer1"
  inkscape:label="fire"
  inkscape:groupmode="layer"
- style="display:inline">
+ style="display:none">
 <g
  id="g3960"
  transform="matrix(0.079726,0,0,0.08101,12.6645,-32.5465)">

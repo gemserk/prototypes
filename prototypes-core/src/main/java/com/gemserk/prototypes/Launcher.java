@@ -32,8 +32,11 @@ import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
 import com.gemserk.prototypes.pixmap.PixmapCollisionPrototype;
+import com.gemserk.prototypes.pixmap.performance.PixmapPerformancePrototype;
 import com.gemserk.prototypes.pixmap.reload.ReloadPixmapTestGameState;
 import com.gemserk.prototypes.superangrysheep.SuperAngrySheepPrototype;
+import com.gemserk.prototypes.texture.DrawToTexturePrototype;
+import com.gemserk.prototypes.texture.PixmapToTexturePrototype;
 
 public class Launcher extends com.gemserk.commons.gdx.Game {
 
@@ -56,6 +59,9 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 					put("PixmapCollision", new PixmapCollisionPrototype());
 					put("SuperAngrySheep", new SuperAngrySheepPrototype());
 					put("ReloadPixmapTest", new ReloadPixmapTestGameState());
+					put("PixmapPerformance", new PixmapPerformancePrototype());
+					put("DrawToTextureBorderTest", new DrawToTexturePrototype());
+					put("PixmapToTextureBorderTest", new PixmapToTexturePrototype());
 				}
 			};
 
@@ -234,3 +240,4 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 	}
 
 }
+

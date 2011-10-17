@@ -46,7 +46,7 @@ public class ReloadPixmapTestGameState extends GameStateImpl {
 	
 	@Override
 	public void resume() {
-		pixmapHelper.reloadTexture();
+		pixmapHelper.reload();
 	}
 
 	@Override
