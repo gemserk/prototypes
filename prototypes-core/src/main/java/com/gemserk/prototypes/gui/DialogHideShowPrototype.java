@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.gemserk.animation4j.gdx.converters.LibgdxConverters;
@@ -24,6 +25,41 @@ public class DialogHideShowPrototype extends GameStateImpl {
 	public static final ControlPositionConverter controlPositionConverter = new ControlPositionConverter();
 	public static final ImageButtonSizeConverter imageButtonSizeConverter = new ImageButtonSizeConverter();
 
+	public static class ResizeButtonHandler extends ButtonHandler {
+		
+		@Override
+		public void onOver(Control control) {
+			ImageButton imageButton = (ImageButton) control;
+			Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+					.end(0.15f, 108f, 108f) //
+					.build());
+		}
+
+		@Override
+		public void onLeave(Control control) {
+			ImageButton imageButton = (ImageButton) control;
+			Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+					.end(0.15f, 96f, 96f) //
+					.build());
+		}
+
+		@Override
+		public void onPressed(Control control) {
+			ImageButton imageButton = (ImageButton) control;
+			Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+					.end(0.05f, 84f, 84f) //
+					.build());
+		}
+
+		@Override
+		public void onReleased(Control control) {
+			ImageButton imageButton = (ImageButton) control;
+			Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+					.end(0.15f, 96f, 96f) //
+					.build());
+		}
+	}
+
 	private static class Gui {
 
 		public static final String Screen = "Screen";
@@ -31,6 +67,7 @@ public class DialogHideShowPrototype extends GameStateImpl {
 
 		public static final String DialogWindow = "DialogWindow";
 		public static final String DialogBackgroundImage = "DialogBackgroundImage";
+		public static final String DialogText = "DialogText";
 
 		public static final String ButtonOk = "ButtonOk";
 		public static final String ButtonCross = "ButtonCross";
@@ -72,6 +109,15 @@ public class DialogHideShowPrototype extends GameStateImpl {
 				.center(0.5f, 0.5f) //
 				.color(1f, 1f, 1f, 1f) //
 				.build());
+		
+		BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("data/fonts/purisa-24.fnt"), Gdx.files.internal("data/fonts/purisa-24.png"), false);
+		
+		dialogWindow.add(GuiControls.label("Are you sure\n you want to Quit?").id(Gui.DialogText) //
+				.position(0f, 0f) //
+				.center(0.5f, 0.75f) //
+				.font(bitmapFont) //
+				.color(1f, 1f, 1f, 1f) //
+				.build());
 
 		Texture buttonTickTexture = new Texture(Gdx.files.internal("gui/button-tick.png"));
 		buttonTickTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -83,38 +129,11 @@ public class DialogHideShowPrototype extends GameStateImpl {
 				.center(0.5f, 0.5f) //
 				.size(96f, 96f) //
 				.color(1f, 1f, 1f, 1f) //
-				.handler(new ButtonHandler() {
-					@Override
-					public void onOver(Control control) {
-						ImageButton imageButton = (ImageButton) control;
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
-								.end(0.15f, 108f, 108f) //
-								.build());
-					}
-					
-					@Override
-					public void onLeave(Control control) {
-						ImageButton imageButton = (ImageButton) control;
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
-								.end(0.15f, 96f, 96f) //
-								.build());
-					}
-					
-					@Override
-					public void onPressed(Control control) {
-						ImageButton imageButton = (ImageButton) control;
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
-								.end(0.15f, 84f, 84f) //
-								.build());
-					}
-
+				.handler(new ResizeButtonHandler() {
 					@Override
 					public void onReleased(Control control) {
+						super.onReleased(control);
 						hideDialog();
-						ImageButton imageButton = (ImageButton) control;
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
-								.end(0.15f, 96f, 96f) //
-								.build());
 					}
 				}).build());
 
@@ -128,38 +147,11 @@ public class DialogHideShowPrototype extends GameStateImpl {
 				.center(0.5f, 0.5f) //
 				.size(96f, 96f) //
 				.color(1f, 1f, 1f, 1f) //
-				.handler(new ButtonHandler() {
-					@Override
-					public void onOver(Control control) {
-						ImageButton imageButton = (ImageButton) control;
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
-								.end(0.15f, 108f, 108f) //
-								.build());
-					}
-					
-					@Override
-					public void onLeave(Control control) {
-						ImageButton imageButton = (ImageButton) control;
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
-								.end(0.15f, 96f, 96f) //
-								.build());
-					}
-					
-					@Override
-					public void onPressed(Control control) {
-						ImageButton imageButton = (ImageButton) control;
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
-								.end(0.15f, 84f, 84f) //
-								.build());
-					}
-
+				.handler(new ResizeButtonHandler() {
 					@Override
 					public void onReleased(Control control) {
+						super.onReleased(control);
 						hideDialog();
-						ImageButton imageButton = (ImageButton) control;
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
-								.end(0.15f, 96f, 96f) //
-								.build());
 					}
 				}).build());
 
