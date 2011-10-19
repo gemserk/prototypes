@@ -17,10 +17,12 @@ import com.gemserk.commons.gdx.gui.Control;
 import com.gemserk.commons.gdx.gui.GuiControls;
 import com.gemserk.commons.gdx.gui.ImageButton;
 import com.gemserk.commons.gdx.gui.animation4j.ControlPositionConverter;
+import com.gemserk.commons.gdx.gui.animation4j.ImageButtonSizeConverter;
 
 public class DialogHideShowPrototype extends GameStateImpl {
 
 	public static final ControlPositionConverter controlPositionConverter = new ControlPositionConverter();
+	public static final ImageButtonSizeConverter imageButtonSizeConverter = new ImageButtonSizeConverter();
 
 	private static class Gui {
 
@@ -83,8 +85,36 @@ public class DialogHideShowPrototype extends GameStateImpl {
 				.color(1f, 1f, 1f, 1f) //
 				.handler(new ButtonHandler() {
 					@Override
+					public void onOver(Control control) {
+						ImageButton imageButton = (ImageButton) control;
+						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+								.end(0.15f, 108f, 108f) //
+								.build());
+					}
+					
+					@Override
+					public void onLeave(Control control) {
+						ImageButton imageButton = (ImageButton) control;
+						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+								.end(0.15f, 96f, 96f) //
+								.build());
+					}
+					
+					@Override
+					public void onPressed(Control control) {
+						ImageButton imageButton = (ImageButton) control;
+						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+								.end(0.15f, 84f, 84f) //
+								.build());
+					}
+
+					@Override
 					public void onReleased(Control control) {
 						hideDialog();
+						ImageButton imageButton = (ImageButton) control;
+						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+								.end(0.15f, 96f, 96f) //
+								.build());
 					}
 				}).build());
 
@@ -100,8 +130,36 @@ public class DialogHideShowPrototype extends GameStateImpl {
 				.color(1f, 1f, 1f, 1f) //
 				.handler(new ButtonHandler() {
 					@Override
+					public void onOver(Control control) {
+						ImageButton imageButton = (ImageButton) control;
+						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+								.end(0.15f, 108f, 108f) //
+								.build());
+					}
+					
+					@Override
+					public void onLeave(Control control) {
+						ImageButton imageButton = (ImageButton) control;
+						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+								.end(0.15f, 96f, 96f) //
+								.build());
+					}
+					
+					@Override
+					public void onPressed(Control control) {
+						ImageButton imageButton = (ImageButton) control;
+						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+								.end(0.15f, 84f, 84f) //
+								.build());
+					}
+
+					@Override
 					public void onReleased(Control control) {
 						hideDialog();
+						ImageButton imageButton = (ImageButton) control;
+						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+								.end(0.15f, 96f, 96f) //
+								.build());
 					}
 				}).build());
 
@@ -125,7 +183,7 @@ public class DialogHideShowPrototype extends GameStateImpl {
 				.end(0.85f, 0.5f, 0.5f, 0.5f, 1f) //
 				.functions(InterpolationFunctions.easeIn(), InterpolationFunctions.easeIn()) //
 				.build());
-		
+
 		clickToShow = false;
 	}
 
@@ -144,7 +202,7 @@ public class DialogHideShowPrototype extends GameStateImpl {
 				.end(0.5f, 1f, 1f, 1f, 1f) //
 				.functions(InterpolationFunctions.easeOut(), InterpolationFunctions.easeOut()) //
 				.build());
-		
+
 		clickToShow = true;
 	}
 
@@ -153,10 +211,10 @@ public class DialogHideShowPrototype extends GameStateImpl {
 		super.update();
 		Synchronizers.synchronize(getDelta());
 		screen.update();
-		
+
 		if (Gdx.input.justTouched() && clickToShow)
 			showDialog();
-			
+
 	}
 
 	@Override

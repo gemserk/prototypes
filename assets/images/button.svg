@@ -12,7 +12,7 @@
  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
  inkscape:export-ydpi="180"
  inkscape:export-xdpi="180"
- inkscape:export-filename="/home/acoppes/workspace/angryships/angryships-desktop/src/main/resources/data/gui/button-cross.png"
+ inkscape:export-filename="/home/acoppes/workspace/angryships/angryships-desktop/src/main/resources/data/gui/button-turn-right.png"
  sodipodi:docname="button.svg"
  inkscape:version="0.48.1 r9760"
  version="1.1"
@@ -274,7 +274,7 @@
  inkscape:groupmode="layer"
  id="layer5"
  inkscape:label="button2"
- style="display:none">
+ style="display:inline">
 <g
  style="display:inline"
  id="g3946"
@@ -326,7 +326,8 @@
 <g
  inkscape:groupmode="layer"
  id="layer8"
- inkscape:label="button_transparent">
+ inkscape:label="button_transparent"
+ style="display:none">
 <g
  transform="matrix(0.995935,0,0,1.00966,-297.914,-345.358)"
  id="g5224"
@@ -339,17 +340,17 @@
  transform="matrix(1.01844,0,0,1.01004,-110.454,155.991)" />
 <path
  transform="matrix(0.954787,0,0,0.946912,300.599,343.197)"
- d="M 64,32 C 64,49.6731 49.6731,64 32,64 14.3269,64 0,49.6731 0,32 0,14.3269 14.3269,0 32,0 49.6731,0 64,14.3269 64,32 z"
+ d="M 64,32 A 32,32 0 1 1 0,32 32,32 0 1 1 64,32 z"
  sodipodi:ry="32"
  sodipodi:rx="32"
  sodipodi:cy="32"
  sodipodi:cx="32"
  id="path5228"
- style="fill:#0094f1;fill-opacity:0.311828;fill-rule:nonzero;stroke:none;display:inline"
+ style="fill:#0094f1;fill-opacity:0.490196;fill-rule:nonzero;stroke:none;display:inline"
  sodipodi:type="arc" />
 <path
  transform="matrix(0.928344,0,0,0.920687,301.4,344.289)"
- d="M 64,32 C 64,49.6731 49.6731,64 32,64 14.3269,64 0,49.6731 0,32 0,14.3269 14.3269,0 32,0 49.6731,0 64,14.3269 64,32 z"
+ d="M 64,32 A 32,32 0 1 1 0,32 32,32 0 1 1 64,32 z"
  sodipodi:ry="32"
  sodipodi:rx="32"
  sodipodi:cy="32"
@@ -371,7 +372,7 @@
  sodipodi:cy="32"
  sodipodi:rx="32"
  sodipodi:ry="32"
- d="M 64,32 C 64,49.6731 49.6731,64 32,64 14.3269,64 0,49.6731 0,32 0,14.3269 14.3269,0 32,0 49.6731,0 64,14.3269 64,32 z"
+ d="M 64,32 A 32,32 0 1 1 0,32 32,32 0 1 1 64,32 z"
  transform="matrix(0.880345,0,0,0.873084,302.904,345.832)" />
 </g>
 </g>
@@ -420,7 +421,7 @@
  id="layer1"
  inkscape:label="fire"
  inkscape:groupmode="layer"
- style="display:inline">
+ style="display:none">
 <g
  id="g3960"
  transform="matrix(0.079726,0,0,0.08101,12.6645,-32.5465)">
