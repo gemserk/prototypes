@@ -67,7 +67,7 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 			ColorUtils.rgba8888ToColor(color, pixmapHelper.getPixel(projectedPosition.x, projectedPosition.y));
 
 			if (color.a != 0) {
-				pixmapHelper.eraseCircle(projectedPosition.x, projectedPosition.y, 40f);
+				pixmapHelper.eraseCircle(projectedPosition.x, projectedPosition.y, 20f);
 				deleted = true;
 				// remove this bomb...
 			}
@@ -201,6 +201,8 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 
 		bombs.removeAll(bombsToDelete);
 		bombsToDelete.clear();
+		
+		pixmapHelper1.updateTexture();
 
 	}
 

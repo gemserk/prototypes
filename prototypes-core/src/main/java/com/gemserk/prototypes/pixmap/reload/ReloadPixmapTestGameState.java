@@ -45,6 +45,12 @@ public class ReloadPixmapTestGameState extends GameStateImpl {
 	}
 	
 	@Override
+	public void update() {
+		super.update();
+		pixmapHelper.updateTexture();
+	}
+	
+	@Override
 	public void resume() {
 		pixmapHelper.reload();
 	}

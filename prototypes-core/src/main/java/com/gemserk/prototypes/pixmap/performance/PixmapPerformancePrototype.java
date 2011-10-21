@@ -49,6 +49,8 @@ public class PixmapPerformancePrototype extends GameStateImpl {
 		
 		terrain = new PixmapHelper(pixmapTerrain);
 		circle = new PixmapHelper(pixmapCircle);
+		
+		circle.updateTexture();
 
 		Sprite sprite = terrain.sprite;
 
@@ -81,7 +83,8 @@ public class PixmapPerformancePrototype extends GameStateImpl {
 			y = MathUtils.random(0, 512);
 			
 			terrain.pixmap.setColor(0f, 0f, 0f, 0f);
-			terrain.pixmap.fillCircle(x, y, 8);
+//			terrain.pixmap.fillCircle(x, y, 8);
+			terrain.eraseCircle(x, y, 12f);
 			
 			// terrain.pixmap.drawPixmap(circle.pixmap, x, y, 0, 0, 32, 32);
 		}

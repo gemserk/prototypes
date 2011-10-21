@@ -38,9 +38,9 @@ public class PixmapToTexturePrototype extends GameStateImpl {
 		// SpriteUtils.centerOn(terrain1.sprite, 256, Gdx.graphics.getHeight() * 0.55f);
 		// terrain1.sprite.setOrigin(terrain1.sprite.getWidth() * 0.5f, terrain1.sprite.getHeight() * 0.5f);
 
-		terrain1.sprite.setOrigin(terrain1.sprite.getWidth() * 0f, terrain1.sprite.getHeight() * 0.5f);
+		terrain1.sprite.setOrigin(terrain1.sprite.getWidth() * 0.5f, terrain1.sprite.getHeight() * 0.5f);
 		terrain1.sprite.setSize(512, 512);
-		terrain1.sprite.setPosition(0 - terrain1.sprite.getOriginX(), 256 - terrain1.sprite.getOriginY());
+		terrain1.sprite.setPosition(256 - terrain1.sprite.getOriginX(), 256 - terrain1.sprite.getOriginY());
 
 		// SpriteUtils.centerOn(terrain2.sprite, 512 + 256, Gdx.graphics.getHeight() * 0.55f);
 		// terrain2.sprite.setOrigin(terrain2.sprite.getWidth() * 0.5f, terrain2.sprite.getHeight() * 0.5f);
