@@ -15,14 +15,16 @@ import com.badlogic.gdx.utils.Disposable;
 import com.gemserk.commons.gdx.graphics.ColorUtils;
 
 public class PixmapHelper implements Disposable {
-	
+
 	private class PixmapChange {
-		
+
 		int x, y;
-		
-		void set(int x, int y) {
+		int width;
+
+		void set(int x, int y, int width) {
 			this.x = x;
 			this.y = y;
+			this.width = width;
 		}
 	}
 
@@ -35,7 +37,11 @@ public class PixmapHelper implements Disposable {
 	// only allow 10 modifications
 	private PixmapChange[] modifications = new PixmapChange[10];
 	private int lastModification = 0;
-	private Pixmap renderPixmap;
+
+	private Pixmap renderPixmap32;
+	private Pixmap renderPixmap64;
+	private Pixmap renderPixmap128;
+	private Pixmap renderPixmap256;
 
 	public PixmapHelper(Pixmap pixmap, Sprite sprite, Texture texture) {
 		this.pixmap = pixmap;
@@ -44,7 +50,11 @@ public class PixmapHelper implements Disposable {
 
 		for (int i = 0; i < modifications.length; i++)
 			modifications[i] = new PixmapChange();
-		this.renderPixmap = new Pixmap(64, 64, Format.RGBA8888);
+
+		this.renderPixmap32 = new Pixmap(32, 32, Format.RGBA8888);
+		this.renderPixmap64 = new Pixmap(64, 64, Format.RGBA8888);
+		this.renderPixmap128 = new Pixmap(128, 128, Format.RGBA8888);
+		this.renderPixmap256 = new Pixmap(256, 256, Format.RGBA8888);
 	}
 
 	public PixmapHelper(Pixmap pixmap) {
@@ -55,7 +65,11 @@ public class PixmapHelper implements Disposable {
 
 		for (int i = 0; i < modifications.length; i++)
 			modifications[i] = new PixmapChange();
-		this.renderPixmap = new Pixmap(64, 64, Format.RGBA8888);
+
+		this.renderPixmap32 = new Pixmap(32, 32, Format.RGBA8888);
+		this.renderPixmap64 = new Pixmap(64, 64, Format.RGBA8888);
+		this.renderPixmap128 = new Pixmap(128, 128, Format.RGBA8888);
+		this.renderPixmap256 = new Pixmap(256, 256, Format.RGBA8888);
 	}
 
 	/**
@@ -109,29 +123,44 @@ public class PixmapHelper implements Disposable {
 		if (lastModification == modifications.length)
 			return;
 		
-		if (x + radius < 0 || y + radius < 0) 
-			return;
+		float scaleX = pixmap.getWidth() / sprite.getWidth();
+
+		int newRadius = Math.round(radius * scaleX);
 		
-		if (x - radius > pixmap.getWidth() || y - radius > pixmap.getHeight())
+		if (x + newRadius < 0 || y + newRadius < 0) 
+			return;
+
+		if (x - newRadius > pixmap.getWidth() || y - newRadius > pixmap.getHeight())
 			return;
 
 		Blending blending = Pixmap.getBlending();
 		pixmap.setColor(0f, 0f, 0f, 0f);
 		Pixmap.setBlending(Blending.None);
 
-		float scaleX = pixmap.getWidth() / sprite.getWidth();
 
-		int newRadius = Math.round(radius * scaleX);
 		int newX = Math.round(x);
 		int newY = Math.round(y);
 
 		pixmap.fillCircle(newX, newY, newRadius);
 		Pixmap.setBlending(blending);
 
-		modifications[lastModification++].set(newX, newY);
+		modifications[lastModification++].set(newX, newY, newRadius * 2);
 	}
 
-	public void updateTexture() {
+	private Pixmap getPixmapForRadius(int width) {
+		if (width <= 32)
+			return renderPixmap32;
+		if (width <= 64)
+			return renderPixmap64;
+		if (width <= 128)
+			return renderPixmap128;
+		return renderPixmap256;
+	}
+
+	/**
+	 * Updates the opengl texture with all the pixmap modifications.
+	 */
+	public void update() {
 
 		if (lastModification == 0)
 			return;
@@ -140,16 +169,18 @@ public class PixmapHelper implements Disposable {
 
 		int width = pixmap.getWidth();
 		int height = pixmap.getHeight();
-		
-		int dstWidth = renderPixmap.getWidth();
-		int dstHeight = renderPixmap.getHeight();
 
 		for (int i = 0; i < lastModification; i++) {
 
 			PixmapChange pixmapChange = modifications[i];
 
+			Pixmap renderPixmap = getPixmapForRadius(pixmapChange.width);
+
+			int dstWidth = renderPixmap.getWidth();
+			int dstHeight = renderPixmap.getHeight();
+
 			Pixmap.setBlending(Blending.None);
-			
+
 			int x = Math.round(pixmapChange.x) - dstWidth / 2;
 			int y = Math.round(pixmapChange.y) - dstHeight / 2;
 
@@ -163,7 +194,7 @@ public class PixmapHelper implements Disposable {
 			else if (y < 0) {
 				y = 0;
 			}
-			
+
 			renderPixmap.drawPixmap(pixmap, 0, 0, x, y, dstWidth, dstHeight);
 
 			Gdx.gl.glTexSubImage2D(GL10.GL_TEXTURE_2D, 0, x, y, dstWidth, dstHeight, //
@@ -175,7 +206,7 @@ public class PixmapHelper implements Disposable {
 	}
 
 	/**
-	 * Reload all the pixmap data to the opengl texture.
+	 * Reload all the pixmap data to the opengl texture, to be used after the game was resumed.
 	 */
 	public void reload() {
 		texture.load(new PixmapTextureData(pixmap, pixmap.getFormat(), false, false));
@@ -185,7 +216,10 @@ public class PixmapHelper implements Disposable {
 	public void dispose() {
 		this.pixmap.dispose();
 		this.texture.dispose();
-		this.renderPixmap.dispose();
+		this.renderPixmap32.dispose();
+		this.renderPixmap64.dispose();
+		this.renderPixmap128.dispose();
+		this.renderPixmap256.dispose();
 	}
 
 }

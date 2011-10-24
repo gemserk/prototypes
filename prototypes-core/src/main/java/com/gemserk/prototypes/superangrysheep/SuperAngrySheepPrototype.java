@@ -530,7 +530,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		secondBackgroundCamera.zoom(secondBackgroundFollowCamera.getZoom());
 		secondBackgroundCamera.move(secondBackgroundFollowCamera.getX(), secondBackgroundFollowCamera.getY());
 		
-		pixmapTerrain.updateTexture();
+		pixmapTerrain.update();
 
 	}
 

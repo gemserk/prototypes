@@ -202,7 +202,7 @@ public class PixmapCollisionPrototype extends GameStateImpl {
 		bombs.removeAll(bombsToDelete);
 		bombsToDelete.clear();
 		
-		pixmapHelper1.updateTexture();
+		pixmapHelper1.update();
 
 	}
 

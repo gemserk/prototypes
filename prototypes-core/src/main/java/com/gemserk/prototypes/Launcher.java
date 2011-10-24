@@ -33,11 +33,11 @@ import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.prototypes.gui.DialogHideShowPrototype;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
 import com.gemserk.prototypes.pixmap.PixmapCollisionPrototype;
+import com.gemserk.prototypes.pixmap.PixmapToTexturePrototype;
 import com.gemserk.prototypes.pixmap.performance.PixmapPerformancePrototype;
 import com.gemserk.prototypes.pixmap.reload.ReloadPixmapTestGameState;
 import com.gemserk.prototypes.superangrysheep.SuperAngrySheepPrototype;
 import com.gemserk.prototypes.texture.DrawToTexturePrototype;
-import com.gemserk.prototypes.texture.PixmapToTexturePrototype;
 
 public class Launcher extends com.gemserk.commons.gdx.Game {
 

@@ -1,4 +1,4 @@
-package com.gemserk.prototypes.texture;
+package com.gemserk.prototypes.pixmap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.graphics.ImmediateModeRendererUtils;
-import com.gemserk.prototypes.pixmap.PixmapHelper;
 
 public class PixmapToTexturePrototype extends GameStateImpl {
 
@@ -30,30 +29,33 @@ public class PixmapToTexturePrototype extends GameStateImpl {
 
 		orthographicCamera = new OrthographicCamera();
 
-		terrain1 = new PixmapHelper(new Pixmap(Gdx.files.internal("pixmap/performance/level01-0.png")));
-		terrain2 = new PixmapHelper(new Pixmap(Gdx.files.internal("pixmap/performance/level01-1.png")));
+		terrain1 = new PixmapHelper(new Pixmap(Gdx.files.internal("pixmap/border/texture.png")));
+		terrain2 = new PixmapHelper(new Pixmap(Gdx.files.internal("pixmap/border/texture.png")));
 
 		// terrain.updateTexture();
 
 		// SpriteUtils.centerOn(terrain1.sprite, 256, Gdx.graphics.getHeight() * 0.55f);
 		// terrain1.sprite.setOrigin(terrain1.sprite.getWidth() * 0.5f, terrain1.sprite.getHeight() * 0.5f);
+		
+		float terrainWidth = 512f * 0.1f;
+		float terrainHeight = 512f * 0.1f;
 
-		terrain1.sprite.setOrigin(terrain1.sprite.getWidth() * 0.5f, terrain1.sprite.getHeight() * 0.5f);
-		terrain1.sprite.setSize(512, 512);
-		terrain1.sprite.setPosition(256 - terrain1.sprite.getOriginX(), 256 - terrain1.sprite.getOriginY());
+		terrain1.sprite.setOrigin(terrainWidth * 0.5f, terrainHeight * 0.5f);
+		terrain1.sprite.setSize(terrainWidth, terrainHeight);
+		terrain1.sprite.setPosition(terrainWidth * 0.5f - terrain1.sprite.getOriginX(), terrainHeight * 0.5f - terrain1.sprite.getOriginY());
 
 		// SpriteUtils.centerOn(terrain2.sprite, 512 + 256, Gdx.graphics.getHeight() * 0.55f);
 		// terrain2.sprite.setOrigin(terrain2.sprite.getWidth() * 0.5f, terrain2.sprite.getHeight() * 0.5f);
 
-		terrain2.sprite.setOrigin(terrain2.sprite.getWidth() * 0.5f, terrain2.sprite.getHeight() * 0.5f);
-		terrain2.sprite.setSize(512, 512);
-		terrain2.sprite.setPosition(512 + 256 - terrain2.sprite.getOriginX(), 256 - terrain2.sprite.getOriginY());
+		terrain2.sprite.setOrigin(terrainWidth * 0.5f, terrainHeight * 0.5f);
+		terrain2.sprite.setSize(terrainWidth, terrainHeight);
+		terrain2.sprite.setPosition(terrainWidth + terrainWidth * 0.5f - terrain2.sprite.getOriginX(), terrainHeight * 0.5f - terrain2.sprite.getOriginY());
 
 		// sprite.setOrigin(spatial.getWidth() * center.x, spatial.getHeight() * center.y);
 		// sprite.setSize(spatial.getWidth(), spatial.getHeight());
 		// sprite.setPosition(newX - sprite.getOriginX(), newY - sprite.getOriginY());
 
-		orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.1f);
 		orthographicCamera.update();
 
 		Gdx.graphics.getGL10().glClearColor(0f, 0f, 0f, 1f);
@@ -67,17 +69,21 @@ public class PixmapToTexturePrototype extends GameStateImpl {
 		int x = Gdx.input.getX();
 		int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 
-		if (!Gdx.input.justTouched())
+		if (!Gdx.input.isTouched())
 			return;
+		
+		position.set(x,y).mul(0.1f);
 
-		terrain1.project(position, x, y);
-		terrain1.eraseCircle(position.x, position.y, 16f);
+		terrain1.project(position, position.x, position.y);
+		terrain1.eraseCircle(position.x, position.y, 32f * 0.1f);
 
-		terrain2.project(position, x, y);
-		terrain2.eraseCircle(position.x, position.y, 16f);
+		position.set(x,y).mul(0.1f);
+		
+		terrain2.project(position, position.x, position.y);
+		terrain2.eraseCircle(position.x, position.y, 32f * 0.1f);
 
-		terrain1.updateTexture();
-		terrain2.updateTexture();
+		terrain1.update();
+		terrain2.update();
 
 	}
 
@@ -96,7 +102,7 @@ public class PixmapToTexturePrototype extends GameStateImpl {
 		spriteBatch.end();
 
 		ImmediateModeRendererUtils.getProjectionMatrix().set(orthographicCamera.combined);
-		ImmediateModeRendererUtils.drawRectangle(0, 0, 512, 512, Color.GREEN);
+		ImmediateModeRendererUtils.drawRectangle(0, 0, 512 * 0.1f, 512 * 0.1f, Color.GREEN);
 	}
 
 	@Override

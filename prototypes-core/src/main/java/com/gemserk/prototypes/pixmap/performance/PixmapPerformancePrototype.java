@@ -50,7 +50,7 @@ public class PixmapPerformancePrototype extends GameStateImpl {
 		terrain = new PixmapHelper(pixmapTerrain);
 		circle = new PixmapHelper(pixmapCircle);
 		
-		circle.updateTexture();
+		circle.update();
 
 		Sprite sprite = terrain.sprite;
 
@@ -89,7 +89,7 @@ public class PixmapPerformancePrototype extends GameStateImpl {
 			// terrain.pixmap.drawPixmap(circle.pixmap, x, y, 0, 0, 32, 32);
 		}
 		
-		terrain.updateTexture();
+		terrain.update();
 		
 //		Gdx.gl.glBindTexture(GL10.GL_TEXTURE_2D, terrain.texture.getTextureObjectHandle());
 //		Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
