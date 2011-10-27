@@ -30,6 +30,7 @@ import com.gemserk.commons.reflection.Injector;
 import com.gemserk.commons.reflection.InjectorImpl;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
+import com.gemserk.prototypes.box2d.frustum.FustumCullingPrototype;
 import com.gemserk.prototypes.gui.DialogHideShowPrototype;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
 import com.gemserk.prototypes.pixmap.PixmapCollisionPrototype;
@@ -64,6 +65,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 					put("DrawToTextureBorderTest", new DrawToTexturePrototype());
 					put("PixmapToTextureBorderTest", new PixmapToTexturePrototype());
 					put("DialogHideShowPrototype", new DialogHideShowPrototype());
+					put("FustumCullingPrototype", new FustumCullingPrototype());
 				}
 			};
 
