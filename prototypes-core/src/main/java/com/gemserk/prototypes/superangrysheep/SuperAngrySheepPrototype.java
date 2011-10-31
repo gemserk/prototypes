@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -64,6 +65,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		boolean deleted = false;
 
 		Controller controller;
+		
+		ParticleEmitter thrustEmitter;
 
 		public void setSprite(Sprite sprite) {
 			this.sprite = sprite;
@@ -102,9 +105,14 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 				this.angle -= rotationAngle;
 				velocity.rotate(-rotationAngle);
 			}
+			
+			thrustEmitter.update(GlobalTime.getDelta());
+			thrustEmitter.setPosition(position.x, position.y);
+			
 		}
 
 		void draw(SpriteBatch spriteBatch) {
+			thrustEmitter.draw(spriteBatch);
 			sprite.draw(spriteBatch);
 		}
 
@@ -292,6 +300,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 	Rectangle worldBounds;
 	private Sprite secondBackgroundSprite;
+	private ParticleEmitter thrustParticleEmitter;
 
 	@Override
 	public void init() {
@@ -325,6 +334,9 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 				
 				texture("ButtonTurnRightTexture", "superangrysheep/button-turn-right.png", true);
 				sprite("ButtonTurnRightSprite", "ButtonTurnRightTexture");
+				
+				particleEffect("BombThrustEffect", "superangrysheep/particles/ThrustEffect", "superangrysheep/particles");
+				particleEmitter("ThrustEmitter", "BombThrustEffect", "Thrust");
 
 			}
 		};
@@ -415,6 +427,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 		leftButton = new LeftButton(controller);
 		rightButton = new RightButton(controller);
 		fireButton = new FireButton(controller);
+		
+		thrustParticleEmitter = resourceManager.getResourceValue("ThrustEmitter");
 
 	}
 
@@ -426,6 +440,9 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		int x = Gdx.input.getX();
 		int y = (Gdx.graphics.getHeight() - Gdx.input.getY());
+		
+		thrustParticleEmitter.setPosition(x, y);
+		thrustParticleEmitter.update(getDelta());
 
 		pixmapTerrain.project(position, x, y);
 
@@ -471,6 +488,9 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 			bombSprite.setSize(32f, 32f);
 
 			bomb.setSprite(bombSprite);
+			bomb.thrustEmitter = resourceManager.getResourceValue("ThrustEmitter");
+			
+			// ParticleEmitterUtils.scaleEmitter(bomb.thrustEmitter, 1f);
 
 			bombs.add(bomb);
 		}
@@ -567,6 +587,9 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		guiCamera.apply(spriteBatch);
 		spriteBatch.begin();
+		
+		thrustParticleEmitter.draw(spriteBatch);
+		
 		// if (Gdx.app.getType() == ApplicationType.Android) {
 		leftButton.draw(spriteBatch);
 		rightButton.draw(spriteBatch);

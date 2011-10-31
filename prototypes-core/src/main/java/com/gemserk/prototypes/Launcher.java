@@ -32,6 +32,7 @@ import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.prototypes.artemis.sprites.SpriteUpdateSystemPerformanceTest;
 import com.gemserk.prototypes.box2d.frustum.FustumCullingPrototype;
+import com.gemserk.prototypes.gdx.particles.ScaleParticleEmitterTest;
 import com.gemserk.prototypes.gui.DialogHideShowPrototype;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
 import com.gemserk.prototypes.pixmap.PixmapCollisionPrototype;
@@ -68,6 +69,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 					put("DialogHideShowPrototype", new DialogHideShowPrototype());
 					put("FustumCullingPrototype", new FustumCullingPrototype());
 					put("SpriteUpdateSystemPerformanceTest", new SpriteUpdateSystemPerformanceTest());
+					put("ScaleParticleEmitterTest", new ScaleParticleEmitterTest());
 				}
 			};
 
@@ -100,7 +102,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			comboBox.width = window.width * 0.75f;
 
 			comboBox.x = window.width * 0.5f - comboBox.width * 0.5f;
-			comboBox.y = window.height * 0.5f;
+			comboBox.y = window.height * 0.75f;
 
 			comboBox.touchable = true;
 
