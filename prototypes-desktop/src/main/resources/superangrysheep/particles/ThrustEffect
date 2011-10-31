@@ -2,16 +2,16 @@ Thrust
 - Delay -
 active: false
 - Duration - 
-lowMin: 200.0
-lowMax: 200.0
+lowMin: 100.0
+lowMax: 100.0
 - Count - 
-min: 120
-max: 240
+min: 10
+max: 20
 - Emission - 
-lowMin: 80.0
-lowMax: 80.0
-highMin: 120.0
-highMax: 120.0
+lowMin: 20.0
+lowMax: 20.0
+highMin: 40.0
+highMax: 40.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -20,8 +20,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 200.0
-highMax: 200.0
+highMin: 300.0
+highMax: 300.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -105,16 +105,20 @@ timeline0: 0.0
 - Gravity - 
 active: false
 - Tint - 
-colorsCount: 6
+colorsCount: 9
 colors0: 1.0
 colors1: 1.0
-colors2: 1.0
-colors3: 0.8156863
-colors4: 0.8156863
-colors5: 0.8156863
-timelineCount: 2
+colors2: 0.0
+colors3: 1.0
+colors4: 0.0
+colors5: 0.0
+colors6: 0.8
+colors7: 0.5
+colors8: 0.0
+timelineCount: 3
 timeline0: 0.0
-timeline1: 1.0
+timeline1: 0.35
+timeline2: 1.0
 - Transparency - 
 lowMin: 0.0
 lowMax: 0.0
