@@ -89,41 +89,6 @@ public class SpriteUpdateSystemPerformanceTest extends GameStateImpl {
 
 	private InputDevicesMonitorImpl<String> inputDevicesMonitor;
 
-	private boolean differ(Spatial a, Spatial b, float eps) {
-
-		if (a.getX() != b.getX())
-			return true;
-
-		if (a.getY() != b.getY())
-			return true;
-
-		if (a.getWidth() != b.getWidth())
-			return true;
-
-		if (a.getHeight() != b.getHeight())
-			return true;
-
-		if (a.getAngle() != b.getAngle())
-			return true;
-
-		// if (Math.abs(a.getX() - b.getX()) > eps)
-		// return true;
-		//
-		// if (Math.abs(a.getY() - b.getY()) > eps)
-		// return true;
-		//
-		// if (Math.abs(a.getWidth() - b.getWidth()) > eps)
-		// return true;
-		//
-		// if (Math.abs(a.getHeight() - b.getHeight()) > eps)
-		// return true;
-		//
-		// if (Math.abs(a.getAngle() - b.getAngle()) > eps)
-		// return true;
-
-		return false;
-	}
-
 	@Override
 	public void init() {
 		gl = Gdx.graphics.getGL10();
@@ -154,36 +119,7 @@ public class SpriteUpdateSystemPerformanceTest extends GameStateImpl {
 
 		worldWrapper.addUpdateSystem(new PhysicsSystem(physicsWorld));
 
-		// worldWrapper.addUpdateSystem(new EntityProcessingSystem(SpatialComponent.class, SpriteComponent.class) {
-		//
-		// @Override
-		// protected void process(Entity e) {
-		// SpatialComponent spatialComponent = Components.getSpatialComponent(e);
-		//
-		// if (differ(spatialComponent.getPreviousSpatial(), spatialComponent.getSpatial(), 0.05f)) {
-		// Components.getSpriteComponent(e).shouldUpdate = true;
-		// spatialComponent.getPreviousSpatial().set(spatialComponent.getSpatial());
-		// }
-		//
-		// // else {
-		// // Components.spriteComponent(e).shouldUpdate = false;
-		// // }
-		//
-		// }
-		// });
-
 		worldWrapper.addRenderSystem(new SpriteUpdateSystem());
-
-		// worldWrapper.addRenderSystem(new EntityProcessingSystem(SpatialComponent.class, SpriteComponent.class) {
-		//
-		// @Override
-		// protected void process(Entity e) {
-		// SpatialComponent spatialComponent = Components.getSpatialComponent(e);
-		// if (!differ(spatialComponent.getPreviousSpatial(), spatialComponent.getSpatial(), 0.05f))
-		// Components.getSpriteComponent(e).shouldUpdate = false;
-		// }
-		// });
-
 		worldWrapper.addRenderSystem(new RenderableSystem(renderLayers));
 
 		worldWrapper.init();
