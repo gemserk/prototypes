@@ -200,7 +200,7 @@ styles: {
 		default: { titleFont: default-font, background: default-window, titleFontColor: white }
 	},
 
-	com.badlogic.gdx.scenes.scene2d.ui.ComboBox$ComboBoxStyle: {
+	com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 		default: { listBackground: default-rect, listSelection: default-combo-selection, font: default-font, fontColor: white, background: default-combo }
 	},
 	

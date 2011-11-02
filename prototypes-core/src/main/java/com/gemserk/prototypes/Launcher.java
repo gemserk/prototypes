@@ -15,8 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.ComboBox;
-import com.badlogic.gdx.scenes.scene2d.ui.ComboBox.ComboBoxStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectionListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
@@ -77,7 +78,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 			stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
-			Window window = new Window("window", "Gemserk's Prototypes Launcher", stage, skin.getStyle(WindowStyle.class), 420, 440);
+			Window window = new Window("Gemserk's Prototypes Launcher", stage, skin.getStyle(WindowStyle.class), 420, 440, "window");
 
 			window.width = Gdx.graphics.getWidth() * 0.85f;
 			window.height = Gdx.graphics.getHeight() * 0.85f;
@@ -95,9 +96,10 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			
 			Arrays.sort(items);
 
-			ComboBoxStyle style = skin.getStyle(ComboBoxStyle.class);
+			
+			SelectBoxStyle style = skin.getStyle(SelectBoxStyle.class);
 
-			final ComboBox comboBox = new ComboBox(items, stage, style, "combo");
+			final SelectBox comboBox = new SelectBox(items, stage, style, "combo");
 
 			comboBox.width = window.width * 0.75f;
 
@@ -106,15 +108,10 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 			comboBox.touchable = true;
 
-			comboBox.setSelectionListener(new ComboBox.SelectionListener() {
+			comboBox.setSelectionListener(new SelectionListener() {
 				@Override
-				public void selected(ComboBox comboBox, int selectionIndex, String selection) {
+				public void selected(Actor comboBox, int selectionIndex, String selection) {
 					System.out.println(selection);
-					// GameState gameState = gameStates.get(selection);
-					// if (gameState != null) {
-					// launcher.transition(gameState)
-					// .start();
-					// }
 				}
 			});
 
