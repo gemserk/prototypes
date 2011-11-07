@@ -46,37 +46,35 @@ import com.gemserk.prototypes.superangrysheep.SuperAngrySheepPrototype;
 import com.gemserk.prototypes.texture.DrawToTexturePrototype;
 
 public class Launcher extends com.gemserk.commons.gdx.Game {
+	
+	public static final Map<String, GameState> gameStates = new HashMap<String, GameState>() {
+		{
+			put("Lighting", new LightingPrototype());
+			put("PixmapCollision", new PixmapCollisionPrototype());
+			put("SuperAngrySheep", new SuperAngrySheepPrototype());
+			put("ReloadPixmapTest", new ReloadPixmapTestGameState());
+			put("PixmapPerformance", new PixmapPerformancePrototype());
+			put("DrawToTextureBorderTest", new DrawToTexturePrototype());
+			put("PixmapToTextureBorderTest", new PixmapToTexturePrototype());
+			put("Gui.DialogHideShowPrototype", new DialogHideShowPrototype());
+			put("Gui.FocusedControlPrototype", new FocusedControlPrototype());
+			put("FustumCullingPrototype", new FustumCullingPrototype());
+			put("Artemis.SpriteUpdateSystemPerformanceTest", new SpriteUpdateSystemPerformanceTest());
+			put("Artemis.UiPrototype", new ArtemisUiPrototype());
+			put("ScaleParticleEmitterTest", new ScaleParticleEmitterTest());
+		}
+	};
 
 	public static class LauncherGameState extends GameStateImpl {
 
 		private Stage stage;
 		private GL10 gl;
 
-		Map<String, GameState> gameStates;
-
 		Launcher launcher;
 
 		@Override
 		public void init() {
 			gl = Gdx.graphics.getGL10();
-
-			gameStates = new HashMap<String, GameState>() {
-				{
-					put("Lighting", new LightingPrototype());
-					put("PixmapCollision", new PixmapCollisionPrototype());
-					put("SuperAngrySheep", new SuperAngrySheepPrototype());
-					put("ReloadPixmapTest", new ReloadPixmapTestGameState());
-					put("PixmapPerformance", new PixmapPerformancePrototype());
-					put("DrawToTextureBorderTest", new DrawToTexturePrototype());
-					put("PixmapToTextureBorderTest", new PixmapToTexturePrototype());
-					put("Gui.DialogHideShowPrototype", new DialogHideShowPrototype());
-					put("Gui.FocusedControlPrototype", new FocusedControlPrototype());
-					put("FustumCullingPrototype", new FustumCullingPrototype());
-					put("Artemis.SpriteUpdateSystemPerformanceTest", new SpriteUpdateSystemPerformanceTest());
-					put("Artemis.UiPrototype", new ArtemisUiPrototype());
-					put("ScaleParticleEmitterTest", new ScaleParticleEmitterTest());
-				}
-			};
 
 			Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"), Gdx.files.internal("data/ui/uiskin.png"));
 
@@ -118,7 +116,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			});
 
 			Button button = new Button(skin);
-			button.setText("Start");
+//			button.setText("Start");
 
 			button.width = window.width * 0.2f;
 			button.height = window.height * 0.1f;

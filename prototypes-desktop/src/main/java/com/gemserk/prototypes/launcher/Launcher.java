@@ -3,7 +3,6 @@ package com.gemserk.prototypes.launcher;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -26,19 +25,6 @@ import com.gemserk.commons.reflection.Injector;
 import com.gemserk.commons.reflection.InjectorImpl;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
-import com.gemserk.prototypes.artemis.sprites.SpriteUpdateSystemPerformanceTest;
-import com.gemserk.prototypes.artemis.ui.ArtemisUiPrototype;
-import com.gemserk.prototypes.box2d.frustum.FustumCullingPrototype;
-import com.gemserk.prototypes.gdx.particles.ScaleParticleEmitterTest;
-import com.gemserk.prototypes.gui.DialogHideShowPrototype;
-import com.gemserk.prototypes.gui.FocusedControlPrototype;
-import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
-import com.gemserk.prototypes.pixmap.PixmapCollisionPrototype;
-import com.gemserk.prototypes.pixmap.PixmapToTexturePrototype;
-import com.gemserk.prototypes.pixmap.performance.PixmapPerformancePrototype;
-import com.gemserk.prototypes.pixmap.reload.ReloadPixmapTestGameState;
-import com.gemserk.prototypes.superangrysheep.SuperAngrySheepPrototype;
-import com.gemserk.prototypes.texture.DrawToTexturePrototype;
 
 public class Launcher extends com.gemserk.commons.gdx.Game {
 
@@ -46,7 +32,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 		private GL10 gl;
 
-		Map<String, GameState> gameStates;
+		Map<String, GameState> gameStates = com.gemserk.prototypes.Launcher.gameStates;
 
 		Launcher launcher;
 		private JFrame screen;
@@ -61,24 +47,6 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 			screen.setSize(640, 80);
 			screen.setLayout(new GridLayout(2, 1));
-
-			gameStates = new HashMap<String, GameState>() {
-				{
-					put("Lighting", new LightingPrototype());
-					put("PixmapCollision", new PixmapCollisionPrototype());
-					put("SuperAngrySheep", new SuperAngrySheepPrototype());
-					put("ReloadPixmapTest", new ReloadPixmapTestGameState());
-					put("PixmapPerformance", new PixmapPerformancePrototype());
-					put("DrawToTextureBorderTest", new DrawToTexturePrototype());
-					put("PixmapToTextureBorderTest", new PixmapToTexturePrototype());
-					put("Gui.DialogHideShowPrototype", new DialogHideShowPrototype());
-					put("Gui.FocusedControlPrototype", new FocusedControlPrototype());
-					put("FustumCullingPrototype", new FustumCullingPrototype());
-					put("Artemis.SpriteUpdateSystemPerformanceTest", new SpriteUpdateSystemPerformanceTest());
-					put("Artemis.UiPrototype", new ArtemisUiPrototype());
-					put("ScaleParticleEmitterTest", new ScaleParticleEmitterTest());
-				}
-			};
 
 			String[] items = new String[gameStates.keySet().size()];
 
