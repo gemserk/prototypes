@@ -173,7 +173,6 @@ public class DialogHideShowPrototype extends GameStateImpl {
 
 		Synchronizers.transition(Transitions.mutableTransition(screenBackground.getColor(), LibgdxConverters.color()) //
 				.end(0.85f, 0.5f, 0.5f, 0.5f, 1f) //
-				.functions(InterpolationFunctions.easeIn(), InterpolationFunctions.easeIn()) //
 				.build());
 
 		clickToShow = false;
@@ -192,7 +191,6 @@ public class DialogHideShowPrototype extends GameStateImpl {
 
 		Synchronizers.transition(Transitions.mutableTransition(screenBackground.getColor(), LibgdxConverters.color()) //
 				.end(0.5f, 1f, 1f, 1f, 1f) //
-				.functions(InterpolationFunctions.easeOut(), InterpolationFunctions.easeOut()) //
 				.build());
 
 		clickToShow = true;

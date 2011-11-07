@@ -1,8 +1,14 @@
-package com.gemserk.prototypes;
+package com.gemserk.prototypes.launcher;
 
-import java.util.Arrays;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -11,22 +17,11 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectionListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.gemserk.animation4j.converters.Converters;
 import com.gemserk.animation4j.gdx.converters.LibgdxConverters;
 import com.gemserk.commons.gdx.GameState;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.ScreenImpl;
-import com.gemserk.commons.gdx.screens.transitions.TransitionBuilder;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.commons.reflection.InjectorImpl;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
@@ -49,16 +44,23 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 	public static class LauncherGameState extends GameStateImpl {
 
-		private Stage stage;
 		private GL10 gl;
 
 		Map<String, GameState> gameStates;
 
 		Launcher launcher;
+		private JFrame screen;
+
+		private JComboBox comboBox;
 
 		@Override
 		public void init() {
 			gl = Gdx.graphics.getGL10();
+
+			screen = new JFrame();
+
+			screen.setSize(640, 80);
+			screen.setLayout(new GridLayout(2, 1));
 
 			gameStates = new HashMap<String, GameState>() {
 				{
@@ -78,95 +80,52 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 				}
 			};
 
-			Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"), Gdx.files.internal("data/ui/uiskin.png"));
-
-			stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-
-			Window window = new Window("Gemserk's Prototypes Launcher", stage, skin.getStyle(WindowStyle.class), "window");
-
-			window.width = Gdx.graphics.getWidth() * 0.85f;
-			window.height = Gdx.graphics.getHeight() * 0.85f;
-
-			window.x = Gdx.graphics.getWidth() * 0.5f - window.width * 0.5f;
-			window.y = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f;
-
-			stage.addActor(window);
-
 			String[] items = new String[gameStates.keySet().size()];
-			
+
 			gameStates.keySet().toArray(items);
-			
-			Arrays.sort(items);
 
-			
-			SelectBoxStyle style = skin.getStyle(SelectBoxStyle.class);
+			comboBox = new JComboBox(items);
 
-			final SelectBox comboBox = new SelectBox(items, stage, style, "combo");
+			screen.add(comboBox);
 
-			comboBox.width = window.width * 0.75f;
-
-			comboBox.x = window.width * 0.5f - comboBox.width * 0.5f;
-			comboBox.y = window.height * 0.75f;
-
-			comboBox.touchable = true;
-
-			comboBox.setSelectionListener(new SelectionListener() {
-				@Override
-				public void selected(Actor comboBox, int selectionIndex, String selection) {
-					System.out.println(selection);
+			screen.add(new JButton("Start") {
+				{
+					addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							String option = (String) comboBox.getSelectedItem();
+							GameState gameState = gameStates.get(option);
+							launcher.transition(gameState);
+						}
+					});
 				}
 			});
+			
+			screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-			Button button = new Button(skin);
-			button.setText("Start");
+			screen.invalidate();
 
-			button.width = window.width * 0.2f;
-			button.height = window.height * 0.1f;
-
-			button.x = window.width * 0.5f - button.width * 0.5f;
-			button.y = comboBox.y - 60f;
-
-			button.setClickListener(new ClickListener() {
-				
-				@Override
-				public void click(Actor arg0, float arg1, float arg2) {
-					String selection = comboBox.getSelection();
-					GameState gameState = gameStates.get(selection);
-					if (gameState != null) {
-						launcher.transition(gameState).start();
-					}
-				}
-			});
-
-			window.addActor(comboBox);
-			window.addActor(button);
-
-			Gdx.input.setInputProcessor(stage);
 
 			Gdx.graphics.getGL10().glClearColor(0, 0, 0, 1);
 		}
 
 		@Override
-		public void update() {
-			stage.act(getDelta());
-		}
-		
-		@Override
 		public void pause() {
 			super.pause();
 			Gdx.input.setInputProcessor(null);
+
+			screen.setVisible(false);
 		}
-		
+
 		@Override
 		public void resume() {
 			super.resume();
-			Gdx.input.setInputProcessor(stage);
+			screen.setVisible(true);
 		}
 
 		@Override
 		public void render() {
 			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-			stage.draw();
 		}
 
 	}
@@ -176,8 +135,11 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 	private InputDevicesMonitorImpl<String> inputDevicesMonitor;
 	private GameState launcherGameState;
 	private GameState currentGameState;
-	
+
 	private BitmapFont bitmapFont;
+
+	private Boolean transition = false;
+	private GameState transitionGameState;
 
 	@Override
 	public void create() {
@@ -186,7 +148,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 		Converters.register(Vector2.class, LibgdxConverters.vector2());
 
 		spriteBatch = new SpriteBatch();
-		
+
 		bitmapFont = new BitmapFont();
 
 		Injector injector = new InjectorImpl();
@@ -210,9 +172,11 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 	}
 
-	public TransitionBuilder transition(GameState gameState) {
-		this.currentGameState = gameState;
-		return new TransitionBuilder(this, new ScreenImpl(gameState));
+	public void transition(GameState gameState) {
+		synchronized (transition) {
+			transition = true;
+			this.transitionGameState = gameState;
+		}
 	}
 
 	@Override
@@ -227,9 +191,14 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 		if (inputDevicesMonitor.getButton("back").isReleased()) {
 			if (currentGameState != launcherGameState) {
-				transition(launcherGameState).disposeCurrent() //
-						.restartScreen() //
-						.start();
+
+				currentGameState.dispose();
+				transition(launcherGameState);
+
+				// transition(launcherGameState).disposeCurrent() //
+				// .restartScreen() //
+				// .start();
+
 			} else {
 				Gdx.app.exit();
 			}
@@ -238,6 +207,16 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 		spriteBatch.begin();
 		bitmapFont.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), Gdx.graphics.getWidth() * 0.02f, Gdx.graphics.getHeight() * 0.95f);
 		spriteBatch.end();
+
+		synchronized (transition) {
+			if (transition) {
+				this.currentGameState = transitionGameState;
+				// return new TransitionBuilder(this, new ScreenImpl(gameState));
+				transition = false;
+				setScreen(new ScreenImpl(this.currentGameState));
+			}
+
+		}
 	}
 
 	@Override
@@ -248,4 +227,3 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 	}
 
 }
-
