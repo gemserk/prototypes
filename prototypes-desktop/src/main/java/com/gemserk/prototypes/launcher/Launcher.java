@@ -3,6 +3,7 @@ package com.gemserk.prototypes.launcher;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -51,6 +52,8 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			String[] items = new String[gameStates.keySet().size()];
 
 			gameStates.keySet().toArray(items);
+			
+			Arrays.sort(items);
 
 			comboBox = new JComboBox(items);
 

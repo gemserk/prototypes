@@ -34,6 +34,7 @@ import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.prototypes.artemis.sprites.SpriteUpdateSystemPerformanceTest;
 import com.gemserk.prototypes.artemis.ui.ArtemisUiPrototype;
 import com.gemserk.prototypes.box2d.frustum.FustumCullingPrototype;
+import com.gemserk.prototypes.fonts.RenderScaledFontsTest;
 import com.gemserk.prototypes.gdx.particles.ScaleParticleEmitterTest;
 import com.gemserk.prototypes.gui.DialogHideShowPrototype;
 import com.gemserk.prototypes.gui.FocusedControlPrototype;
@@ -62,6 +63,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			put("Artemis.SpriteUpdateSystemPerformanceTest", new SpriteUpdateSystemPerformanceTest());
 			put("Artemis.UiPrototype", new ArtemisUiPrototype());
 			put("ScaleParticleEmitterTest", new ScaleParticleEmitterTest());
+			put("Fonts.RenderScaledFontsTest", new RenderScaledFontsTest());
 		}
 	};
 
