@@ -45,6 +45,7 @@ public class RenderScaledFontsTest extends GameStateImpl {
 		};
 
 		testFont = resourceManager.getResourceValue("TestFont");
+		testFont.setUseIntegerPositions(false);
 
 		uiCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 
