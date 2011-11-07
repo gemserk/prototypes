@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:cc="http://creativecommons.org/ns#"
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:svg="http://www.w3.org/2000/svg"
+ xmlns="http://www.w3.org/2000/svg"
+ xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+ xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+ width="512"
+ height="600"
+ id="svg2"
+ version="1.1"
+ inkscape:version="0.48.1 r9760"
+ sodipodi:docname="button-tutorial3.svg"
+ inkscape:export-filename="/tmp/button-tutorial3.png"
+ inkscape:export-xdpi="180"
+ inkscape:export-ydpi="180">
+<defs
+ id="defs4">
+<filter
+ color-interpolation-filters="sRGB"
+ inkscape:collect="always"
+ id="filter4027-0">
+<feGaussianBlur
+ inkscape:collect="always"
+ stdDeviation="0.64"
+ id="feGaussianBlur4029-9" />
+</filter>
+</defs>
+<sodipodi:namedview
+ id="base"
+ pagecolor="#ffffff"
+ bordercolor="#666666"
+ borderopacity="1.0"
+ inkscape:pageopacity="1"
+ inkscape:pageshadow="2"
+ inkscape:zoom="0.668989"
+ inkscape:cx="279.091"
+ inkscape:cy="409.189"
+ inkscape:document-units="px"
+ inkscape:current-layer="layer1"
+ showgrid="false"
+ showguides="true"
+ inkscape:guide-bbox="true"
+ inkscape:window-width="1440"
+ inkscape:window-height="849"
+ inkscape:window-x="0"
+ inkscape:window-y="24"
+ inkscape:window-maximized="1">
+<sodipodi:guide
+ orientation="1,0"
+ position="128.552,995.532"
+ id="guide3017" />
+<sodipodi:guide
+ orientation="1,0"
+ position="256.357,893.886"
+ id="guide3019" />
+<sodipodi:guide
+ orientation="0,1"
+ position="79.9714,816.904"
+ id="guide3021" />
+<sodipodi:guide
+ orientation="0,1"
+ position="51.2634,898.431"
+ id="guide3023" />
+<sodipodi:guide
+ orientation="1,0"
+ position="386.03,916.308"
+ id="guide3815" />
+<sodipodi:guide
+ orientation="0,1"
+ position="280.274,1007.49"
+ id="guide3817" />
+<sodipodi:guide
+ orientation="0,1"
+ position="56.8021,710.026"
+ id="guide3844" />
+<sodipodi:guide
+ orientation="0,1"
+ position="128.552,623.328"
+ id="guide4115" />
+<sodipodi:guide
+ orientation="0,1"
+ position="59.0443,494.029"
+ id="guide4125" />
+</sodipodi:namedview>
+<metadata
+ id="metadata7">
+<rdf:RDF>
+<cc:Work
+ rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type
+ rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+<dc:title></dc:title>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g
+ inkscape:label="Layer 1"
+ inkscape:groupmode="layer"
+ id="layer1"
+ transform="translate(0,-452.362)">
+<flowRoot
+ xml:space="preserve"
+ id="flowRoot2985"
+ style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"><flowRegion
+ id="flowRegion2987"><rect
+ id="rect2989"
+ width="454.5"
+ height="154.319"
+ x="24.3105"
+ y="16.524"
+ style="font-size:30px" /></flowRegion><flowPara
+ id="flowPara2991"></flowPara></flowRoot><flowRoot
+ xml:space="preserve"
+ id="flowRoot3009"
+ style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+ transform="translate(-35.1936,389.362)"><flowRegion
+ id="flowRegion3011"><rect
+ id="rect3013"
+ width="711.346"
+ height="292.783"
+ x="13.7407"
+ y="18.638"
+ style="font-size:28px" /></flowRegion><flowPara
+ id="flowPara3015">building button contents like a ? for help button</flowPara></flowRoot><path
+ sodipodi:type="arc"
+ style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ id="path3025"
+ sodipodi:cx="67.6394"
+ sodipodi:cy="56.8694"
+ sodipodi:rx="43.7227"
+ sodipodi:ry="44.0964"
+ d="M 111.362,56.8694 A 43.7227,44.0964 0 1 1 23.9167,56.8694 43.7227,44.0964 0 1 1 111.362,56.8694 z"
+ transform="translate(-5.60547,472.847)"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
+<flowRoot
+ xml:space="preserve"
+ id="flowRoot3795"
+ style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+ transform="translate(-1.49479,466.867)"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90"><flowRegion
+ id="flowRegion3797"><rect
+ id="rect3799"
+ width="105.757"
+ height="73.2448"
+ x="11.9583"
+ y="137.962"
+ style="font-size:10px" /></flowRegion><flowPara
+ id="flowPara3801">Start drawing a circle</flowPara></flowRoot><path
+ transform="translate(128.178,472.473)"
+ d="M 111.362,56.8694 A 43.7227,44.0964 0 1 1 67.2717,12.7746 L 67.6394,56.8694 z"
+ sodipodi:ry="44.0964"
+ sodipodi:rx="43.7227"
+ sodipodi:cy="56.8694"
+ sodipodi:cx="67.6394"
+ id="path3803"
+ style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ sodipodi:type="arc"
+ sodipodi:start="0"
+ sodipodi:end="4.70398"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
+<flowRoot
+ transform="translate(126.684,466.494)"
+ style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+ id="flowRoot3805"
+ xml:space="preserve"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90"><flowRegion
+ id="flowRegion3807"><rect
+ style="font-size:10px"
+ y="137.962"
+ x="11.9583"
+ height="73.2448"
+ width="105.757"
+ id="rect3809" /></flowRegion><flowPara
+ id="flowPara3811">modify the circle to remove a quarter</flowPara></flowRoot><path
+ sodipodi:end="4.70398"
+ sodipodi:start="0"
+ sodipodi:type="arc"
+ style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ id="path3813"
+ sodipodi:cx="67.6394"
+ sodipodi:cy="56.8694"
+ sodipodi:rx="43.7227"
+ sodipodi:ry="44.0964"
+ d="M 111.362,56.8694 A 43.7227,44.0964 0 1 1 67.2717,12.7746 L 67.6394,56.8694 z"
+ transform="matrix(-1,0,0,-1,392.384,586.587)"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
+<flowRoot
+ xml:space="preserve"
+ id="flowRoot3819"
+ style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+ transform="translate(266.447,466.867)"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90"><flowRegion
+ id="flowRegion3821"><rect
+ id="rect3823"
+ width="105.757"
+ height="73.2448"
+ x="11.9583"
+ y="137.962"
+ style="font-size:10px" /></flowRegion><flowPara
+ id="flowPara3825">flip it to get the right direction</flowPara></flowRoot><path
+ transform="matrix(-1,0,0,-1,517.573,585.838)"
+ d="M 111.362,56.8694 A 43.7227,44.0964 0 1 1 67.2717,12.7746 L 67.6394,56.8694 z"
+ sodipodi:ry="44.0964"
+ sodipodi:rx="43.7227"
+ sodipodi:cy="56.8694"
+ sodipodi:cx="67.6394"
+ id="path3827"
+ style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ sodipodi:type="arc"
+ sodipodi:start="0"
+ sodipodi:end="4.70398"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
+<path
+ sodipodi:end="4.70398"
+ sodipodi:start="0"
+ sodipodi:type="arc"
+ style="fill:#6868ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ id="path3829"
+ sodipodi:cx="67.6394"
+ sodipodi:cy="56.8694"
+ sodipodi:rx="43.7227"
+ sodipodi:ry="44.0964"
+ d="M 111.362,56.8694 A 43.7227,44.0964 0 1 1 67.2717,12.7746 L 67.6394,56.8694 z"
+ transform="matrix(-0.726496,0,0,-0.726496,499.074,570.555)"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
+<flowRoot
+ transform="translate(386.778,463.13)"
+ style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+ id="flowRoot3831"
+ xml:space="preserve"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90"><flowRegion
+ id="flowRegion3833"><rect
+ style="font-size:10px"
+ y="137.962"
+ x="11.9583"
+ height="73.2448"
+ width="105.757"
+ id="rect3835" /></flowRegion><flowPara
+ id="flowPara3837">duplicate it and make it smaller</flowPara></flowRoot><path
+ style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ d="M 62.7812,675.456 C 38.6339,675.456 19.0625,695.196 19.0625,719.55 L 31.0312,719.55 C 31.181,701.986 45.3313,687.8 62.7812,687.8 80.3242,687.8 94.5625,702.138 94.5625,719.831 94.5625,737.419 80.5006,751.714 63.0625,751.862 L 63.1562,763.643 C 87.1593,763.44 106.5,743.759 106.5,719.55 106.5,695.196 86.9286,675.456 62.7812,675.456 z"
+ id="path3839"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90"
+ inkscape:connector-curvature="0" />
+<flowRoot
+ transform="translate(2.61589,653.343)"
+ style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+ id="flowRoot3846"
+ xml:space="preserve"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90"><flowRegion
+ id="flowRegion3848"><rect
+ style="font-size:10px"
+ y="137.962"
+ x="11.9583"
+ height="73.2448"
+ width="105.757"
+ id="rect3850" /></flowRegion><flowPara
+ id="flowPara3852">now make path difference between the bigger shape and the other one.</flowPara></flowRoot><path
+ id="path3854"
+ d="M 196.315,675.458 C 180.149,675.458 167.047,688.673 167.047,704.978 L 175.059,704.978 C 175.16,693.219 184.633,683.722 196.315,683.722 208.059,683.722 217.592,693.321 217.592,705.166 217.592,716.94 208.178,726.51 196.504,726.61 L 196.566,734.497 C 212.636,734.361 225.583,721.185 225.583,704.978 225.583,688.673 212.481,675.458 196.315,675.458 z"
+ style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ inkscape:connector-curvature="0"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
+<rect
+ style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ id="rect3856"
+ width="8.98431"
+ height="26.0617"
+ x="169.49"
+ y="726.053"
+ ry="0"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
+<path
+ sodipodi:type="arc"
+ style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ id="path3860"
+ sodipodi:cx="194.977"
+ sodipodi:cy="288.749"
+ sodipodi:rx="4.01725"
+ sodipodi:ry="5.23177"
+ d="M 198.994,288.749 A 4.01725,5.23177 0 1 1 190.96,288.749 4.01725,5.23177 0 1 1 198.994,288.749 z"
+ transform="matrix(1.30233,0,0,1,-80.1154,475.649)"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
+<flowRoot
+ xml:space="preserve"
+ id="flowRoot3862"
+ style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+ transform="translate(134.738,649.644)"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90"><flowRegion
+ id="flowRegion3864"><rect
+ id="rect3866"
+ width="105.757"
+ height="73.2448"
+ x="11.9583"
+ y="137.962"
+ style="font-size:10px" /></flowRegion><flowPara
+ id="flowPara3868">add a rectangle and a circle for the last part of the symbol.</flowPara></flowRoot><path
+ style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ d="M 328.969,675.456 C 312.803,675.456 299.688,688.682 299.688,704.987 L 307.719,704.987 C 307.82,693.228 317.287,683.737 328.969,683.737 340.713,683.737 350.25,693.33 350.25,705.174 350.25,715.7 342.718,724.457 332.781,726.268 L 332.781,726.174 323.812,726.174 323.812,752.237 332.781,752.237 332.781,734.237 C 347.158,732.351 358.219,719.976 358.219,704.987 358.219,688.682 345.135,675.456 328.969,675.456 z M 328.125,759.174 C 325.236,759.174 322.906,761.504 322.906,764.393 322.906,767.283 325.236,769.643 328.125,769.643 331.014,769.643 333.375,767.283 333.375,764.393 333.375,761.504 331.014,759.174 328.125,759.174 z"
+ id="path3870"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90"
+ inkscape:connector-curvature="0" />
+<flowRoot
+ transform="translate(258.058,649.644)"
+ style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+ id="flowRoot3877"
+ xml:space="preserve"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90"><flowRegion
+ id="flowRegion3879"><rect
+ style="font-size:10px"
+ y="137.962"
+ x="11.9583"
+ height="73.2448"
+ width="105.757"
+ id="rect3881" /></flowRegion><flowPara
+ id="flowPara3883">use path union between all shapes now</flowPara></flowRoot><path
+ id="path3904"
+ d="M 447.805,675.458 C 431.639,675.458 418.524,688.684 418.524,704.989 418.524,704.989 418.64,708.009 422.561,708.069 426.167,708.126 426.555,704.989 426.555,704.989 426.656,693.23 436.123,683.739 447.805,683.739 459.549,683.739 469.086,693.332 469.086,705.176 469.086,715.702 461.554,724.459 456.585,725.317 451.786,725.106 446.721,723.924 443.441,727.299 441.175,730.276 440.983,750.305 442.648,752.239 444.599,754.505 449.595,754.254 451.804,752.239 452.621,751.494 452.421,736.862 451.344,735.026 451.158,734.4 451.617,734.239 451.617,734.239 465.994,732.353 477.055,719.978 477.055,704.989 477.055,688.684 463.971,675.458 447.805,675.458 z M 446.961,759.176 C 444.072,759.176 441.742,761.506 441.742,764.395 441.742,767.285 444.072,769.645 446.961,769.645 449.85,769.645 452.211,767.285 452.211,764.395 452.211,761.506 449.85,759.176 446.961,759.176 z"
+ style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+ inkscape:connector-curvature="0"
+ sodipodi:nodetypes="scscssccssccsssssss"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
+<flowRoot
+ xml:space="preserve"
+ id="flowRoot3906"
+ style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+ transform="translate(386.481,648.323)"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90"><flowRegion
+ id="flowRegion3908"><rect
+ id="rect3910"
+ width="105.757"
+ height="73.2448"
+ x="11.9583"
+ y="137.962"
+ style="font-size:10px" /></flowRegion><flowPara
+ id="flowPara3912">play a bit editing the path nodes to make it smoother</flowPara></flowRoot><g
+ style="display:inline"
+ id="g3946"
+ transform="matrix(1.99162,0,0,2.01906,-405.417,176.099)"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90">
+<path
+ transform="matrix(1.01844,0,0,1.01004,-110.454,155.991)"
+ style="fill:#000000;fill-opacity:0.446237;fill-rule:nonzero;stroke:none;display:inline;filter:url(#filter4027-0)"
+ d="M 451.63,191.568 C 457.841,197.064 461.786,205.09 461.786,214.036 461.786,230.605 448.355,244.036 431.786,244.036 425.573,244.036 419.793,242.146 415.005,238.911 420.288,243.557 427.198,246.38 434.786,246.38 451.355,246.38 464.786,232.949 464.786,216.38 464.786,206.056 459.569,196.965 451.63,191.568 z"
+ id="path3876"
+ inkscape:connector-curvature="0" />
+<path
+ sodipodi:type="arc"
+ style="fill:#0094f1;fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
+ id="path3878"
+ sodipodi:cx="32"
+ sodipodi:cy="32"
+ sodipodi:rx="32"
+ sodipodi:ry="32"
+ d="M 64,32 C 64,49.6731 49.6731,64 32,64 14.3269,64 0,49.6731 0,32 0,14.3269 14.3269,0 32,0 49.6731,0 64,14.3269 64,32 z"
+ transform="matrix(0.954787,0,0,0.946912,300.599,343.197)" />
+<path
+ sodipodi:type="arc"
+ style="fill:none;stroke:#6ec7ff;stroke-width:2.583536;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+ id="path3880"
+ sodipodi:cx="32"
+ sodipodi:cy="32"
+ sodipodi:rx="32"
+ sodipodi:ry="32"
+ d="M 64,32 C 64,49.6731 49.6731,64 32,64 14.3269,64 0,49.6731 0,32 0,14.3269 14.3269,0 32,0 49.6731,0 64,14.3269 64,32 z"
+ transform="matrix(0.928344,0,0,0.920687,301.4,344.289)" />
+<path
+ sodipodi:nodetypes="cscc"
+ inkscape:connector-curvature="0"
+ id="path3922"
+ d="M 358.779,370.151 C 356.97,357.446 345.543,346.271 330.808,346.271 316.074,346.271 306.196,357.315 303.225,370.151 320.597,361.341 338.666,357.895 358.779,370.151 z"
+ style="fill:#ffffff;fill-opacity:0.446237;fill-rule:nonzero;stroke:none" />
+<path
+ transform="matrix(0.880345,0,0,0.873084,302.904,345.832)"
+ d="M 64,32 C 64,49.6731 49.6731,64 32,64 14.3269,64 0,49.6731 0,32 0,14.3269 14.3269,0 32,0 49.6731,0 64,14.3269 64,32 z"
+ sodipodi:ry="32"
+ sodipodi:rx="32"
+ sodipodi:cy="32"
+ sodipodi:cx="32"
+ id="path3944"
+ style="fill:none;stroke:#0072b8;stroke-width:0.636014;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+ sodipodi:type="arc" />
+</g>
+<path
+ id="path4127"
+ d="M 256.393,886.97 C 239.873,886.97 226.47,900.485 226.47,917.149 226.47,917.149 226.589,920.234 230.596,920.295 234.281,920.354 234.677,917.149 234.677,917.149 234.781,905.131 244.455,895.432 256.393,895.432 268.395,895.432 278.141,905.236 278.141,917.339 278.141,928.096 270.443,937.044 265.365,937.921 260.461,937.706 255.285,936.499 251.933,939.947 249.618,942.99 249.422,963.457 251.123,965.434 253.117,967.749 258.222,967.493 260.48,965.434 261.315,964.672 261.11,949.719 260.01,947.845 259.82,947.205 260.289,947.038 260.289,947.038 274.981,945.112 286.284,932.466 286.284,917.149 286.284,900.485 272.913,886.97 256.393,886.97 z M 255.531,972.522 C 252.578,972.522 250.197,974.904 250.197,977.857 250.197,980.81 252.578,983.22 255.531,983.22 258.483,983.22 260.896,980.81 260.896,977.857 260.896,974.904 258.483,972.522 255.531,972.522 z"
+ style="fill:#000000;fill-opacity:0.392157;fill-rule:nonzero;stroke:none"
+ inkscape:connector-curvature="0"
+ sodipodi:nodetypes="scscssccssccsssssss"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
+<path
+ sodipodi:nodetypes="scscssccssccsssssss"
+ inkscape:connector-curvature="0"
+ style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#0072b8;stroke-width:2.036279;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+ d="M 253.487,885.121 C 236.966,885.121 223.564,898.636 223.564,915.3 223.564,915.3 223.682,918.385 227.689,918.446 231.374,918.505 231.771,915.3 231.771,915.3 231.874,903.282 241.549,893.583 253.487,893.583 265.488,893.583 275.234,903.387 275.234,915.49 275.234,926.247 267.537,935.195 262.459,936.072 257.555,935.857 252.379,934.65 249.027,938.098 246.711,941.141 246.515,961.608 248.216,963.585 250.21,965.9 255.316,965.644 257.573,963.585 258.408,962.823 258.204,947.87 257.103,945.996 256.913,945.356 257.382,945.189 257.382,945.189 272.074,943.263 283.378,930.617 283.378,915.3 283.378,898.636 270.007,885.121 253.487,885.121 z M 252.624,970.673 C 249.672,970.673 247.291,973.055 247.291,976.008 247.291,978.962 249.672,981.37 252.624,981.37 255.576,981.37 257.989,978.962 257.989,976.008 257.989,973.055 255.576,970.673 252.624,970.673 z"
+ id="path4113"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90" />
+<flowRoot
+ xml:space="preserve"
+ id="flowRoot4117"
+ style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+ transform="translate(154.041,858.572)"
+ inkscape:export-filename="/tmp/buttons-tutorial3.png"
+ inkscape:export-xdpi="90"
+ inkscape:export-ydpi="90"><flowRegion
+ id="flowRegion4119"><rect
+ id="rect4121"
+ width="182.661"
+ height="66.5182"
+ x="11.9583"
+ y="137.962"
+ style="font-size:10px" /></flowRegion><flowPara
+ id="flowPara4123">Finally, take the button background from the previous tutorials and join forces to make a cute button</flowPara></flowRoot></g>
+</svg>

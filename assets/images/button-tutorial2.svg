@@ -37,11 +37,11 @@
  borderopacity="1.0"
  inkscape:pageopacity="1"
  inkscape:pageshadow="2"
- inkscape:zoom="0.473047"
- inkscape:cx="-320.307"
- inkscape:cy="325.811"
+ inkscape:zoom="0.668989"
+ inkscape:cx="480.558"
+ inkscape:cy="155.644"
  inkscape:document-units="px"
- inkscape:current-layer="layer1"
+ inkscape:current-layer="layer2"
  showgrid="false"
  showguides="true"
  inkscape:guide-bbox="true"
@@ -80,7 +80,7 @@
 <dc:format>image/svg+xml</dc:format>
 <dc:type
  rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-<dc:title></dc:title>
+<dc:title />
 </cc:Work>
 </rdf:RDF>
 </metadata>
@@ -89,7 +89,7 @@
  inkscape:groupmode="layer"
  id="layer1"
  transform="translate(0,-540.351)"
- style="display:inline">
+ style="display:none">
 <g
  transform="matrix(1.71811,0,0,1.74179,-450.065,-25.4462)"
  id="g3335"
@@ -148,7 +148,7 @@
  x="101.646"
  y="-63.5002"
  style="font-size:20px" /></flowRegion><flowPara
- id="flowPara3208"></flowPara></flowRoot><flowRoot
+ id="flowPara3208" /></flowRoot><flowRoot
  xml:space="preserve"
  id="flowRoot3210"
  style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
@@ -467,7 +467,7 @@
  height="51.7919"
  x="139.521"
  y="766.978" /></flowRegion><flowPara
- id="flowPara4245"></flowPara></flowRoot><g
+ id="flowPara4245" /></flowRoot><g
  id="g4271"
  transform="matrix(0.637359,0,0,0.637359,-827.794,272.462)"
  inkscape:export-filename="/tmp/button-tutorial2-example.png"
@@ -644,7 +644,7 @@
  inkscape:groupmode="layer"
  id="layer2"
  inkscape:label="Square Button"
- style="display:none">
+ style="display:inline">
 <flowRoot
  transform="matrix(1.2909,0,0,1.2909,39.8084,166.809)"
  style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Arial;-inkscape-font-specification:Arial"
@@ -697,7 +697,7 @@
  height="41.7506"
  x="198.183"
  y="200.192" /></flowRegion><flowPara
- id="flowPara4358"></flowPara></flowRoot><rect
+ id="flowPara4358" /></flowRoot><rect
  style="fill:#ffb380;fill-opacity:1;fill-rule:nonzero;stroke:none"
  id="rect4360"
  width="136.819"
