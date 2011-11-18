@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.gemserk.animation4j.transitions.Transitions;
@@ -157,6 +158,8 @@ public class FocusedControlPrototype extends GameStateImpl {
 	private ResourceManager<String> resourceManager;
 
 	private FocusMonitor focusMonitor;
+	private BitmapFont font1;
+	private BitmapFont font2;
 
 	@Override
 	public void init() {
@@ -247,6 +250,12 @@ public class FocusedControlPrototype extends GameStateImpl {
 		focusMonitor = new FocusMonitor(screen.findControl(Gui.ButtonOption1), screen.findControl(Gui.ButtonOption2), screen.findControl(Gui.ButtonOption3));
 
 		clickToShow = true;
+		
+		font1 = resourceManager.getResourceValue("TextFont");
+		font2 = resourceManager.getResourceValue("TextFont");
+		
+		font1.dispose();
+
 	}
 
 	@Override
@@ -260,8 +269,10 @@ public class FocusedControlPrototype extends GameStateImpl {
 	@Override
 	public void render() {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
 		spriteBatch.begin();
 		screen.draw(spriteBatch);
+		font2.draw(spriteBatch, "HOLA", 50, 50);
 		spriteBatch.end();
 	}
 

@@ -13,12 +13,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.FlickScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectionListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.gemserk.animation4j.converters.Converters;
@@ -47,7 +47,7 @@ import com.gemserk.prototypes.superangrysheep.SuperAngrySheepPrototype;
 import com.gemserk.prototypes.texture.DrawToTexturePrototype;
 
 public class Launcher extends com.gemserk.commons.gdx.Game {
-	
+
 	public static final Map<String, GameState> gameStates = new HashMap<String, GameState>() {
 		{
 			put("Lighting", new LightingPrototype());
@@ -82,7 +82,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 			stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
-			Window window = new Window("Gemserk's Prototypes Launcher", stage, skin.getStyle(WindowStyle.class), "window");
+			Window window = new Window("Gemserk's Prototypes Launcher", skin.getStyle(WindowStyle.class), "window");
 
 			window.width = Gdx.graphics.getWidth() * 0.85f;
 			window.height = Gdx.graphics.getHeight() * 0.85f;
@@ -93,44 +93,58 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			stage.addActor(window);
 
 			String[] items = new String[gameStates.keySet().size()];
-			
+
 			gameStates.keySet().toArray(items);
-			
+
 			Arrays.sort(items);
 
-			
 			SelectBoxStyle style = skin.getStyle(SelectBoxStyle.class);
 
-			final SelectBox comboBox = new SelectBox(items, stage, style, "combo");
+//			final SelectBox comboBox = new SelectBox(items, style, "combo");
+//
+//			comboBox.width = window.width * 0.75f;
+//
+//			comboBox.x = window.width * 0.5f - comboBox.width * 0.5f;
+//			comboBox.y = window.height * 0.75f;
+//
+//			comboBox.touchable = true;
+//
+//			comboBox.setSelectionListener(new SelectionListener() {
+//				@Override
+//				public void selected(Actor comboBox, int selectionIndex, String selection) {
+//					System.out.println(selection);
+//				}
+//			});
+			
+			final List list = new List(items, skin);
 
-			comboBox.width = window.width * 0.75f;
+			
+			FlickScrollPane scrollPane = new FlickScrollPane(list);
+			
+//			ScrollPane scrollPane = new ScrollPane(flickScrollPane, skin);
+			
+			scrollPane.width = window.width * 0.75f;
+			scrollPane.height = window.height * 0.5f;
 
-			comboBox.x = window.width * 0.5f - comboBox.width * 0.5f;
-			comboBox.y = window.height * 0.75f;
-
-			comboBox.touchable = true;
-
-			comboBox.setSelectionListener(new SelectionListener() {
-				@Override
-				public void selected(Actor comboBox, int selectionIndex, String selection) {
-					System.out.println(selection);
-				}
-			});
-
-			Button button = new Button(skin);
-//			button.setText("Start");
+			scrollPane.x = window.width * 0.5f - scrollPane.width * 0.5f;
+			scrollPane.y = window.height * 0.35f;
+			
+			window.addActor(scrollPane);
+			
+			TextButton button = new TextButton("Start", skin);
+			// button.setText("Start");
 
 			button.width = window.width * 0.2f;
 			button.height = window.height * 0.1f;
 
 			button.x = window.width * 0.5f - button.width * 0.5f;
-			button.y = comboBox.y - 60f;
+			button.y = scrollPane.y - 60f;
 
 			button.setClickListener(new ClickListener() {
-				
+
 				@Override
 				public void click(Actor arg0, float arg1, float arg2) {
-					String selection = comboBox.getSelection();
+					String selection = list.getSelection();
 					GameState gameState = gameStates.get(selection);
 					if (gameState != null) {
 						launcher.transition(gameState).start();
@@ -138,7 +152,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 				}
 			});
 
-			window.addActor(comboBox);
+			// window.addActor(comboBox);
 			window.addActor(button);
 
 			Gdx.input.setInputProcessor(stage);
@@ -150,13 +164,13 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 		public void update() {
 			stage.act(getDelta());
 		}
-		
+
 		@Override
 		public void pause() {
 			super.pause();
 			Gdx.input.setInputProcessor(null);
 		}
-		
+
 		@Override
 		public void resume() {
 			super.resume();
@@ -176,7 +190,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 	private InputDevicesMonitorImpl<String> inputDevicesMonitor;
 	private GameState launcherGameState;
 	private GameState currentGameState;
-	
+
 	private BitmapFont bitmapFont;
 
 	@Override
@@ -186,7 +200,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 		Converters.register(Vector2.class, LibgdxConverters.vector2());
 
 		spriteBatch = new SpriteBatch();
-		
+
 		bitmapFont = new BitmapFont();
 
 		Injector injector = new InjectorImpl();
@@ -248,4 +262,3 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 	}
 
 }
-
