@@ -55,6 +55,13 @@
 			<artifactId>commons-gdx-resources</artifactId>
 			<version>${commons.gdx.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>aurelienribon.fixtureatlas</groupId>
+			<artifactId>libgdx-fixtureatlas</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 
 </project>

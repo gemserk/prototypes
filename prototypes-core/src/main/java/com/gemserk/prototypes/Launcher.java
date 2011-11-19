@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.FlickScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -39,6 +38,7 @@ import com.gemserk.prototypes.gdx.particles.ScaleParticleEmitterTest;
 import com.gemserk.prototypes.gui.DialogHideShowPrototype;
 import com.gemserk.prototypes.gui.FocusedControlPrototype;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
+import com.gemserk.prototypes.physicseditor.FixtureAtlasLoadShapeTest;
 import com.gemserk.prototypes.pixmap.PixmapCollisionPrototype;
 import com.gemserk.prototypes.pixmap.PixmapToTexturePrototype;
 import com.gemserk.prototypes.pixmap.performance.PixmapPerformancePrototype;
@@ -64,6 +64,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			put("Artemis.UiPrototype", new ArtemisUiPrototype());
 			put("ScaleParticleEmitterTest", new ScaleParticleEmitterTest());
 			put("Fonts.RenderScaledFontsTest", new RenderScaledFontsTest());
+			put("PhysicsEditor.FixtureAtlasLoadShapeTest", new FixtureAtlasLoadShapeTest());
 		}
 	};
 
@@ -98,39 +99,19 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 			Arrays.sort(items);
 
-			SelectBoxStyle style = skin.getStyle(SelectBoxStyle.class);
-
-//			final SelectBox comboBox = new SelectBox(items, style, "combo");
-//
-//			comboBox.width = window.width * 0.75f;
-//
-//			comboBox.x = window.width * 0.5f - comboBox.width * 0.5f;
-//			comboBox.y = window.height * 0.75f;
-//
-//			comboBox.touchable = true;
-//
-//			comboBox.setSelectionListener(new SelectionListener() {
-//				@Override
-//				public void selected(Actor comboBox, int selectionIndex, String selection) {
-//					System.out.println(selection);
-//				}
-//			});
-			
 			final List list = new List(items, skin);
 
-			
 			FlickScrollPane scrollPane = new FlickScrollPane(list);
-			
-//			ScrollPane scrollPane = new ScrollPane(flickScrollPane, skin);
-			
+			// ScrollPane scrollPane = new ScrollPane(flickScrollPane, skin);
+
 			scrollPane.width = window.width * 0.75f;
 			scrollPane.height = window.height * 0.5f;
 
 			scrollPane.x = window.width * 0.5f - scrollPane.width * 0.5f;
 			scrollPane.y = window.height * 0.35f;
-			
+
 			window.addActor(scrollPane);
-			
+
 			TextButton button = new TextButton("Start", skin);
 			// button.setText("Start");
 
@@ -152,7 +133,6 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 				}
 			});
 
-			// window.addActor(comboBox);
 			window.addActor(button);
 
 			Gdx.input.setInputProcessor(stage);
