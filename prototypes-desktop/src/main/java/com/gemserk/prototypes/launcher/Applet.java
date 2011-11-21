@@ -6,8 +6,10 @@ import java.awt.Canvas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.utils.GdxNativesLoader;
+import com.gemserk.commons.utils.MailUtilsDesktopImpl;
 import com.gemserk.commons.utils.gdx.LwjglLibgdxLibraryUtils;
 import com.gemserk.prototypes.Launcher;
+import com.gemserk.prototypes.Utils;
 
 public class Applet extends java.applet.Applet {
 
@@ -34,6 +36,8 @@ public class Applet extends java.applet.Applet {
 
 		GdxNativesLoader.disableNativesLoading = true;
 		LwjglLibgdxLibraryUtils.loadLibgdxLibrary();
+		
+		Utils.mailUtils = new MailUtilsDesktopImpl();
 
 		try {
 			setLayout(new BorderLayout());

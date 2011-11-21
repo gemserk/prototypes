@@ -8,7 +8,9 @@ import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.gemserk.commons.gdx.Game;
+import com.gemserk.commons.utils.MailUtilsAndroidImpl;
 import com.gemserk.prototypes.Launcher;
+import com.gemserk.prototypes.Utils;
 
 public class AndroidApplication extends com.badlogic.gdx.backends.android.AndroidApplication {
 
@@ -28,6 +30,8 @@ public class AndroidApplication extends com.badlogic.gdx.backends.android.Androi
 		config.useAccelerometer = true;
 		config.useCompass = true;
 		config.useWakelock = true;
+		
+		Utils.mailUtils = new MailUtilsAndroidImpl(this);
 
 		Game game = new Launcher();
 

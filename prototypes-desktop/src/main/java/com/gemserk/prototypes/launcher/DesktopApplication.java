@@ -6,7 +6,9 @@ import org.slf4j.LoggerFactory;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.gemserk.commons.gdx.Game;
+import com.gemserk.commons.utils.MailUtilsDesktopImpl;
 import com.gemserk.prototypes.Launcher;
+import com.gemserk.prototypes.Utils;
 
 public class DesktopApplication {
 
@@ -44,6 +46,8 @@ public class DesktopApplication {
 		arguments.parse(argv);
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		
+		Utils.mailUtils = new MailUtilsDesktopImpl();
 
 		config.title = "Gemserk's Prototypes";
 		config.width = arguments.width;
