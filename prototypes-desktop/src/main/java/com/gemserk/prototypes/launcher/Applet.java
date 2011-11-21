@@ -6,6 +6,8 @@ import java.awt.Canvas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.utils.GdxNativesLoader;
+import com.gemserk.commons.utils.BrowserUtilsDesktopImpl;
+import com.gemserk.commons.utils.FacebookUtilsDesktopImpl;
 import com.gemserk.commons.utils.MailUtilsDesktopImpl;
 import com.gemserk.commons.utils.gdx.LwjglLibgdxLibraryUtils;
 import com.gemserk.prototypes.Launcher;
@@ -38,6 +40,7 @@ public class Applet extends java.applet.Applet {
 		LwjglLibgdxLibraryUtils.loadLibgdxLibrary();
 		
 		Utils.mailUtils = new MailUtilsDesktopImpl();
+		Utils.facebookUtils = new FacebookUtilsDesktopImpl(new BrowserUtilsDesktopImpl());
 
 		try {
 			setLayout(new BorderLayout());

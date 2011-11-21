@@ -38,6 +38,7 @@ import com.gemserk.prototypes.gdx.particles.ScaleParticleEmitterTest;
 import com.gemserk.prototypes.gui.DialogHideShowPrototype;
 import com.gemserk.prototypes.gui.FocusedControlPrototype;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
+import com.gemserk.prototypes.mail.FacebookTest;
 import com.gemserk.prototypes.mail.SendMailTest;
 import com.gemserk.prototypes.physicseditor.FixtureAtlasLoadShapeTest;
 import com.gemserk.prototypes.pixmap.PixmapCollisionPrototype;
@@ -66,7 +67,8 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			put("ScaleParticleEmitterTest", new ScaleParticleEmitterTest());
 			put("Fonts.RenderScaledFontsTest", new RenderScaledFontsTest());
 			put("PhysicsEditor.FixtureAtlasLoadShapeTest", new FixtureAtlasLoadShapeTest());
-			put("OS.SendMailTest", new SendMailTest());
+			put("Internet.SendMailTest", new SendMailTest());
+			put("Internet.FacebookTest", new FacebookTest());
 		}
 	};
 

@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.gemserk.commons.gdx.Game;
+import com.gemserk.commons.utils.BrowserUtilsDesktopImpl;
+import com.gemserk.commons.utils.FacebookUtilsDesktopImpl;
 import com.gemserk.commons.utils.MailUtilsDesktopImpl;
 import com.gemserk.prototypes.Launcher;
 import com.gemserk.prototypes.Utils;
@@ -48,6 +50,8 @@ public class DesktopApplication {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		
 		Utils.mailUtils = new MailUtilsDesktopImpl();
+		Utils.facebookUtils = new FacebookUtilsDesktopImpl(new BrowserUtilsDesktopImpl());
+		Utils.browserUtils = new BrowserUtilsDesktopImpl();
 
 		config.title = "Gemserk's Prototypes";
 		config.width = arguments.width;
