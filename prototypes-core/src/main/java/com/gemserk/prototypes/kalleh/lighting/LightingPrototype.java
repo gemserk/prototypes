@@ -56,11 +56,6 @@ public class LightingPrototype extends GameStateImpl {
 			}
 		};
 
-		rayHandler = new RayHandler(1024);
-		// rayHandler.shadows = true;
-
-		light = rayHandler.addLight(5f, 35f, 180f, 45f, 30f, 250, new Color(1f, 1f, 1f, 1f));
-
 		// Light light2 = rayHandler.addLight(5f, 5f, 0f, 360f, 20f, 250, new Color(1f, 0f, 0f, 0.5f));
 		//
 		// rayHandler.addLight(8f, 9f, 180f, 30f, 30f, 250, new Color(0f, 1f, 0f, 1f));
@@ -87,6 +82,11 @@ public class LightingPrototype extends GameStateImpl {
 		// light2.xray = true;
 
 		world = new World(new Vector2(), false);
+		
+		rayHandler = new RayHandler(world, 1024);
+		// rayHandler.shadows = true;
+
+		light = rayHandler.addLight(5f, 35f, 180f, 45f, 30f, 250, new Color(1f, 1f, 1f, 1f), false, false);
 
 		BodyBuilder bodyBuilder = new BodyBuilder(world);
 
@@ -186,7 +186,7 @@ public class LightingPrototype extends GameStateImpl {
 		spriteBatch.begin();
 		spriteBatch.end();
 
-		rayHandler.updateAndRender(world);
+		rayHandler.updateAndRender();
 		box2dDebugRenderer.render(world, worldCamera.combined);
 
 		spriteBatch.setProjectionMatrix(guiCamera.projection);
