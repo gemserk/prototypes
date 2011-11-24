@@ -57,11 +57,7 @@ public class LightingPrototype2 extends GameStateImpl {
 	private Body mouseBody;
 
 	private <T> T random(T[] ts) {
-		int random = MathUtils.random(0, ts.length - 1);
-		System.out.println(random);
-		T t = ts[random];
-		System.out.println(t);
-		return t;
+		return ts[MathUtils.random(0, ts.length - 1)];
 	}
 
 	@Override
