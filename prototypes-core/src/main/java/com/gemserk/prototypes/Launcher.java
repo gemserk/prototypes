@@ -38,6 +38,7 @@ import com.gemserk.prototypes.gdx.particles.ScaleParticleEmitterTest;
 import com.gemserk.prototypes.gui.DialogHideShowPrototype;
 import com.gemserk.prototypes.gui.FocusedControlPrototype;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
+import com.gemserk.prototypes.kalleh.lighting.LightingPrototype2;
 import com.gemserk.prototypes.mail.FacebookTest;
 import com.gemserk.prototypes.mail.SendMailTest;
 import com.gemserk.prototypes.physicseditor.FixtureAtlasLoadShapeTest;
@@ -53,6 +54,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 	public static final Map<String, GameState> gameStates = new HashMap<String, GameState>() {
 		{
 			put("Lighting", new LightingPrototype());
+			put("Lighting2", new LightingPrototype2());
 			put("PixmapCollision", new PixmapCollisionPrototype());
 			put("SuperAngrySheep", new SuperAngrySheepPrototype());
 			put("ReloadPixmapTest", new ReloadPixmapTestGameState());
