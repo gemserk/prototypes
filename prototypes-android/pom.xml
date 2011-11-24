@@ -22,6 +22,8 @@
 		<!-- this trick of loading build timestamp into other property is necessary 
 			due to http://jira.codehaus.org/browse/MRESOURCES-99 and also more readable -->
 		<versionCode>${maven.build.timestamp}</versionCode>
+		<android.build>true</android.build>
+		<android.skipzipalign>false</android.skipzipalign>
 	</properties>
 
 	<build>
@@ -75,12 +77,14 @@
 				<artifactId>maven-android-plugin</artifactId>
 				<version>2.9.0-beta-4</version>
 				<configuration>
+					<generateApk>${android.build}</generateApk>
 					<sdk>
 						<path>${env.ANDROID_HOME}</path>
 						<platform>8</platform>
 					</sdk>
 					<zipalign>
 						<verbose>true</verbose>
+						<skip>${android.skipzipalign}</skip>
 					</zipalign>
 					<deleteConflictingFiles>true</deleteConflictingFiles>
 					<extractDuplicates>true</extractDuplicates>
@@ -118,6 +122,15 @@
 	</build>
 
 	<profiles>
+
+		<profile>
+			<id>noapk</id>
+			<properties>
+				<android.build>false</android.build>
+				<android.skipzipalign>true</android.skipzipalign>
+			</properties>
+		</profile>
+
 		<profile>
 			<!-- the release profile does sign, proguard, zipalign ... but does not 
 				run instrumentation tests -->
