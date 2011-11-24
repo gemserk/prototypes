@@ -86,6 +86,9 @@
 					<extractDuplicates>true</extractDuplicates>
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
 					<assetsDirectory>../prototypes-desktop/src/main/resources</assetsDirectory>
+					<jvmArguments>
+						<argument>-Xmx350m</argument>
+					</jvmArguments>
 				</configuration>
 				<extensions>true</extensions>
 				<executions>
