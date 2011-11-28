@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
+import com.gemserk.commons.gdx.graphics.SpriteBatchUtils;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.prototypes.kalleh.lighting.RayHandler.Light;
@@ -33,12 +35,15 @@ public class LightingPrototype extends GameStateImpl {
 
 	Box2DDebugRenderer box2dDebugRenderer;
 	private Light light;
+	
+	BitmapFont font;
 
 	@Override
 	public void init() {
 		gl = Gdx.graphics.getGL10();
 
 		spriteBatch = new SpriteBatch();
+		font = new BitmapFont();
 
 		worldCamera = new OrthographicCamera();
 
@@ -192,8 +197,18 @@ public class LightingPrototype extends GameStateImpl {
 		spriteBatch.setProjectionMatrix(guiCamera.projection);
 		spriteBatch.setTransformMatrix(guiCamera.view);
 		spriteBatch.begin();
+		SpriteBatchUtils.drawMultilineText(spriteBatch, font, "http://code.google.com/p/box2dlights/", Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() - 30f, 0.5f, 0.5f);
 		spriteBatch.end();
 
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		spriteBatch.dispose();
+		font.dispose();
+		rayHandler.dispose();
+		world.dispose();
 	}
 
 }

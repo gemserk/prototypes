@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -13,9 +14,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
+import com.gemserk.commons.gdx.graphics.SpriteBatchUtils;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.prototypes.kalleh.lighting.RayHandler.Light;
@@ -38,6 +42,8 @@ public class LightingPrototype2 extends GameStateImpl {
 
 	private RayHandler rayHandler;
 	private World world;
+	
+	BitmapFont font;
 
 	Box2DDebugRenderer box2dDebugRenderer;
 
@@ -54,7 +60,8 @@ public class LightingPrototype2 extends GameStateImpl {
 	}
 
 	ArrayList<BallLight> ballLights;
-	private Body mouseBody;
+//	private Body mouseBody;
+	private BodyBuilder bodyBuilder;
 
 	private <T> T random(T[] ts) {
 		return ts[MathUtils.random(0, ts.length - 1)];
@@ -65,6 +72,7 @@ public class LightingPrototype2 extends GameStateImpl {
 		gl = Gdx.graphics.getGL10();
 
 		spriteBatch = new SpriteBatch();
+		font = new BitmapFont();
 
 		worldCamera = new OrthographicCamera();
 
@@ -78,7 +86,8 @@ public class LightingPrototype2 extends GameStateImpl {
 		inputDevicesMonitor = new InputDevicesMonitorImpl<String>();
 		new LibgdxInputMappingBuilder<String>(inputDevicesMonitor, Gdx.input) {
 			{
-
+				monitorMouseLeftButton("newBall");
+				monitorMouseRightButton("removeBall");
 			}
 		};
 
@@ -112,7 +121,7 @@ public class LightingPrototype2 extends GameStateImpl {
 		rayHandler = new RayHandler(world, 1024);
 		// rayHandler.shadows = true;
 
-		BodyBuilder bodyBuilder = new BodyBuilder(world);
+		bodyBuilder = new BodyBuilder(world);
 
 		Shape[] shapes = new Shape[] { //
 		new Shape(new Vector2[] { new Vector2(3f, 1.5f), new Vector2(1f, 4f), new Vector2(-2.5f, 1f), new Vector2(-1.5f, -2.5f), new Vector2(1f, -1.5f), }), //
@@ -146,14 +155,14 @@ public class LightingPrototype2 extends GameStateImpl {
 
 		}
 
-		mouseBody = bodyBuilder //
-				.fixture(bodyBuilder.fixtureDefBuilder() //
-						.circleShape(0.2f) //
-						.restitution(0.8f) //
-				) //
-				.type(BodyType.DynamicBody) //
-				.position(0f, 0f) //
-				.build();
+//		mouseBody = bodyBuilder //
+//				.fixture(bodyBuilder.fixtureDefBuilder() //
+//						.circleShape(0.2f) //
+//						.restitution(0.8f) //
+//				) //
+//				.type(BodyType.DynamicBody) //
+//				.position(0f, 0f) //
+//				.build();
 
 		bodyBuilder //
 				.fixture(bodyBuilder.fixtureDefBuilder() //
@@ -180,6 +189,7 @@ public class LightingPrototype2 extends GameStateImpl {
 					) //
 					.type(BodyType.DynamicBody) //
 					.position(x, y) //
+					.userData(ballLight) //
 					.build();
 
 			ballLight.light = rayHandler.addLight(0f, 0f, 180f, 180f, 5f, 150, new Color(random(colors)), false, false);
@@ -216,10 +226,11 @@ public class LightingPrototype2 extends GameStateImpl {
 		world.step(getDelta(), 3, 3);
 
 		inputDevicesMonitor.update();
-
+		
 		int x = Gdx.input.getX();
 		// int y = (Gdx.graphics.getHeight() - Gdx.input.getY());
 		int y = Gdx.input.getY();
+		
 
 		// if (Gdx.input.justTouched()) {
 
@@ -228,9 +239,47 @@ public class LightingPrototype2 extends GameStateImpl {
 		position.z = 1f;
 
 		worldCamera.unproject(position);
-		// System.out.println(position);
 		
-		mouseBody.setTransform(position.x, position.y, 0f);
+		if (inputDevicesMonitor.getButton("newBall").isReleased()) {
+			BallLight ballLight = new BallLight();
+
+			ballLight.ball = bodyBuilder //
+					.fixture(bodyBuilder.fixtureDefBuilder() //
+							.circleShape(0.2f) //
+							.restitution(1f) //
+					) //
+					.type(BodyType.DynamicBody) //
+					.position(position.x, position.y) //
+					.userData(ballLight) //
+					.build();
+
+			ballLight.light = rayHandler.addLight(0f, 0f, 180f, 180f, 5f, 150, new Color(random(colors)), false, false);
+
+			ballLights.add(ballLight);
+		}
+		
+		if (inputDevicesMonitor.getButton("removeBall").isReleased()) {
+			
+			world.QueryAABB(new QueryCallback() {
+				
+				@Override
+				public boolean reportFixture(Fixture fixture) {
+					BallLight ballLight = (BallLight) fixture.getBody().getUserData();
+					if (ballLight == null)
+						return true;
+
+					ballLight.light.remove();
+					ballLights.remove(ballLight);
+					world.destroyBody(ballLight.ball);
+					
+					return false;
+				}
+			}, position.x, position.y, position.x, position.y);
+			
+		}
+
+		
+//		mouseBody.setTransform(position.x, position.y, 0f);
 
 		for (int i = 0; i < ballLights.size(); i++) {
 			BallLight ballLight = ballLights.get(i);
@@ -259,8 +308,18 @@ public class LightingPrototype2 extends GameStateImpl {
 		spriteBatch.setProjectionMatrix(guiCamera.projection);
 		spriteBatch.setTransformMatrix(guiCamera.view);
 		spriteBatch.begin();
+		SpriteBatchUtils.drawMultilineText(spriteBatch, font, "http://code.google.com/p/box2dlights/", Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() - 30f, 0.5f, 0.5f);
 		spriteBatch.end();
 
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		spriteBatch.dispose();
+		font.dispose();
+		rayHandler.dispose();
+		world.dispose();
 	}
 
 }
