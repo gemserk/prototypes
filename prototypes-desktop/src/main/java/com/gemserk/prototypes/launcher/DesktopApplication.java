@@ -3,9 +3,9 @@ package com.gemserk.prototypes.launcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.gemserk.commons.gdx.Game;
 import com.gemserk.commons.utils.BrowserUtilsDesktopImpl;
 import com.gemserk.commons.utils.FacebookUtilsDesktopImpl;
 import com.gemserk.commons.utils.MailUtilsDesktopImpl;
@@ -67,7 +67,7 @@ public class DesktopApplication {
 		// Game game = new PixmapCollisionPrototype();
 
 //		Game game = new com.gemserk.prototypes.launcher.Launcher();
-		Game game = new Launcher();
+		ApplicationListener game = new Launcher();
 
 		// boolean runningInDebug = System.getProperty("runningInDebug") != null;
 

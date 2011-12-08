@@ -30,7 +30,7 @@ public class DialogHideShowPrototype extends GameStateImpl {
 		@Override
 		public void onOver(Control control) {
 			ImageButton imageButton = (ImageButton) control;
-			Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+			Synchronizers.transition(Transitions.transition(imageButton, imageButtonSizeConverter) //
 					.end(0.15f, 108f, 108f) //
 					.build());
 		}
@@ -38,7 +38,7 @@ public class DialogHideShowPrototype extends GameStateImpl {
 		@Override
 		public void onLeave(Control control) {
 			ImageButton imageButton = (ImageButton) control;
-			Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+			Synchronizers.transition(Transitions.transition(imageButton, imageButtonSizeConverter) //
 					.end(0.15f, 96f, 96f) //
 					.build());
 		}
@@ -46,7 +46,7 @@ public class DialogHideShowPrototype extends GameStateImpl {
 		@Override
 		public void onPressed(Control control) {
 			ImageButton imageButton = (ImageButton) control;
-			Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+			Synchronizers.transition(Transitions.transition(imageButton, imageButtonSizeConverter) //
 					.end(0.05f, 84f, 84f) //
 					.build());
 		}
@@ -54,7 +54,7 @@ public class DialogHideShowPrototype extends GameStateImpl {
 		@Override
 		public void onReleased(Control control) {
 			ImageButton imageButton = (ImageButton) control;
-			Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+			Synchronizers.transition(Transitions.transition(imageButton, imageButtonSizeConverter) //
 					.end(0.15f, 96f, 96f) //
 					.build());
 		}
@@ -163,7 +163,7 @@ public class DialogHideShowPrototype extends GameStateImpl {
 	public void showDialog() {
 		Control dialogWindow = screen.findControl(Gui.DialogWindow);
 
-		Synchronizers.transition(Transitions.mutableTransition(dialogWindow, controlPositionConverter) //
+		Synchronizers.transition(Transitions.transition(dialogWindow, controlPositionConverter) //
 				.start(Gdx.graphics.getWidth() * 0.5f, -Gdx.graphics.getHeight() * 0.5f) //
 				.end(0.85f, Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f) //
 				.functions(InterpolationFunctions.easeIn(), InterpolationFunctions.easeIn()) //
@@ -171,7 +171,7 @@ public class DialogHideShowPrototype extends GameStateImpl {
 
 		ImageButton screenBackground = screen.findControl(Gui.ScreenBackground);
 
-		Synchronizers.transition(Transitions.mutableTransition(screenBackground.getColor(), LibgdxConverters.color()) //
+		Synchronizers.transition(Transitions.transition(screenBackground.getColor(), LibgdxConverters.color()) //
 				.end(0.85f, 0.5f, 0.5f, 0.5f, 1f) //
 				.build());
 
@@ -181,7 +181,7 @@ public class DialogHideShowPrototype extends GameStateImpl {
 	public void hideDialog() {
 		Control dialogWindow = screen.findControl(Gui.DialogWindow);
 
-		Synchronizers.transition(Transitions.mutableTransition(dialogWindow, controlPositionConverter) //
+		Synchronizers.transition(Transitions.transition(dialogWindow, controlPositionConverter) //
 				.start(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f) //
 				.end(0.5f, Gdx.graphics.getWidth() * 0.5f, -Gdx.graphics.getHeight() * 0.5f) //
 				.functions(InterpolationFunctions.easeOut(), InterpolationFunctions.easeOut()) //
@@ -189,7 +189,7 @@ public class DialogHideShowPrototype extends GameStateImpl {
 
 		ImageButton screenBackground = screen.findControl(Gui.ScreenBackground);
 
-		Synchronizers.transition(Transitions.mutableTransition(screenBackground.getColor(), LibgdxConverters.color()) //
+		Synchronizers.transition(Transitions.transition(screenBackground.getColor(), LibgdxConverters.color()) //
 				.end(0.5f, 1f, 1f, 1f, 1f) //
 				.build());
 

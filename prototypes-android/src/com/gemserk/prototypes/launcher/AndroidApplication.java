@@ -6,8 +6,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.gemserk.commons.gdx.Game;
 import com.gemserk.commons.utils.BrowserUtilsAndroidImpl;
 import com.gemserk.commons.utils.FacebookUtilsAndroidImpl;
 import com.gemserk.commons.utils.MailUtilsAndroidImpl;
@@ -37,7 +37,7 @@ public class AndroidApplication extends com.badlogic.gdx.backends.android.Androi
 		Utils.facebookUtils = new FacebookUtilsAndroidImpl(this);
 		Utils.browserUtils = new BrowserUtilsAndroidImpl(this);
 
-		Game game = new Launcher();
+		ApplicationListener game = new Launcher();
 
 		View gameView = initializeForView(game, config);
 

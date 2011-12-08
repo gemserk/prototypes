@@ -34,7 +34,7 @@ public class FocusedControlPrototype extends GameStateImpl {
 		@Override
 		public void onPressed(Control control) {
 			ImageButton imageButton = (ImageButton) control;
-			Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+			Synchronizers.transition(Transitions.transition(imageButton, imageButtonSizeConverter) //
 					.end(0.05f, 256f * 0.9f, 128 * 0.9f) //
 					.build());
 		}
@@ -42,7 +42,7 @@ public class FocusedControlPrototype extends GameStateImpl {
 		@Override
 		public void onReleased(Control control) {
 			ImageButton imageButton = (ImageButton) control;
-			Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+			Synchronizers.transition(Transitions.transition(imageButton, imageButtonSizeConverter) //
 					.end(0.15f, 256f * 1f, 128f * 1f) //
 					.build());
 		}
@@ -111,11 +111,11 @@ public class FocusedControlPrototype extends GameStateImpl {
 					ImageButton imageButton = (ImageButton) controls.get(i);
 
 					if (imageButton != focusedControl)
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+						Synchronizers.transition(Transitions.transition(imageButton, imageButtonSizeConverter) //
 								.end(0.15f, 256f, 128f) //
 								.build());
 					else
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+						Synchronizers.transition(Transitions.transition(imageButton, imageButtonSizeConverter) //
 								.end(0.15f, 280f, 140f) //
 								.build());
 
@@ -134,11 +134,11 @@ public class FocusedControlPrototype extends GameStateImpl {
 					ImageButton imageButton = (ImageButton) controls.get(i);
 
 					if (imageButton != focusedControl)
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+						Synchronizers.transition(Transitions.transition(imageButton, imageButtonSizeConverter) //
 								.end(0.15f, 256f, 128f) //
 								.build());
 					else
-						Synchronizers.transition(Transitions.mutableTransition(imageButton, imageButtonSizeConverter) //
+						Synchronizers.transition(Transitions.transition(imageButton, imageButtonSizeConverter) //
 								.end(0.15f, 280f, 140f) //
 								.build());
 

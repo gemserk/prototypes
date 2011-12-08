@@ -70,12 +70,16 @@ public class Applet extends java.applet.Applet {
 					super.removeNotify();
 				}
 			};
+			
 			canvas.setSize(getWidth(), getHeight());
 			add(canvas);
-			canvas.setFocusable(true);
-			canvas.requestFocus();
+//			canvas.setFocusable(true);
+//			canvas.requestFocus();
 			canvas.setIgnoreRepaint(true);
-			setVisible(true);
+//			setVisible(true);
+			
+			validate();
+			
 		} catch (Exception e) {
 			System.err.println(e);
 			throw new RuntimeException("Unable to create display", e);

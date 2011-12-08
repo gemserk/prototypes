@@ -1,5 +1,6 @@
 package com.gemserk.prototypes;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +23,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.gemserk.animation4j.converters.Converters;
 import com.gemserk.animation4j.gdx.converters.LibgdxConverters;
+import com.gemserk.commons.gdx.ApplicationListenerGameStateBasedImpl;
 import com.gemserk.commons.gdx.GameState;
+import com.gemserk.commons.gdx.GameStateDelegateFixedTimestepImpl;
+import com.gemserk.commons.gdx.GameStateDelegateWithInternalStateImpl;
 import com.gemserk.commons.gdx.GameStateImpl;
-import com.gemserk.commons.gdx.ScreenImpl;
-import com.gemserk.commons.gdx.screens.transitions.TransitionBuilder;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.commons.reflection.InjectorImpl;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
@@ -49,7 +51,7 @@ import com.gemserk.prototypes.pixmap.reload.ReloadPixmapTestGameState;
 import com.gemserk.prototypes.superangrysheep.SuperAngrySheepPrototype;
 import com.gemserk.prototypes.texture.DrawToTexturePrototype;
 
-public class Launcher extends com.gemserk.commons.gdx.Game {
+public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 	public static final Map<String, GameState> gameStates = new HashMap<String, GameState>() {
 		{
@@ -132,9 +134,11 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 				@Override
 				public void click(Actor arg0, float arg1, float arg2) {
 					String selection = list.getSelection();
-					GameState gameState = gameStates.get(selection);
+					GameState gameState = new GameStateDelegateWithInternalStateImpl(new GameStateDelegateFixedTimestepImpl(gameStates.get(selection)));
 					if (gameState != null) {
-						launcher.transition(gameState).start();
+						launcher.setGameState(gameState, false);
+						launcher.currentGameState = gameState;
+						// launcher.transition(gameState).start();
 					}
 				}
 			});
@@ -169,6 +173,14 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			stage.draw();
 		}
 
+		@Override
+		public void resize(int width, int height) {
+			super.resize(width, height);
+
+			System.out.println(MessageFormat.format("resizing: {0}x{1}", width, height));
+
+		}
+
 	}
 
 	// private ResourceManager<String> resourceManager;
@@ -193,10 +205,12 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 		injector.bind("launcher", this);
 
-		launcherGameState = injector.getInstance(LauncherGameState.class);
+		launcherGameState = new GameStateDelegateWithInternalStateImpl(new GameStateDelegateFixedTimestepImpl(injector.getInstance(LauncherGameState.class)));
 		currentGameState = launcherGameState;
 
-		setScreen(new ScreenImpl(launcherGameState));
+		setGameState(launcherGameState);
+
+		// setScreen(new ScreenImpl(launcherGameState));
 
 		inputDevicesMonitor = new InputDevicesMonitorImpl<String>();
 		new LibgdxInputMappingBuilder<String>(inputDevicesMonitor, Gdx.input) {
@@ -210,10 +224,10 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 	}
 
-	public TransitionBuilder transition(GameState gameState) {
-		this.currentGameState = gameState;
-		return new TransitionBuilder(this, new ScreenImpl(gameState));
-	}
+	// public TransitionBuilder transition(GameState gameState) {
+	// this.currentGameState = gameState;
+	// return new TransitionBuilder(this, new ScreenImpl(gameState));
+	// }
 
 	@Override
 	public void render() {
@@ -222,14 +236,19 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 
 		if (inputDevicesMonitor.getButton("restart").isReleased()) {
 			System.out.println("restarting");
-			getScreen().restart();
+			getGameState().dispose();
+			getGameState().init();
+			// getScreen().restart();
 		}
 
 		if (inputDevicesMonitor.getButton("back").isReleased()) {
 			if (currentGameState != launcherGameState) {
-				transition(launcherGameState).disposeCurrent() //
-						.restartScreen() //
-						.start();
+				// transition(launcherGameState).disposeCurrent() //
+				// .restartScreen() //
+				// .start();
+
+				setGameState(launcherGameState, true);
+
 			} else {
 				Gdx.app.exit();
 			}
