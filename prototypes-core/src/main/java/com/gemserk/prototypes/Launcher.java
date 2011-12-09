@@ -76,6 +76,10 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 		}
 	};
 
+	private static GameState delegate(GameState gameState) {
+		return new GameStateDelegateWithInternalStateImpl(new GameStateDelegateFixedTimestepImpl(gameState));
+	}
+	
 	public static class LauncherGameState extends GameStateImpl {
 
 		private Stage stage;
@@ -134,7 +138,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 				@Override
 				public void click(Actor arg0, float arg1, float arg2) {
 					String selection = list.getSelection();
-					GameState gameState = new GameStateDelegateWithInternalStateImpl(new GameStateDelegateFixedTimestepImpl(gameStates.get(selection)));
+					GameState gameState = delegate(gameStates.get(selection));
 					if (gameState != null) {
 						launcher.setGameState(gameState, false);
 						launcher.currentGameState = gameState;
@@ -190,7 +194,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 	private GameState currentGameState;
 
 	private BitmapFont bitmapFont;
-
+	
 	@Override
 	public void create() {
 
@@ -205,7 +209,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 		injector.bind("launcher", this);
 
-		launcherGameState = new GameStateDelegateWithInternalStateImpl(new GameStateDelegateFixedTimestepImpl(injector.getInstance(LauncherGameState.class)));
+		launcherGameState = delegate(injector.getInstance(LauncherGameState.class));
 		currentGameState = launcherGameState;
 
 		setGameState(launcherGameState);
