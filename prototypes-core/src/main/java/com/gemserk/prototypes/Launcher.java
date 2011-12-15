@@ -37,6 +37,7 @@ import com.gemserk.prototypes.artemis.ui.ArtemisUiPrototype;
 import com.gemserk.prototypes.box2d.frustum.FustumCullingPrototype;
 import com.gemserk.prototypes.fonts.RenderScaledFontsTest;
 import com.gemserk.prototypes.gdx.particles.ScaleParticleEmitterTest;
+import com.gemserk.prototypes.gdx.particles.SnowParticleEmitterTest;
 import com.gemserk.prototypes.gui.DialogHideShowPrototype;
 import com.gemserk.prototypes.gui.FocusedControlPrototype;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
@@ -68,7 +69,8 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			put("FustumCullingPrototype", new FustumCullingPrototype());
 			put("Artemis.SpriteUpdateSystemPerformanceTest", new SpriteUpdateSystemPerformanceTest());
 			put("Artemis.UiPrototype", new ArtemisUiPrototype());
-			put("ScaleParticleEmitterTest", new ScaleParticleEmitterTest());
+			put("Gdx.ScaleParticleEmitterTest", new ScaleParticleEmitterTest());
+			put("Gdx.SnowParticleEmitterTest", new SnowParticleEmitterTest());
 			put("Fonts.RenderScaledFontsTest", new RenderScaledFontsTest());
 			put("PhysicsEditor.FixtureAtlasLoadShapeTest", new FixtureAtlasLoadShapeTest());
 			put("Internet.SendMailTest", new SendMailTest());
