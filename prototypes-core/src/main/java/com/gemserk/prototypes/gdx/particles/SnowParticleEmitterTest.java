@@ -33,20 +33,20 @@ public class SnowParticleEmitterTest extends GameStateImpl {
 		new LibgdxResourceBuilder(resourceManager) {
 			{
 				particleEffect("SnowParticleEffect", "gdx/particles/SnowParticleEffect", "gdx/particles");
-				particleEmitter("SnowEmitter", "SnowParticleEffect", "SnowEmitter", 1f / 64f);
+				particleEmitter("SnowEmitter", "SnowParticleEffect", "SnowEmitter", 1f);
 			}
 		};
 
 		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 
-		worldCamera.move(Gdx.graphics.getWidth() * 0.25f, Gdx.graphics.getHeight() * 0.5f);
-		worldCamera.zoom(64f);
+		worldCamera.move(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
+		worldCamera.zoom(1f);
 
 		snowEmitter = resourceManager.getResourceValue("SnowEmitter");
 
 		snowEmitter.setPosition(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 		snowEmitter.start();
-
+		
 		// ParticleEmitterUtils.scaleEmitter(thrustParticleEmitter, 1f / 40f);
 
 		// System.out.println(thrustParticleEmitter.getSpawnHeight().getLowMin());
@@ -71,7 +71,7 @@ public class SnowParticleEmitterTest extends GameStateImpl {
 
 		worldCamera.unproject(position);
 		
-		 snowEmitter.setPosition(position.x, position.y);
+		//  snowEmitter.setPosition(position.x, position.y);
 		snowEmitter.update(getDelta());
 	}
 

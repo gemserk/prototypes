@@ -34,7 +34,7 @@ import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.prototypes.artemis.sprites.SpriteUpdateSystemPerformanceTest;
 import com.gemserk.prototypes.artemis.ui.ArtemisUiPrototype;
-import com.gemserk.prototypes.box2d.frustum.FustumCullingPrototype;
+import com.gemserk.prototypes.box2d.frustum.FrustumCullingPrototype;
 import com.gemserk.prototypes.fonts.RenderScaledFontsTest;
 import com.gemserk.prototypes.gdx.particles.ScaleParticleEmitterTest;
 import com.gemserk.prototypes.gdx.particles.SnowParticleEmitterTest;
@@ -49,6 +49,7 @@ import com.gemserk.prototypes.pixmap.PixmapCollisionPrototype;
 import com.gemserk.prototypes.pixmap.PixmapToTexturePrototype;
 import com.gemserk.prototypes.pixmap.performance.PixmapPerformancePrototype;
 import com.gemserk.prototypes.pixmap.reload.ReloadPixmapTestGameState;
+import com.gemserk.prototypes.render.culling.CameraFrustumCullingPrototype;
 import com.gemserk.prototypes.superangrysheep.SuperAngrySheepPrototype;
 import com.gemserk.prototypes.texture.DrawToTexturePrototype;
 
@@ -66,7 +67,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			put("PixmapToTextureBorderTest", new PixmapToTexturePrototype());
 			put("Gui.DialogHideShowPrototype", new DialogHideShowPrototype());
 			put("Gui.FocusedControlPrototype", new FocusedControlPrototype());
-			put("FustumCullingPrototype", new FustumCullingPrototype());
+			put("FrustumCullingPrototype", new FrustumCullingPrototype());
 			put("Artemis.SpriteUpdateSystemPerformanceTest", new SpriteUpdateSystemPerformanceTest());
 			put("Artemis.UiPrototype", new ArtemisUiPrototype());
 			put("Gdx.ScaleParticleEmitterTest", new ScaleParticleEmitterTest());
@@ -75,6 +76,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			put("PhysicsEditor.FixtureAtlasLoadShapeTest", new FixtureAtlasLoadShapeTest());
 			put("Internet.SendMailTest", new SendMailTest());
 			put("Internet.FacebookTest", new FacebookTest());
+			put("Commons.CameraFrustumCullingPrototype", new CameraFrustumCullingPrototype());
 		}
 	};
 

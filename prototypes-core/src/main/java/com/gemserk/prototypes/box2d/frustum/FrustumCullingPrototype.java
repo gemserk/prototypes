@@ -21,7 +21,7 @@ import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.prototypes.kalleh.lighting.Shape;
 
-public class FustumCullingPrototype extends GameStateImpl {
+public class FrustumCullingPrototype extends GameStateImpl {
 
 	static class Categories {
 
