@@ -10,6 +10,8 @@ prototypes-android/.settings
 prototypes-android/libs
 prototypes-android/.externalToolBuilders
 prototypes-android/gen
+prototypes-android/bin
+prototypes-android/project.properties
 
 prototypes-core/target
 prototypes-core/.classpath
