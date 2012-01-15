@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.GlobalTime;
+import com.gemserk.commons.gdx.graphics.ConvexHull2d;
+import com.gemserk.commons.gdx.graphics.ConvexHull2dCalculationImpl;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 
@@ -28,7 +30,8 @@ public class ConvexHull2dPrototype extends GameStateImpl {
 	private ShapeRenderer shapeRenderer;
 
 	private Array<Vector2> points;
-	private Array<Vector2> polygonPoints;
+
+	private ConvexHull2d convexHull2d = new ConvexHull2dCalculationImpl(5);
 
 	@Override
 	public void init() {
@@ -55,7 +58,6 @@ public class ConvexHull2dPrototype extends GameStateImpl {
 		Gdx.graphics.getGL10().glClearColor(0f, 0f, 1f, 0f);
 
 		points = new Array<Vector2>();
-		polygonPoints = new Array<Vector2>();
 	}
 
 	Vector2 nearPoint = null;
@@ -72,20 +74,20 @@ public class ConvexHull2dPrototype extends GameStateImpl {
 		int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 
 		if (inputDevicesMonitor.getButton("touch").isPressed()) {
-			nearPoint = findNear(x, y, 4f);
+			nearPoint = findNear(x, y, 15f);
 		}
 
 		if (inputDevicesMonitor.getButton("touch").isHolded()) {
 			if (nearPoint != null) {
 				nearPoint.set(x, y);
-				recalculateConvexHull();
+				recalculateConvexHull(points, convexHull2d);
 			}
 		}
 
 		if (inputDevicesMonitor.getButton("touch").isReleased()) {
 			if (nearPoint == null) {
 				points.add(new Vector2(x, y));
-				recalculateConvexHull();
+				recalculateConvexHull(points, convexHull2d);
 			}
 		}
 
@@ -102,43 +104,12 @@ public class ConvexHull2dPrototype extends GameStateImpl {
 		return null;
 	}
 
-	private void recalculateConvexHull() {
-
-		// extracted algorithm to calculate a convex hull of a 2d polygon from http://www.cse.unsw.edu.au/~lambert/java/3d/ConvexHull.html
-
-		polygonPoints.clear();
-
-		if (points.size <= 1)
-			return;
-
-		Vector2 p;
-		Vector2 bot = points.get(0);
-
-		for (int i = 1; i < points.size; i++) {
+	private void recalculateConvexHull(Array<Vector2> points, ConvexHull2d convexHull2d) {
+		for (int i = 0; i < points.size; i++) {
 			Vector2 point = points.get(i);
-			if (point.y < bot.y)
-				bot = point;
+			convexHull2d.add(point.x, point.y);
 		}
-
-		polygonPoints.add(bot);
-
-		p = bot;
-
-		do {
-			int i;
-			i = points.get(0) == p ? 1 : 0;
-			Vector2 cand = points.get(i);
-
-			for (i = i + 1; i < points.size; i++) {
-				Vector2 point = points.get(i);
-				if (point != p && area(p, cand, point) > 0)
-					cand = points.get(i);
-			}
-
-			polygonPoints.add(cand);
-			p = cand;
-		} while (p != bot);
-
+		convexHull2d.recalculate();
 	}
 
 	/* signed area of a triangle */
@@ -150,26 +121,21 @@ public class ConvexHull2dPrototype extends GameStateImpl {
 	public void render() {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-		// spriteBatch.setProjectionMatrix(worldCamera.projection);
-		// spriteBatch.setTransformMatrix(worldCamera.view);
-		// spriteBatch.begin();
-		// spriteBatch.end();
-
 		shapeRenderer.setProjectionMatrix(worldCamera.projection);
 		shapeRenderer.setTransformMatrix(worldCamera.view);
 
-		if (polygonPoints.size > 2) {
-			shapeRenderer.setColor(1f, 1f, 1f, 1f);
-			shapeRenderer.begin(ShapeType.Line);
-			for (int i = 0; i < polygonPoints.size; i++) {
-				Vector2 p0 = polygonPoints.get(i);
-				if (i + 1 == polygonPoints.size)
-					break;
-				Vector2 p1 = polygonPoints.get(i + 1);
-				shapeRenderer.line(p0.x, p0.y, p1.x, p1.y);
-			}
-			shapeRenderer.end();
+		shapeRenderer.setColor(1f, 1f, 1f, 1f);
+		shapeRenderer.begin(ShapeType.Line);
+		for (int i = 0; i < convexHull2d.getPointsCount(); i++) {
+			float x0 = convexHull2d.getX(i);
+			float y0 = convexHull2d.getY(i);
+			if (i + 1 == convexHull2d.getPointsCount())
+				break;
+			float x1 = convexHull2d.getX(i + 1);
+			float y1 = convexHull2d.getY(i + 1);
+			shapeRenderer.line(x0, y0, x1, y1);
 		}
+		shapeRenderer.end();
 
 		shapeRenderer.setColor(1f, 0f, 0f, 1f);
 		shapeRenderer.begin(ShapeType.FilledCircle);

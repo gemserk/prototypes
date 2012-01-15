@@ -173,6 +173,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 		public void resume() {
 			super.resume();
 			Gdx.input.setInputProcessor(stage);
+			Gdx.input.setCatchBackKey(false);
 		}
 
 		@Override
