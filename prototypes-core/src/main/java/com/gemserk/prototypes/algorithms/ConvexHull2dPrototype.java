@@ -129,8 +129,12 @@ public class ConvexHull2dPrototype extends GameStateImpl {
 		for (int i = 0; i < convexHull2d.getPointsCount(); i++) {
 			float x0 = convexHull2d.getX(i);
 			float y0 = convexHull2d.getY(i);
-			if (i + 1 == convexHull2d.getPointsCount())
+			if (i + 1 == convexHull2d.getPointsCount()) {
+				float x1 = convexHull2d.getX(0);
+				float y1 = convexHull2d.getY(0);
+				shapeRenderer.line(x0, y0, x1, y1);
 				break;
+			}
 			float x1 = convexHull2d.getX(i + 1);
 			float y1 = convexHull2d.getY(i + 1);
 			shapeRenderer.line(x0, y0, x1, y1);
