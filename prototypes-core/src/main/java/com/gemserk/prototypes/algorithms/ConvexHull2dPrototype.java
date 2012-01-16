@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.graphics.ConvexHull2d;
-import com.gemserk.commons.gdx.graphics.ConvexHull2dCalculationImpl;
+import com.gemserk.commons.gdx.graphics.ConvexHull2dImpl;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 
@@ -31,7 +31,7 @@ public class ConvexHull2dPrototype extends GameStateImpl {
 
 	private Array<Vector2> points;
 
-	private ConvexHull2d convexHull2d = new ConvexHull2dCalculationImpl(5);
+	private ConvexHull2d convexHull2d = new ConvexHull2dImpl(5);
 
 	@Override
 	public void init() {
