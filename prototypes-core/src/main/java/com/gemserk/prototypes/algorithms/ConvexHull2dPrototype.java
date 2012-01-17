@@ -3,14 +3,11 @@ package com.gemserk.prototypes.algorithms;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.gemserk.commons.gdx.GameStateImpl;
-import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.graphics.ConvexHull2d;
 import com.gemserk.commons.gdx.graphics.ConvexHull2dImpl;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
@@ -19,13 +16,10 @@ import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 public class ConvexHull2dPrototype extends GameStateImpl {
 
 	private GL10 gl;
-	private SpriteBatch spriteBatch;
 
 	private OrthographicCamera worldCamera;
 
 	private InputDevicesMonitorImpl<String> inputDevicesMonitor;
-
-	private World world;
 
 	private ShapeRenderer shapeRenderer;
 
@@ -36,8 +30,6 @@ public class ConvexHull2dPrototype extends GameStateImpl {
 	@Override
 	public void init() {
 		gl = Gdx.graphics.getGL10();
-
-		spriteBatch = new SpriteBatch();
 
 		worldCamera = new OrthographicCamera();
 
@@ -53,8 +45,6 @@ public class ConvexHull2dPrototype extends GameStateImpl {
 			}
 		};
 
-		world = new World(new Vector2(), false);
-
 		Gdx.graphics.getGL10().glClearColor(0f, 0f, 1f, 0f);
 
 		points = new Array<Vector2>();
@@ -65,8 +55,6 @@ public class ConvexHull2dPrototype extends GameStateImpl {
 	@Override
 	public void update() {
 		super.update();
-
-		world.step(GlobalTime.getDelta(), 5, 5);
 
 		inputDevicesMonitor.update();
 
@@ -110,11 +98,6 @@ public class ConvexHull2dPrototype extends GameStateImpl {
 			convexHull2d.add(point.x, point.y);
 		}
 		convexHull2d.recalculate();
-	}
-
-	/* signed area of a triangle */
-	float area(Vector2 a, Vector2 b, Vector2 c) {
-		return b.x * c.y - b.y * c.x + c.x * a.y - c.y * a.x + a.x * b.y - a.y * b.x;
 	}
 
 	@Override
