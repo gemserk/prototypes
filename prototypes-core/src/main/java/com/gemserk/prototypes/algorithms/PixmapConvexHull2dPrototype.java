@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.graphics.ConvexHull2d;
 import com.gemserk.commons.gdx.graphics.ConvexHull2dImpl;
+import com.gemserk.commons.gdx.graphics.ShapeUtils;
 import com.gemserk.commons.gdx.resources.LibgdxResourceBuilder;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
@@ -34,6 +35,7 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 	private Array<Vector2> points;
 
 	private ConvexHull2d convexHull2d = new ConvexHull2dImpl(5);
+	private ConvexHull2d smallConvexHull2d = new ConvexHull2dImpl(5);
 
 	@Override
 	public void init() {
@@ -44,7 +46,7 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 		worldCamera = new OrthographicCamera();
 
 		worldCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		worldCamera.translate(-Gdx.graphics.getWidth() * 0.5f, -Gdx.graphics.getHeight() * 0.5f, 0f);
+		// worldCamera.translate(-Gdx.graphics.getWidth() * 0.5f, -Gdx.graphics.getHeight() * 0.5f, 0f);
 		worldCamera.update();
 
 		shapeRenderer = new ShapeRenderer();
@@ -54,6 +56,7 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 		new LibgdxResourceBuilder(resourceManager) {
 			{
 				texture("FarmTexture", "pixmapconvexhull/farm.png");
+				// texture("FarmTexture", "physicseditor/island01.png");
 				sprite("FarmSprite", "FarmTexture");
 			}
 		};
@@ -61,6 +64,7 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 		farmSprite = resourceManager.getResourceValue("FarmSprite");
 
 		Pixmap pixmap = new Pixmap(Gdx.files.internal("pixmapconvexhull/farm.png"));
+		// Pixmap pixmap = new Pixmap(Gdx.files.internal("physicseditor/island01.png"));
 
 		inputDevicesMonitor = new InputDevicesMonitorImpl<String>();
 		new LibgdxInputMappingBuilder<String>(inputDevicesMonitor, Gdx.input) {
@@ -84,12 +88,62 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 				}
 			}
 		}
-		
+
 		pixmap.dispose();
-		
+
 		convexHull2d.recalculate();
-		
+
+		int size = convexHull2d.getPointsCount();
+
 		System.out.println("calculation without optimization: " + convexHull2d.getPointsCount() + " points");
+
+		int i = 0;
+
+		// removes aligned points!!
+
+		while (i < size) {
+			int p0 = i;
+			float x0 = convexHull2d.getX(p0);
+			float y0 = convexHull2d.getY(p0);
+
+			boolean aligned = true;
+
+			smallConvexHull2d.add(x0, y0);
+
+			int p1 = 0;
+			int p2 = 0;
+
+			do {
+				p1 = i + 1;
+				p2 = i + 2;
+
+				if (p1 >= size)
+					p1 = p1 % size;
+
+				if (p2 >= size)
+					p2 = p2 % size;
+
+				float x1 = convexHull2d.getX(p1);
+				float y1 = convexHull2d.getY(p1);
+				float x2 = convexHull2d.getX(p2);
+				float y2 = convexHull2d.getY(p2);
+
+				float triangleArea = Math.abs(ShapeUtils.area(x0, y0, x1, y1, x2, y2));
+				aligned = triangleArea < 0.01f;
+
+				if (!aligned)
+					break;
+
+				i++;
+
+			} while (aligned && i < size);
+
+			i++;
+		}
+
+		smallConvexHull2d.recalculate();
+
+		System.out.println("calculation with optimization: " + smallConvexHull2d.getPointsCount() + " points");
 
 	}
 
@@ -110,19 +164,19 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 		// nearPoint = findNear(x, y, 15f);
 		// }
 
-//		if (inputDevicesMonitor.getButton("touch").isHolded()) {
-//			if (nearPoint != null) {
-//				nearPoint.set(x, y);
-//				recalculateConvexHull(points, convexHull2d);
-//			}
-//		}
-//
-//		if (inputDevicesMonitor.getButton("touch").isReleased()) {
-//			if (nearPoint == null) {
-//				points.add(new Vector2(x, y));
-//				recalculateConvexHull(points, convexHull2d);
-//			}
-//		}
+		// if (inputDevicesMonitor.getButton("touch").isHolded()) {
+		// if (nearPoint != null) {
+		// nearPoint.set(x, y);
+		// recalculateConvexHull(points, convexHull2d);
+		// }
+		// }
+		//
+		// if (inputDevicesMonitor.getButton("touch").isReleased()) {
+		// if (nearPoint == null) {
+		// points.add(new Vector2(x, y));
+		// recalculateConvexHull(points, convexHull2d);
+		// }
+		// }
 
 	}
 
@@ -148,7 +202,7 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 	@Override
 	public void render() {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
+
 		spriteBatch.setProjectionMatrix(worldCamera.projection);
 		spriteBatch.setTransformMatrix(worldCamera.view);
 		spriteBatch.begin();
@@ -174,7 +228,24 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 			shapeRenderer.line(x0, y0, x1, y1);
 		}
 		shapeRenderer.end();
-		
+
+		shapeRenderer.setColor(0f, 1f, 1f, 1f);
+		shapeRenderer.begin(ShapeType.Line);
+		for (int i = 0; i < smallConvexHull2d.getPointsCount(); i++) {
+			float x0 = smallConvexHull2d.getX(i);
+			float y0 = smallConvexHull2d.getY(i);
+			if (i + 1 == smallConvexHull2d.getPointsCount()) {
+				float x1 = smallConvexHull2d.getX(0);
+				float y1 = smallConvexHull2d.getY(0);
+				shapeRenderer.line(x0, y0, x1, y1);
+				break;
+			}
+			float x1 = smallConvexHull2d.getX(i + 1);
+			float y1 = smallConvexHull2d.getY(i + 1);
+			shapeRenderer.line(x0, y0, x1, y1);
+		}
+		shapeRenderer.end();
+
 		shapeRenderer.setColor(1f, 0f, 0f, 1f);
 		shapeRenderer.begin(ShapeType.FilledCircle);
 		for (int i = 0; i < convexHull2d.getPointsCount(); i++) {
