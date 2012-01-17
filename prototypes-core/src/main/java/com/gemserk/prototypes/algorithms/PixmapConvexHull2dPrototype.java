@@ -44,6 +44,7 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 		worldCamera = new OrthographicCamera();
 
 		worldCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		worldCamera.translate(-Gdx.graphics.getWidth() * 0.5f, -Gdx.graphics.getHeight() * 0.5f, 0f);
 		worldCamera.update();
 
 		shapeRenderer = new ShapeRenderer();
@@ -79,10 +80,16 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 				int pixel = pixmap.getPixel(i, j);
 				Color.rgba8888ToColor(color, pixel);
 				if (color.a > 0) {
-					convexHull2d.add(i, j);
+					convexHull2d.add(i, pixmap.getHeight() - j);
 				}
 			}
 		}
+		
+		pixmap.dispose();
+		
+		convexHull2d.recalculate();
+		
+		System.out.println("calculation without optimization: " + convexHull2d.getPointsCount() + " points");
 
 	}
 
@@ -141,6 +148,12 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 	@Override
 	public void render() {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		spriteBatch.setProjectionMatrix(worldCamera.projection);
+		spriteBatch.setTransformMatrix(worldCamera.view);
+		spriteBatch.begin();
+		farmSprite.draw(spriteBatch);
+		spriteBatch.end();
 
 		shapeRenderer.setProjectionMatrix(worldCamera.projection);
 		shapeRenderer.setTransformMatrix(worldCamera.view);
@@ -161,13 +174,13 @@ public class PixmapConvexHull2dPrototype extends GameStateImpl {
 			shapeRenderer.line(x0, y0, x1, y1);
 		}
 		shapeRenderer.end();
-
+		
 		shapeRenderer.setColor(1f, 0f, 0f, 1f);
 		shapeRenderer.begin(ShapeType.FilledCircle);
-		for (int i = 0; i < points.size; i++) {
-			Vector2 p0 = points.get(i);
-			shapeRenderer.filledCircle(p0.x, p0.y, 4f);
-			// shapeRenderer.point(p0.x, p0.y, 0f);
+		for (int i = 0; i < convexHull2d.getPointsCount(); i++) {
+			float x = convexHull2d.getX(i);
+			float y = convexHull2d.getY(i);
+			shapeRenderer.filledCircle(x, y, 1f, 5);
 		}
 		shapeRenderer.end();
 
