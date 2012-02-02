@@ -36,6 +36,7 @@ import com.gemserk.prototypes.algorithms.ConvexHull2dPrototype;
 import com.gemserk.prototypes.algorithms.PixmapConvexHull2dPrototype;
 import com.gemserk.prototypes.artemis.sprites.SpriteUpdateSystemPerformanceTest;
 import com.gemserk.prototypes.box2d.frustum.FrustumCullingPrototype;
+import com.gemserk.prototypes.camera.CameraParallaxPrototype;
 import com.gemserk.prototypes.fonts.RenderScaledFontsTest;
 import com.gemserk.prototypes.gdx.particles.ScaleParticleEmitterTest;
 import com.gemserk.prototypes.gdx.particles.SnowParticleEmitterTest;
@@ -78,6 +79,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			put("Internet.FacebookTest", new FacebookTest());
 			put("Polygons.ConvexHull2dPrototype", new ConvexHull2dPrototype());
 			put("Polygons.PixmapConvexHull2dPrototype", new PixmapConvexHull2dPrototype());
+			put("Camera.CameraParallaxPrototype", new CameraParallaxPrototype());
 //			put("Commons.CameraFrustumCullingPrototype", new CameraFrustumCullingPrototype());
 		}
 	};
