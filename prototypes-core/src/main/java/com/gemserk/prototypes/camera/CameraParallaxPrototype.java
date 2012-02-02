@@ -78,12 +78,38 @@ public class CameraParallaxPrototype extends GameStateImpl {
 		
 		backgroundSprite.setPosition(0f, 0f);
 		secondBackgroundSpriteTile1.setPosition(0f, 0f);
-		secondBackgroundSpriteTile2.setPosition(800f, 0f);
+		secondBackgroundSpriteTile2.setPosition(800f, 50f);
+		characterSprite.setPosition(100f, 140f);
 	}
 
 	@Override
 	public void update() {
 		super.update();
+		
+		float x = characterSprite.getX();
+		float y = characterSprite.getY();
+		
+		float velocity = 400f * Gdx.graphics.getDeltaTime();
+		characterSprite.setPosition(x + velocity, y);
+		
+		worldCamera.position.set(characterSprite.getX() + Gdx.graphics.getWidth() * 0.35f, characterSprite.getY() + Gdx.graphics.getHeight() * 0.25f, 0f);
+		worldCamera.update();
+		
+		secondBackgroundCamera.position.set(characterSprite.getX() * 0.25f + Gdx.graphics.getWidth() * 0.35f, Gdx.graphics.getHeight() * 0.5f, 0f);
+		secondBackgroundCamera.update();
+		
+		// check if the second background tiles are behind, then move them forward .... 
+		// I am using -400f because the viewport is 800 and the camera is centered....
+		if (secondBackgroundSpriteTile1.getX() + secondBackgroundSpriteTile1.getWidth() < secondBackgroundCamera.position.x - 400f) {
+			// 1600 because there are two tiles
+			secondBackgroundSpriteTile1.setX(secondBackgroundSpriteTile1.getX() + 1600f);
+		}
+		
+		if (secondBackgroundSpriteTile2.getX() + secondBackgroundSpriteTile2.getWidth() < secondBackgroundCamera.position.x - 400f) {
+			// 1600 because there are two tiles
+			secondBackgroundSpriteTile2.setX(secondBackgroundSpriteTile2.getX() + 1600f);
+		}
+		
 	}
 
 	@Override
@@ -109,6 +135,7 @@ public class CameraParallaxPrototype extends GameStateImpl {
 		spriteBatch.setTransformMatrix(worldCamera.view);
 		spriteBatch.setProjectionMatrix(worldCamera.projection);
 		spriteBatch.begin();
+		characterSprite.draw(spriteBatch);
 		spriteBatch.end();
 
 	}
