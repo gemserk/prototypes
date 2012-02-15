@@ -51,7 +51,7 @@ public class DesktopApplication {
 		arguments.parse(argv);
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		
+
 		Utils.mailUtils = new MailUtilsDesktopImpl();
 		Utils.facebookUtils = new FacebookUtilsDesktopImpl(new BrowserUtilsDesktopImpl());
 		Utils.browserUtils = new BrowserUtilsDesktopImpl();
@@ -64,16 +64,27 @@ public class DesktopApplication {
 		config.useCPUSynch = true;
 		config.forceExit = true;
 		config.vSyncEnabled = true;
-		
+
 		Injector injector = new InjectorImpl();
-		
+
 		UserDataRegistrator userDataRegistrator = new UserDataRegistrator() {
+
+			RegisterUserJFrame registerUserJFrame = new RegisterUserJFrame();
+
 			@Override
-			public void requestUserData(RequestUserDataListener requestUserDataListener) {
-				requestUserDataListener.cancelled();
+			public void requestUserData(final RequestUserDataListener requestUserDataListener) {
+				registerUserJFrame.handle(requestUserDataListener);
+				// registerUserJFrame.getCancelButton().addActionListener(new ActionListener() {
+				// @Override
+				// public void actionPerformed(ActionEvent e) {
+				// requestUserDataListener.cancelled();
+				// registerUserJFrame.setVisible(false);
+				// }
+				// });
+				// registerUserJFrame.setVisible(true);
 			}
 		};
-		
+
 		injector.bind("userDataRegistrator", userDataRegistrator);
 
 		// Game game = new LightingPrototype();
@@ -81,9 +92,9 @@ public class DesktopApplication {
 		// Game game = new PixmapCollisionPrototype();
 
 		// Game game = new com.gemserk.prototypes.launcher.Launcher();
-		
+
 		ApplicationListener game = new Launcher();
-		
+
 		injector.injectMembers(game);
 
 		// boolean runningInDebug = System.getProperty("runningInDebug") != null;
