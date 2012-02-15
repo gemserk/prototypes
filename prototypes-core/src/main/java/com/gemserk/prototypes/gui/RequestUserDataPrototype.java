@@ -41,9 +41,9 @@ public class RequestUserDataPrototype extends GameStateImpl {
 				
 				@Override
 				public void accepted(String username, String name, String password) {
-					System.out.println("accepted!");
+					System.out.println("accepted! " + username + ", " + name + ", " + password);
 				}
-			});
+			}, "player779123", "player779123");
 		}
 		
 	}

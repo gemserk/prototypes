@@ -69,7 +69,8 @@ public class RegisterUserJFrame extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				RegisterUserJFrame.this.setVisible(false);
-				requestUserDataListener.accepted(null, null, null);
+				requestUserDataListener.accepted(usernameTextField.getText(), 
+						nameTextField.getText(), new String(passwordTextField.getPassword()));
 			}
 		});
 		
@@ -112,10 +113,13 @@ public class RegisterUserJFrame extends JDialog {
 		panel_1.add(passwordTextField);
 	}
 
-	public void handle(RequestUserDataListener requestUserDataListener) {
+	public void handle(RequestUserDataListener requestUserDataListener, String defaultUsername, String defaultName) {
 		if (this.isVisible())
 			return;
 		this.requestUserDataListener = requestUserDataListener;
+		this.usernameTextField.setText(defaultUsername);
+		this.nameTextField.setText(defaultName);
+		this.passwordTextField.setText("");
 		this.setVisible(true);
 	}
 }

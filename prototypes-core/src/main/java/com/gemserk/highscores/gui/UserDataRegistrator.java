@@ -10,6 +10,6 @@ public interface UserDataRegistrator {
 		
 	}
 	
-	void requestUserData(RequestUserDataListener requestUserDataListener);
+	void requestUserData(RequestUserDataListener requestUserDataListener, String currentUsername, String currentName);
 
 }

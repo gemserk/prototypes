@@ -68,20 +68,10 @@ public class DesktopApplication {
 		Injector injector = new InjectorImpl();
 
 		UserDataRegistrator userDataRegistrator = new UserDataRegistrator() {
-
 			RegisterUserJFrame registerUserJFrame = new RegisterUserJFrame();
-
 			@Override
-			public void requestUserData(final RequestUserDataListener requestUserDataListener) {
-				registerUserJFrame.handle(requestUserDataListener);
-				// registerUserJFrame.getCancelButton().addActionListener(new ActionListener() {
-				// @Override
-				// public void actionPerformed(ActionEvent e) {
-				// requestUserDataListener.cancelled();
-				// registerUserJFrame.setVisible(false);
-				// }
-				// });
-				// registerUserJFrame.setVisible(true);
+			public void requestUserData(RequestUserDataListener requestUserDataListener, String currentUsername, String currentName) {
+				registerUserJFrame.handle(requestUserDataListener, currentUsername, currentName);				
 			}
 		};
 
