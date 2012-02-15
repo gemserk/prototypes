@@ -29,7 +29,6 @@ import com.gemserk.commons.gdx.GameStateDelegateFixedTimestepImpl;
 import com.gemserk.commons.gdx.GameStateDelegateWithInternalStateImpl;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.reflection.Injector;
-import com.gemserk.commons.reflection.InjectorImpl;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.prototypes.algorithms.ConvexHull2dPrototype;
@@ -42,6 +41,7 @@ import com.gemserk.prototypes.gdx.particles.ScaleParticleEmitterTest;
 import com.gemserk.prototypes.gdx.particles.SnowParticleEmitterTest;
 import com.gemserk.prototypes.gui.DialogHideShowPrototype;
 import com.gemserk.prototypes.gui.FocusedControlPrototype;
+import com.gemserk.prototypes.gui.RequestUserDataPrototype;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype2;
 import com.gemserk.prototypes.mail.FacebookTest;
@@ -68,6 +68,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			put("PixmapToTextureBorderTest", new PixmapToTexturePrototype());
 			put("Gui.DialogHideShowPrototype", new DialogHideShowPrototype());
 			put("Gui.FocusedControlPrototype", new FocusedControlPrototype());
+			put("Gui.RequestUserDataPrototype", new RequestUserDataPrototype());
 			put("FrustumCullingPrototype", new FrustumCullingPrototype());
 			put("Artemis.SpriteUpdateSystemPerformanceTest", new SpriteUpdateSystemPerformanceTest());
 //			put("Artemis.UiPrototype", new ArtemisUiPrototype());
@@ -83,6 +84,8 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 //			put("Commons.CameraFrustumCullingPrototype", new CameraFrustumCullingPrototype());
 		}
 	};
+	
+	Injector injector;
 
 	private static GameState delegate(GameState gameState) {
 		return new GameStateDelegateWithInternalStateImpl(new GameStateDelegateFixedTimestepImpl(gameState));
@@ -94,6 +97,8 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 		private GL10 gl;
 
 		Launcher launcher;
+		
+		Injector injector;
 
 		@Override
 		public void init() {
@@ -146,7 +151,9 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 				@Override
 				public void click(Actor arg0, float arg1, float arg2) {
 					String selection = list.getSelection();
-					GameState gameState = delegate(gameStates.get(selection));
+					GameState sourceGameState = gameStates.get(selection);
+					injector.injectMembers(sourceGameState);
+					GameState gameState = delegate(sourceGameState);
 					if (gameState != null) {
 						launcher.setGameState(gameState, false);
 						launcher.currentGameState = gameState;
@@ -214,12 +221,14 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 		bitmapFont = new BitmapFont();
 
-		Injector injector = new InjectorImpl();
+		Injector injector = this.injector.createChildInjector();
 
 		injector.bind("launcher", this);
 
 		launcherGameState = delegate(injector.getInstance(LauncherGameState.class));
 		currentGameState = launcherGameState;
+		
+		injector.injectMembers(launcherGameState);
 
 		setGameState(launcherGameState);
 

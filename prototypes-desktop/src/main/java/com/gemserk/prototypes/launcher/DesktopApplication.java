@@ -6,9 +6,12 @@ import org.slf4j.LoggerFactory;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.gemserk.commons.reflection.Injector;
+import com.gemserk.commons.reflection.InjectorImpl;
 import com.gemserk.commons.utils.BrowserUtilsDesktopImpl;
 import com.gemserk.commons.utils.FacebookUtilsDesktopImpl;
 import com.gemserk.commons.utils.MailUtilsDesktopImpl;
+import com.gemserk.highscores.gui.UserDataRegistrator;
 import com.gemserk.prototypes.Launcher;
 import com.gemserk.prototypes.Utils;
 
@@ -61,13 +64,27 @@ public class DesktopApplication {
 		config.useCPUSynch = true;
 		config.forceExit = true;
 		config.vSyncEnabled = true;
+		
+		Injector injector = new InjectorImpl();
+		
+		UserDataRegistrator userDataRegistrator = new UserDataRegistrator() {
+			@Override
+			public void requestUserData(RequestUserDataListener requestUserDataListener) {
+				requestUserDataListener.cancelled();
+			}
+		};
+		
+		injector.bind("userDataRegistrator", userDataRegistrator);
 
 		// Game game = new LightingPrototype();
 		// Game game = new PixmapFromTextureAtlasPrototype();
 		// Game game = new PixmapCollisionPrototype();
 
-//		Game game = new com.gemserk.prototypes.launcher.Launcher();
+		// Game game = new com.gemserk.prototypes.launcher.Launcher();
+		
 		ApplicationListener game = new Launcher();
+		
+		injector.injectMembers(game);
 
 		// boolean runningInDebug = System.getProperty("runningInDebug") != null;
 

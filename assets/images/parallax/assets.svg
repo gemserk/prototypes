@@ -15,7 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.2 r9819"
-   sodipodi:docname="assets.svg">
+   sodipodi:docname="assets.svg"
+   inkscape:export-filename="/home/acoppes/workspace/prototypes/prototypes-desktop/src/main/resources/parallax/background2.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4">
     <linearGradient
@@ -49,7 +52,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
      inkscape:cx="449.80321"
-     inkscape:cy="269.01104"
+     inkscape:cy="382.14286"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
      showgrid="false"
@@ -82,7 +85,10 @@
        width="800"
        height="480"
        x="0"
-       y="572.36218" />
+       y="572.36218"
+       inkscape:export-filename="/home/acoppes/workspace/prototypes/prototypes-desktop/src/main/resources/parallax/background.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -633,9 +639,13 @@
   <g
      inkscape:groupmode="layer"
      id="layer3"
-     inkscape:label="elements">
+     inkscape:label="elements"
+     style="display:inline">
     <g
-       id="g4393">
+       id="g4393"
+       inkscape:export-filename="/home/acoppes/workspace/prototypes/prototypes-desktop/src/main/resources/parallax/character.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <path
          style="fill:#0000ff;fill-opacity:1;stroke:none"
          d="m 134.35028,335.54819 58.08377,-0.77926 -35.86041,-17.40349 -73.236054,0.51951 41.921324,9.09137 z"
