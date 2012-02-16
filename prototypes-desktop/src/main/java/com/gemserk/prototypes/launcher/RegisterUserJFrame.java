@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.gemserk.highscores.client.User;
-import com.gemserk.highscores.gui.RequestUserListener;
+import com.gemserk.highscores.gui.RegisterUserListener;
 
 public class RegisterUserJFrame extends JDialog {
 
@@ -31,10 +31,10 @@ public class RegisterUserJFrame extends JDialog {
 	private JButton submitButton;
 	private JButton cancelButton;
 	
-	RequestUserListener requestUserListener;
+	RegisterUserListener registerUserListener;
 	
-	public void setRequestUserDataListener(RequestUserListener requestUserListener) {
-		this.requestUserListener = requestUserListener;
+	public void setRequestUserDataListener(RegisterUserListener registerUserListener) {
+		this.registerUserListener = registerUserListener;
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class RegisterUserJFrame extends JDialog {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				requestUserListener.cancelled();
+				registerUserListener.cancelled();
 			}
 		});
 		
@@ -71,7 +71,7 @@ public class RegisterUserJFrame extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				RegisterUserJFrame.this.setVisible(false);
 				User user = new User(usernameTextField.getText(), nameTextField.getText(), new String(passwordTextField.getPassword()), false);
-				requestUserListener.accepted(user);
+				registerUserListener.accepted(user);
 			}
 		});
 		
@@ -82,7 +82,7 @@ public class RegisterUserJFrame extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				RegisterUserJFrame.this.setVisible(false);
-				requestUserListener.cancelled();
+				registerUserListener.cancelled();
 			}
 		});
 		
@@ -114,10 +114,10 @@ public class RegisterUserJFrame extends JDialog {
 		panel_1.add(passwordTextField);
 	}
 
-	public void handle(RequestUserListener requestUserListener, String defaultUsername, String defaultName) {
+	public void handle(RegisterUserListener registerUserListener, String defaultUsername, String defaultName) {
 		if (this.isVisible())
 			return;
-		this.requestUserListener = requestUserListener;
+		this.registerUserListener = registerUserListener;
 		this.usernameTextField.setText(defaultUsername);
 		this.nameTextField.setText(defaultName);
 		this.passwordTextField.setText("");

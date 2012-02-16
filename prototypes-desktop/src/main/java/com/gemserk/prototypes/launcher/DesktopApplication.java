@@ -11,7 +11,7 @@ import com.gemserk.commons.reflection.InjectorImpl;
 import com.gemserk.commons.utils.BrowserUtilsDesktopImpl;
 import com.gemserk.commons.utils.FacebookUtilsDesktopImpl;
 import com.gemserk.commons.utils.MailUtilsDesktopImpl;
-import com.gemserk.highscores.gui.RequestUserListener;
+import com.gemserk.highscores.gui.RegisterUserListener;
 import com.gemserk.highscores.gui.UserDataRegistrator;
 import com.gemserk.prototypes.Launcher;
 import com.gemserk.prototypes.Utils;
@@ -71,8 +71,8 @@ public class DesktopApplication {
 		UserDataRegistrator userDataRegistrator = new UserDataRegistrator() {
 			RegisterUserJFrame registerUserJFrame = new RegisterUserJFrame();
 			@Override
-			public void requestUserData(RequestUserListener requestUserListener, String currentUsername, String currentName) {
-				registerUserJFrame.handle(requestUserListener, currentUsername, currentName);				
+			public void requestUserData(RegisterUserListener registerUserListener, String currentUsername, String currentName) {
+				registerUserJFrame.handle(registerUserListener, currentUsername, currentName);				
 			}
 		};
 

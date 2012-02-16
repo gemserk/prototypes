@@ -6,7 +6,7 @@ import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.highscores.client.User;
-import com.gemserk.highscores.gui.RequestUserListener;
+import com.gemserk.highscores.gui.RegisterUserListener;
 import com.gemserk.highscores.gui.UserDataRegistrator;
 
 public class RequestUserDataPrototype extends GameStateImpl {
@@ -35,7 +35,7 @@ public class RequestUserDataPrototype extends GameStateImpl {
 		inputDevicesMonitor.update();
 		
 		if (inputDevicesMonitor.getButton("touch").isReleased()) {
-			userDataRegistrator.requestUserData(new RequestUserListener() {
+			userDataRegistrator.requestUserData(new RegisterUserListener() {
 				@Override
 				public void cancelled() {
 					System.out.println("cancelled");
