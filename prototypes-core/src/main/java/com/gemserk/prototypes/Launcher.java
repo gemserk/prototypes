@@ -255,6 +255,12 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 	// this.currentGameState = gameState;
 	// return new TransitionBuilder(this, new ScreenImpl(gameState));
 	// }
+	
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+		System.out.println("resize!!");
+	}
 
 	@Override
 	public void render() {

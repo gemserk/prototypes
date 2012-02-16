@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,12 +19,39 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.tablelayout.Table;
+import com.gemserk.animation4j.converters.TypeConverter;
+import com.gemserk.animation4j.interpolator.function.InterpolationFunctions;
+import com.gemserk.animation4j.transitions.Transition;
+import com.gemserk.animation4j.transitions.Transitions;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.highscores.client.User;
 import com.gemserk.highscores.gui.RequestUserListener;
 import com.gemserk.prototypes.Launcher;
 
 public class RequestUserDataUsingScenePrototype extends GameStateImpl {
+
+	public static class ActorPositionTypeConverter implements TypeConverter<Actor> {
+		@Override
+		public int variables() {
+			return 2;
+		}
+
+		@Override
+		public float[] copyFromObject(Actor object, float[] x) {
+			if (x == null)
+				x = new float[variables()];
+			x[0] = object.x;
+			x[1] = object.y;
+			return x;
+		}
+
+		@Override
+		public Actor copyToObject(Actor object, float[] x) {
+			object.x = x[0];
+			object.y = x[1];
+			return object;
+		}
+	}
 
 	private class RegisterUserAction extends Action {
 
@@ -70,7 +96,7 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 				passwordErrorLabel.setColor(1f, 0f, 0f, 1f);
 
 				usernameErrorLabel.setText("Error: username already used");
-				
+
 				requestUserListener.accepted(new User("a", "b", "c", false));
 			}
 
@@ -82,8 +108,6 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 	private GL10 gl;
 
 	private Stage stage;
-
-	private SpriteBatch spriteBatch;
 
 	private Window window;
 
@@ -117,9 +141,29 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 		}
 	};
 
-	private Label nameErrorLabel;
+	// class TestKeyboard extends DefaultOnscreenKeyboard {
+	//
+	// private boolean visible;
+	//
+	// @Override
+	// public void show(boolean visible) {
+	// this.visible = visible;
+	// super.show(visible);
+	// System.out.println(visible);
+	// }
+	//
+	// public boolean isVisible() {
+	// return this.visible;
+	// }
+	// }
+	//
+	// TestKeyboard testKeyboard = new TestKeyboard();
+
+	Label nameErrorLabel;
 
 	private RequestUserListener requestUserListener;
+
+	FlickScrollPane scrollPane;
 
 	@Override
 	public void init() {
@@ -163,21 +207,25 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 
 		usernameTextField = new CustomTextField("", textFieldStyle);
 		usernameTextField.setTextFieldFilter(usernameTextFieldFilter);
+		// usernameTextField.setOnscreenKeyboard(testKeyboard);
 
 		usernameErrorLabel = new Label(skin);
 		usernameErrorLabel.setColor(1f, 0f, 0f, 1f);
 
 		nameTextField = new CustomTextField("", textFieldStyle);
 		nameTextField.setTextFieldFilter(nameTextFieldFilter);
+		// nameTextField.setOnscreenKeyboard(testKeyboard);
 
 		nameErrorLabel = new Label(skin);
 		nameErrorLabel.setColor(1f, 0f, 0f, 1f);
 
 		passwordTextField = new CustomTextField("", textFieldStyle);
 		passwordTextField.setPasswordMode(true);
+		// passwordTextField.setOnscreenKeyboard(testKeyboard);
 
 		confirmPasswordTextField = new CustomTextField("", textFieldStyle);
 		confirmPasswordTextField.setPasswordMode(true);
+		// confirmPasswordTextField.setOnscreenKeyboard(testKeyboard);
 
 		passwordErrorLabel = new Label(skin);
 		passwordErrorLabel.setColor(1f, 0f, 0f, 1f);
@@ -193,6 +241,8 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 				usernameErrorLabel.setText("");
 				passwordErrorLabel.setText("");
 				nameErrorLabel.setText("");
+				
+				Actor lastErrorActor = null;
 
 				String username = usernameTextField.getText();
 				String name = nameTextField.getText();
@@ -201,25 +251,32 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 
 				if (username.trim().length() == 0) {
 					usernameErrorLabel.setText("Error: username can't be empty");
+					lastErrorActor = usernameTextField;
 					localError = true;
 				}
 
 				if (name.trim().length() == 0) {
 					nameErrorLabel.setText("Error: name can't be empty");
+					lastErrorActor = nameTextField;
 					localError = true;
 				}
 
 				if (password.trim().length() < 4) {
 					passwordErrorLabel.setText("Error: passwords must have 4 or more characters");
+					lastErrorActor = passwordTextField;
 					localError = true;
 				} else if (!password.equals(confirmPassword)) {
 					passwordErrorLabel.setText("Error: passwords don't match");
+					lastErrorActor = confirmPasswordTextField;
 					localError = true;
 				}
+				
+				if (lastErrorActor != null)
+					stage.setKeyboardFocus(lastErrorActor);
 
 				// validate user with server...
 
-				if (!localError) 
+				if (!localError)
 					window.action(new RegisterUserAction());
 			}
 		});
@@ -260,7 +317,7 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 		window.add(submitButton).align(Align.CENTER).fill(0.5f, 0f);
 		window.add(cancelButton).align(Align.CENTER).fill(0.5f, 0f);
 
-		FlickScrollPane scrollPane = new FlickScrollPane(window);
+		scrollPane = new FlickScrollPane(window);
 
 		scrollPane.width = Gdx.graphics.getWidth() * 0.95f;
 		scrollPane.height = Gdx.graphics.getHeight() * 0.95f;
@@ -274,13 +331,62 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 
 		Gdx.graphics.getGL10().glClearColor(0, 0, 0, 1);
 
-		spriteBatch = new SpriteBatch();
 	}
+
+	Transition scrollPanePositionTransition;
 
 	@Override
 	public void update() {
 		super.update();
 		stage.act(getDelta());
+
+		if (scrollPanePositionTransition != null) {
+			scrollPanePositionTransition.update(getDelta());
+			if (scrollPanePositionTransition.isFinished())
+				scrollPanePositionTransition = null;
+			return;
+		}
+		
+		Actor focusedActor = stage.getKeyboardFocus();
+		
+		if (focusedActor == null) {
+			
+			scrollPanePositionTransition = Transitions.transition(scrollPane, new ActorPositionTypeConverter()) //
+					.end(0.25f, scrollPane.x, Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f) //
+					.functions(InterpolationFunctions.linear(), InterpolationFunctions.easeIn())
+					.build();
+			
+			return;
+		}
+
+		float desiredY = Gdx.graphics.getHeight() * 0.75f;
+
+		if (focusedActor.y < desiredY) {
+			float diff = Math.abs(desiredY - focusedActor.y);
+			// scrollPane.y = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f + diff;
+
+			float finalY = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f + diff + 1;
+
+			scrollPanePositionTransition = Transitions.transition(scrollPane, new ActorPositionTypeConverter()) //
+					.end(0.25f, scrollPane.x, finalY) //
+					.functions(InterpolationFunctions.linear(), InterpolationFunctions.easeIn())
+					.build();
+
+		} else {
+			// scrollPane.y = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f;
+			
+			float finalY = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f;
+
+			scrollPanePositionTransition = Transitions.transition(scrollPane, new ActorPositionTypeConverter()) //
+					.end(0.25f, scrollPane.x, finalY) //
+					.functions(InterpolationFunctions.linear(), InterpolationFunctions.easeIn())
+					.build();
+
+		}
+
+		// if (!testKeyboard.isVisible())
+		// return;
+
 	}
 
 	@Override
@@ -302,7 +408,6 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 
 	@Override
 	public void dispose() {
-		spriteBatch.dispose();
 		super.dispose();
 	}
 

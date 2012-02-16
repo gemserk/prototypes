@@ -440,13 +440,18 @@ public class CustomTextField extends Widget {
 
 	/** Focuses the next TextField. If none is found, the keyboard is hidden. Does nothing if the text field is not in a stage.
 	 * @param up If true, the TextField with the same or next smallest y coordinate is found, else the next highest. */
-	public void next (boolean up) {
-		if (stage == null) return;
+	public void next(boolean up) {
+		if (stage == null)
+			return;
 		CustomTextField customTextField = findNextTextField(stage.getActors(), null, up);
-		if (customTextField != null)
+		if (customTextField != null) {
 			stage.setKeyboardFocus(customTextField);
-		else
-			Gdx.input.setOnscreenKeyboardVisible(false);
+		} else {
+			this.getOnscreenKeyboard().show(false);
+			stage.unfocus(this);
+		}
+
+		// Gdx.input.setOnscreenKeyboardVisible(false);
 	}
 
 	private CustomTextField findNextTextField (List<Actor> actors, CustomTextField best, boolean up) {
