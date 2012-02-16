@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.tablelayout.Table;
-import com.gemserk.animation4j.converters.TypeConverter;
+import com.gemserk.animation4j.gdx.scenes.scene2d.Scene2dConverters;
 import com.gemserk.animation4j.interpolator.function.InterpolationFunctions;
 import com.gemserk.animation4j.transitions.Transition;
 import com.gemserk.animation4j.transitions.Transitions;
@@ -30,26 +30,58 @@ import com.gemserk.prototypes.Launcher;
 
 public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 
-	public static class ActorPositionTypeConverter implements TypeConverter<Actor> {
+	class CancelButtonClickListener implements ClickListener {
 		@Override
-		public int variables() {
-			return 2;
+		public void click(Actor actor, float x, float y) {
+			requestUserListener.cancelled();
 		}
+	}
 
+	class SubmitButtonClickListener implements ClickListener {
 		@Override
-		public float[] copyFromObject(Actor object, float[] x) {
-			if (x == null)
-				x = new float[variables()];
-			x[0] = object.x;
-			x[1] = object.y;
-			return x;
-		}
+		public void click(Actor actor, float x, float y) {
+			boolean localError = false;
 
-		@Override
-		public Actor copyToObject(Actor object, float[] x) {
-			object.x = x[0];
-			object.y = x[1];
-			return object;
+			usernameErrorLabel.setText("");
+			passwordErrorLabel.setText("");
+			nameErrorLabel.setText("");
+			
+			Actor lastErrorActor = null;
+
+			String username = usernameTextField.getText();
+			String name = nameTextField.getText();
+			String password = passwordTextField.getText();
+			String confirmPassword = confirmPasswordTextField.getText();
+
+			if (username.trim().length() == 0) {
+				usernameErrorLabel.setText("Error: username can't be empty");
+				lastErrorActor = usernameTextField;
+				localError = true;
+			}
+
+			if (name.trim().length() == 0) {
+				nameErrorLabel.setText("Error: name can't be empty");
+				lastErrorActor = nameTextField;
+				localError = true;
+			}
+
+			if (password.trim().length() < 4) {
+				passwordErrorLabel.setText("Error: passwords must have 4 or more characters");
+				lastErrorActor = passwordTextField;
+				localError = true;
+			} else if (!password.equals(confirmPassword)) {
+				passwordErrorLabel.setText("Error: passwords don't match");
+				lastErrorActor = confirmPasswordTextField;
+				localError = true;
+			}
+			
+			if (lastErrorActor != null)
+				stage.setKeyboardFocus(lastErrorActor);
+
+			// validate user with server...
+
+			if (!localError)
+				window.action(new RegisterUserAction());
 		}
 	}
 
@@ -128,6 +160,8 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 
 		@Override
 		public boolean acceptChar(CustomTextField customTextField, char key) {
+			if (key == '\t')
+				return true;
 			if (!Pattern.matches(rexexp, Character.toString(key)))
 				return false;
 			return customTextField.getText().length() < 15;
@@ -141,29 +175,11 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 		}
 	};
 
-	// class TestKeyboard extends DefaultOnscreenKeyboard {
-	//
-	// private boolean visible;
-	//
-	// @Override
-	// public void show(boolean visible) {
-	// this.visible = visible;
-	// super.show(visible);
-	// System.out.println(visible);
-	// }
-	//
-	// public boolean isVisible() {
-	// return this.visible;
-	// }
-	// }
-	//
-	// TestKeyboard testKeyboard = new TestKeyboard();
-
 	Label nameErrorLabel;
 
-	private RequestUserListener requestUserListener;
-
 	FlickScrollPane scrollPane;
+	
+	private RequestUserListener requestUserListener;
 
 	@Override
 	public void init() {
@@ -171,13 +187,7 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 		Gdx.graphics.getGL10().glClearColor(0f, 0f, 0f, 1f);
 
 		Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"), Gdx.files.internal("data/ui/uiskin.png"));
-
-		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-
-		window = new Window("Register user", skin.getStyle(WindowStyle.class), "window");
-
-		window.setMovable(false);
-
+		
 		requestUserListener = new RequestUserListener() {
 
 			@Override
@@ -202,6 +212,12 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 				});
 			}
 		};
+
+		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+
+		window = new Window("Register user", skin.getStyle(WindowStyle.class), "window");
+
+		window.setMovable(false);
 
 		TextFieldStyle textFieldStyle = skin.getStyle(TextFieldStyle.class);
 
@@ -233,60 +249,8 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 		submitButton = new TextButton("Submit", skin);
 		cancelButton = new TextButton("Cancel", skin);
 
-		submitButton.setClickListener(new ClickListener() {
-			@Override
-			public void click(Actor actor, float x, float y) {
-				boolean localError = false;
-
-				usernameErrorLabel.setText("");
-				passwordErrorLabel.setText("");
-				nameErrorLabel.setText("");
-				
-				Actor lastErrorActor = null;
-
-				String username = usernameTextField.getText();
-				String name = nameTextField.getText();
-				String password = passwordTextField.getText();
-				String confirmPassword = confirmPasswordTextField.getText();
-
-				if (username.trim().length() == 0) {
-					usernameErrorLabel.setText("Error: username can't be empty");
-					lastErrorActor = usernameTextField;
-					localError = true;
-				}
-
-				if (name.trim().length() == 0) {
-					nameErrorLabel.setText("Error: name can't be empty");
-					lastErrorActor = nameTextField;
-					localError = true;
-				}
-
-				if (password.trim().length() < 4) {
-					passwordErrorLabel.setText("Error: passwords must have 4 or more characters");
-					lastErrorActor = passwordTextField;
-					localError = true;
-				} else if (!password.equals(confirmPassword)) {
-					passwordErrorLabel.setText("Error: passwords don't match");
-					lastErrorActor = confirmPasswordTextField;
-					localError = true;
-				}
-				
-				if (lastErrorActor != null)
-					stage.setKeyboardFocus(lastErrorActor);
-
-				// validate user with server...
-
-				if (!localError)
-					window.action(new RegisterUserAction());
-			}
-		});
-
-		cancelButton.setClickListener(new ClickListener() {
-			@Override
-			public void click(Actor actor, float x, float y) {
-				requestUserListener.cancelled();
-			}
-		});
+		submitButton.setClickListener(new SubmitButtonClickListener());
+		cancelButton.setClickListener(new CancelButtonClickListener());
 
 		window.defaults().spaceBottom(10);
 
@@ -321,8 +285,8 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 
 		scrollPane.width = Gdx.graphics.getWidth() * 0.95f;
 		scrollPane.height = Gdx.graphics.getHeight() * 0.95f;
-		scrollPane.x = Gdx.graphics.getWidth() * 0.5f - window.width * 0.5f;
-		scrollPane.y = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f;
+		scrollPane.x = Gdx.graphics.getWidth() * 0.5f - scrollPane.width * 0.5f;
+		scrollPane.y = Gdx.graphics.getHeight() * 0.5f - scrollPane.height * 0.5f;
 
 		// stage.addActor(window);
 		stage.addActor(scrollPane);
@@ -330,7 +294,8 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 		Gdx.input.setInputProcessor(stage);
 
 		Gdx.graphics.getGL10().glClearColor(0, 0, 0, 1);
-
+		
+		
 	}
 
 	Transition scrollPanePositionTransition;
@@ -351,8 +316,8 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 		
 		if (focusedActor == null) {
 			
-			scrollPanePositionTransition = Transitions.transition(scrollPane, new ActorPositionTypeConverter()) //
-					.end(0.25f, scrollPane.x, Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f) //
+			scrollPanePositionTransition = Transitions.transition(scrollPane, Scene2dConverters.actorPositionTypeConverter) //
+					.end(0.25f, scrollPane.x, Gdx.graphics.getHeight() * 0.5f - scrollPane.height * 0.5f) //
 					.functions(InterpolationFunctions.linear(), InterpolationFunctions.easeIn())
 					.build();
 			
@@ -363,29 +328,29 @@ public class RequestUserDataUsingScenePrototype extends GameStateImpl {
 
 		if (focusedActor.y < desiredY) {
 			float diff = Math.abs(desiredY - focusedActor.y);
-			// scrollPane.y = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f + diff;
 
-			float finalY = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f + diff + 1;
+			float finalY = Gdx.graphics.getHeight() * 0.5f - scrollPane.height * 0.5f + diff + 1;
 
-			scrollPanePositionTransition = Transitions.transition(scrollPane, new ActorPositionTypeConverter()) //
+			if (finalY == scrollPane.y)
+				return;
+
+			scrollPanePositionTransition = Transitions.transition(scrollPane, Scene2dConverters.actorPositionTypeConverter) //
 					.end(0.25f, scrollPane.x, finalY) //
 					.functions(InterpolationFunctions.linear(), InterpolationFunctions.easeIn())
 					.build();
 
 		} else {
-			// scrollPane.y = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f;
+			float finalY = Gdx.graphics.getHeight() * 0.5f - scrollPane.height * 0.5f;
 			
-			float finalY = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f;
+			if (finalY == scrollPane.y)
+				return;
 
-			scrollPanePositionTransition = Transitions.transition(scrollPane, new ActorPositionTypeConverter()) //
+			scrollPanePositionTransition = Transitions.transition(scrollPane, Scene2dConverters.actorPositionTypeConverter) //
 					.end(0.25f, scrollPane.x, finalY) //
 					.functions(InterpolationFunctions.linear(), InterpolationFunctions.easeIn())
 					.build();
 
 		}
-
-		// if (!testKeyboard.isVisible())
-		// return;
 
 	}
 
