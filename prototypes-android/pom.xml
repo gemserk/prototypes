@@ -44,14 +44,14 @@
 			<plugin>
 				<groupId>com.googlecode.mavennatives</groupId>
 				<artifactId>maven-nativedependencies-plugin</artifactId>
-				<version>0.0.5</version>
+				<version>0.0.6</version>
 				<configuration>
 					<nativesTargetDir>libs</nativesTargetDir>
 					<separateDirs>true</separateDirs>
 				</configuration>
 				<executions>
 					<execution>
-						<phase>package</phase>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>copy</goal>
 						</goals>
