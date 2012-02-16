@@ -29,6 +29,8 @@ import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 
 public class Launcher extends com.gemserk.commons.gdx.Game {
 
+	public static boolean processGlobalInput = true;
+
 	public static class LauncherGameState extends GameStateImpl {
 
 		private GL10 gl;
@@ -52,7 +54,7 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 			String[] items = new String[gameStates.keySet().size()];
 
 			gameStates.keySet().toArray(items);
-			
+
 			Arrays.sort(items);
 
 			comboBox = new JComboBox(items);
@@ -71,11 +73,10 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 					});
 				}
 			});
-			
+
 			screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 			screen.invalidate();
-
 
 			Gdx.graphics.getGL10().glClearColor(0, 0, 0, 1);
 		}
@@ -155,24 +156,28 @@ public class Launcher extends com.gemserk.commons.gdx.Game {
 		super.render();
 		inputDevicesMonitor.update();
 
-		if (inputDevicesMonitor.getButton("restart").isReleased()) {
-			System.out.println("restarting");
-			getScreen().restart();
-		}
-
-		if (inputDevicesMonitor.getButton("back").isReleased()) {
-			if (currentGameState != launcherGameState) {
-
-				currentGameState.dispose();
-				transition(launcherGameState);
-
-				// transition(launcherGameState).disposeCurrent() //
-				// .restartScreen() //
-				// .start();
-
-			} else {
-				Gdx.app.exit();
+		if (processGlobalInput) {
+			
+			if (inputDevicesMonitor.getButton("restart").isReleased()) {
+				System.out.println("restarting");
+				getScreen().restart();
 			}
+
+			if (inputDevicesMonitor.getButton("back").isReleased()) {
+				if (currentGameState != launcherGameState) {
+
+					currentGameState.dispose();
+					transition(launcherGameState);
+
+					// transition(launcherGameState).disposeCurrent() //
+					// .restartScreen() //
+					// .start();
+
+				} else {
+					Gdx.app.exit();
+				}
+			}
+			
 		}
 
 		spriteBatch.begin();

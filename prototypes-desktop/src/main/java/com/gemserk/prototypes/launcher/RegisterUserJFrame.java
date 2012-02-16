@@ -16,7 +16,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import com.gemserk.highscores.gui.UserDataRegistrator.RequestUserDataListener;
+import com.gemserk.highscores.client.User;
+import com.gemserk.highscores.gui.RequestUserListener;
 
 public class RegisterUserJFrame extends JDialog {
 
@@ -30,10 +31,10 @@ public class RegisterUserJFrame extends JDialog {
 	private JButton submitButton;
 	private JButton cancelButton;
 	
-	RequestUserDataListener requestUserDataListener;
+	RequestUserListener requestUserListener;
 	
-	public void setRequestUserDataListener(RequestUserDataListener requestUserDataListener) {
-		this.requestUserDataListener = requestUserDataListener;
+	public void setRequestUserDataListener(RequestUserListener requestUserListener) {
+		this.requestUserListener = requestUserListener;
 	}
 
 	/**
@@ -48,7 +49,7 @@ public class RegisterUserJFrame extends JDialog {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				requestUserDataListener.cancelled();
+				requestUserListener.cancelled();
 			}
 		});
 		
@@ -69,8 +70,8 @@ public class RegisterUserJFrame extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				RegisterUserJFrame.this.setVisible(false);
-				requestUserDataListener.accepted(usernameTextField.getText(), 
-						nameTextField.getText(), new String(passwordTextField.getPassword()));
+				User user = new User(usernameTextField.getText(), nameTextField.getText(), new String(passwordTextField.getPassword()), false);
+				requestUserListener.accepted(user);
 			}
 		});
 		
@@ -81,7 +82,7 @@ public class RegisterUserJFrame extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				RegisterUserJFrame.this.setVisible(false);
-				requestUserDataListener.cancelled();
+				requestUserListener.cancelled();
 			}
 		});
 		
@@ -113,10 +114,10 @@ public class RegisterUserJFrame extends JDialog {
 		panel_1.add(passwordTextField);
 	}
 
-	public void handle(RequestUserDataListener requestUserDataListener, String defaultUsername, String defaultName) {
+	public void handle(RequestUserListener requestUserListener, String defaultUsername, String defaultName) {
 		if (this.isVisible())
 			return;
-		this.requestUserDataListener = requestUserDataListener;
+		this.requestUserListener = requestUserListener;
 		this.usernameTextField.setText(defaultUsername);
 		this.nameTextField.setText(defaultName);
 		this.passwordTextField.setText("");

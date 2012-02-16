@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.GL10;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
+import com.gemserk.highscores.client.User;
+import com.gemserk.highscores.gui.RequestUserListener;
 import com.gemserk.highscores.gui.UserDataRegistrator;
 
 public class RequestUserDataPrototype extends GameStateImpl {
@@ -33,15 +35,15 @@ public class RequestUserDataPrototype extends GameStateImpl {
 		inputDevicesMonitor.update();
 		
 		if (inputDevicesMonitor.getButton("touch").isReleased()) {
-			userDataRegistrator.requestUserData(new UserDataRegistrator.RequestUserDataListener() {
+			userDataRegistrator.requestUserData(new RequestUserListener() {
 				@Override
 				public void cancelled() {
 					System.out.println("cancelled");
 				}
 				
 				@Override
-				public void accepted(String username, String name, String password) {
-					System.out.println("accepted! " + username + ", " + name + ", " + password);
+				public void accepted(User user) {
+					System.out.println("accepted! " + user.getUsername() + ", " + user.getName()+ ", " + user.getPrivatekey());
 				}
 			}, "player779123", "player779123");
 		}

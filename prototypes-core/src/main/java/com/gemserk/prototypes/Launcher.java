@@ -57,6 +57,8 @@ import com.gemserk.prototypes.texture.DrawToTexturePrototype;
 
 public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
+	public static boolean processGlobalInput = true;
+
 	public static final Map<String, GameState> gameStates = new HashMap<String, GameState>() {
 		{
 			put("Lighting", new LightingPrototype());
@@ -73,7 +75,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			put("Gui.RequestUserDataUsingScenePrototype", new RequestUserDataUsingScenePrototype());
 			put("FrustumCullingPrototype", new FrustumCullingPrototype());
 			put("Artemis.SpriteUpdateSystemPerformanceTest", new SpriteUpdateSystemPerformanceTest());
-//			put("Artemis.UiPrototype", new ArtemisUiPrototype());
+			// put("Artemis.UiPrototype", new ArtemisUiPrototype());
 			put("Gdx.ScaleParticleEmitterTest", new ScaleParticleEmitterTest());
 			put("Gdx.SnowParticleEmitterTest", new SnowParticleEmitterTest());
 			put("Fonts.RenderScaledFontsTest", new RenderScaledFontsTest());
@@ -83,23 +85,23 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			put("Polygons.ConvexHull2dPrototype", new ConvexHull2dPrototype());
 			put("Polygons.PixmapConvexHull2dPrototype", new PixmapConvexHull2dPrototype());
 			put("Camera.CameraParallaxPrototype", new CameraParallaxPrototype());
-//			put("Commons.CameraFrustumCullingPrototype", new CameraFrustumCullingPrototype());
+			// put("Commons.CameraFrustumCullingPrototype", new CameraFrustumCullingPrototype());
 		}
 	};
-	
+
 	Injector injector;
 
 	private static GameState delegate(GameState gameState) {
 		return new GameStateDelegateWithInternalStateImpl(new GameStateDelegateFixedTimestepImpl(gameState));
 	}
-	
+
 	public static class LauncherGameState extends GameStateImpl {
 
 		private Stage stage;
 		private GL10 gl;
 
 		Launcher launcher;
-		
+
 		Injector injector;
 
 		@Override
@@ -208,11 +210,12 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 	// private ResourceManager<String> resourceManager;
 	private SpriteBatch spriteBatch;
 	private InputDevicesMonitorImpl<String> inputDevicesMonitor;
-	private GameState launcherGameState;
-	private GameState currentGameState;
+	
+	public GameState launcherGameState;
+	public GameState currentGameState;
 
 	private BitmapFont bitmapFont;
-	
+
 	@Override
 	public void create() {
 
@@ -229,7 +232,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 		launcherGameState = delegate(injector.getInstance(LauncherGameState.class));
 		currentGameState = launcherGameState;
-		
+
 		injector.injectMembers(launcherGameState);
 
 		setGameState(launcherGameState);
@@ -258,23 +261,25 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 		super.render();
 		inputDevicesMonitor.update();
 
-		if (inputDevicesMonitor.getButton("restart").isReleased()) {
-			System.out.println("restarting");
-			getGameState().dispose();
-			getGameState().init();
-			// getScreen().restart();
-		}
+		if (processGlobalInput) {
+			if (inputDevicesMonitor.getButton("restart").isReleased()) {
+				System.out.println("restarting");
+				getGameState().dispose();
+				getGameState().init();
+				// getScreen().restart();
+			}
 
-		if (inputDevicesMonitor.getButton("back").isReleased()) {
-			if (currentGameState != launcherGameState) {
-				// transition(launcherGameState).disposeCurrent() //
-				// .restartScreen() //
-				// .start();
+			if (inputDevicesMonitor.getButton("back").isReleased()) {
+				if (currentGameState != launcherGameState) {
+					// transition(launcherGameState).disposeCurrent() //
+					// .restartScreen() //
+					// .start();
 
-				setGameState(launcherGameState, true);
+					setGameState(launcherGameState, true);
 
-			} else {
-				Gdx.app.exit();
+				} else {
+					Gdx.app.exit();
+				}
 			}
 		}
 

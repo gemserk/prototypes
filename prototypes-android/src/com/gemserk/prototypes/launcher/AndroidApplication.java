@@ -14,6 +14,7 @@ import com.gemserk.commons.reflection.InjectorImpl;
 import com.gemserk.commons.utils.BrowserUtilsAndroidImpl;
 import com.gemserk.commons.utils.FacebookUtilsAndroidImpl;
 import com.gemserk.commons.utils.MailUtilsAndroidImpl;
+import com.gemserk.highscores.gui.RequestUserListener;
 import com.gemserk.highscores.gui.UserDataRegistrator;
 import com.gemserk.prototypes.Launcher;
 import com.gemserk.prototypes.Utils;
@@ -45,7 +46,7 @@ public class AndroidApplication extends com.badlogic.gdx.backends.android.Androi
 
 		injector.bind("userDataRegistrator", new UserDataRegistrator() {
 			@Override
-			public void requestUserData(RequestUserDataListener requestUserDataListener, String currentUsername, String currentName) {
+			public void requestUserData(RequestUserListener requestUserListener, String currentUsername, String currentName) {
 				Intent intent = new Intent(getApplicationContext(), RegisterUserActivity.class);
 				startActivityForResult(intent, RegisterUserActivity.REGISTERUSER_REQUEST_CODE);
 			}
