@@ -43,6 +43,8 @@ public class RegisterUserStage extends Stage {
 		
 		static String errorPasswordEnoughCharacters = "Error: passwords must have 4 or more characters";
 		static String errorPasswordsDontMatch = "Error: passwords don't match";
+		
+		static String messageSubmittingData = "Please wait...";
 
 	}
 
@@ -130,7 +132,7 @@ public class RegisterUserStage extends Stage {
 		public RegisterUserAction() {
 			window.touchable = false;
 			passwordErrorLabel.setColor(0f, 1f, 0f, 1f);
-			passwordErrorLabel.setText("please wait...");
+			passwordErrorLabel.setText(Texts.messageSubmittingData);
 		}
 
 		@Override
@@ -189,7 +191,7 @@ public class RegisterUserStage extends Stage {
 
 	RegisterUserListener registerUserListener;
 
-	Transition centerOnFocusedActorTransition;
+	Transition<?> centerOnFocusedActorTransition;
 
 	SubmitButtonClickListener submitButtonClickListener = new SubmitButtonClickListener();
 	CancelButtonClickListener cancelButtonClickListener = new CancelButtonClickListener();
