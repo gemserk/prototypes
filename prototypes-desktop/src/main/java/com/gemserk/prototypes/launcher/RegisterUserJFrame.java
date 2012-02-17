@@ -70,7 +70,7 @@ public class RegisterUserJFrame extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				RegisterUserJFrame.this.setVisible(false);
-				User user = new User(1234, nameTextField.getText(), new String(passwordTextField.getPassword()));
+				User user = new User(1234, nameTextField.getText(), new String(passwordTextField.getPassword()), false);
 				registerUserListener.accepted(user);
 			}
 		});

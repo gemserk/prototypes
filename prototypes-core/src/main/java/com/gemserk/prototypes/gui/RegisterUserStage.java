@@ -168,7 +168,7 @@ public class RegisterUserStage extends Stage {
 
 				usernameErrorLabel.setText("Error: username already used");
 
-				registerUserListener.accepted(new User(1230L, "b", "c"));
+				registerUserListener.accepted(new User(1230L, "b", "c", false));
 			}
 
 		}
