@@ -43,7 +43,7 @@ public class RequestUserDataPrototype extends GameStateImpl {
 				
 				@Override
 				public void accepted(User user) {
-					System.out.println("accepted! " + user.getUsername() + ", " + user.getName()+ ", " + user.getPrivatekey());
+					System.out.println("accepted! " + user.getUserId() + ", " + user.getName()+ ", " + user.getPrivatekey());
 				}
 			}, "player779123", "player779123");
 		}
