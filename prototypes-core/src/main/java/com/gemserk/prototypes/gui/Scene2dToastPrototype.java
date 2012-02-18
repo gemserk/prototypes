@@ -2,6 +2,7 @@ package com.gemserk.prototypes.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -31,69 +32,60 @@ public class Scene2dToastPrototype extends GameStateImpl {
 
 	private Skin skin;
 
-	class ToastStage extends Stage {
+	Actor toast(final String text, final Skin skin) {
 
-		Window window;
-		TimelineAnimation timelineAnimation;
-		Label toastLabel;
+		return new Window("", skin) {
 
-		public ToastStage(Skin skin, String toast, float width, float height, boolean stretch) {
-			super(width, height, stretch);
+			TimelineAnimation timelineAnimation;
 
-			toastLabel = new Label(toast, skin);
+			{
+				setMovable(false);
 
-			window = new Window("", skin);
+				defaults().spaceBottom(5);
 
-			window.setMovable(false);
-			window.setTitle("");
-			window.setModal(true);
+				Label toastLabel = new Label(text, skin);
 
-			window.defaults().spaceBottom(5);
+				width = Gdx.graphics.getWidth() * 0.95f;
+				height = toastLabel.getTextBounds().height + 20 + getStyle().titleFont.getLineHeight();
 
-			window.width = Gdx.graphics.getWidth() * 0.95f;
-			window.height = toastLabel.getTextBounds().height + 20 + window.getStyle().titleFont.getLineHeight();
+				x = Gdx.graphics.getWidth() * 0.5f - width * 0.5f;
 
-			window.x = Gdx.graphics.getWidth() * 0.5f - window.width * 0.5f;
-			window.y = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f;
+				row().fill().expandX();
+				add(toastLabel).align(Align.LEFT).fill(0f, 0f).padLeft(20);
 
-			window.row().fill().expandX();
-			window.add(toastLabel).align(Align.LEFT).fill(0f, 0f).padLeft(20);
+				float outsideY = Gdx.graphics.getHeight() + height;
+				float insideY = Gdx.graphics.getHeight() - height + getStyle().titleFont.getLineHeight();
+				
+				y = outsideY;
 
-			addActor(window);
+				timelineAnimation = Builders.animation( //
+						Builders.timeline() //
+								.value(Builders.timelineValue(this, Scene2dConverters.actorPositionTypeConverter) //
+										.keyFrame(0f, new float[] { x, outsideY }, //
+												InterpolationFunctions.linear(), InterpolationFunctions.easeIn()) //
+										.keyFrame(1f, new float[] { x, insideY }) //
+										.keyFrame(4f, new float[] { x, insideY }, //
+												InterpolationFunctions.linear(), InterpolationFunctions.easeOut()) //
+										.keyFrame(5f, new float[] { x, outsideY }) //
+								) //
+						) //
+						.started(true) //
+						.delay(0f) //
+						.speed(2f) //
+						.build();
+			}
 
-			inputDevicesMonitor = new InputDevicesMonitorImpl<String>();
-			new LibgdxInputMappingBuilder<String>(inputDevicesMonitor, Gdx.input) {
-				{
-					monitorPointerDown("toast", 0);
+			@Override
+			public void act(float delta) {
+				super.act(delta);
+				timelineAnimation.update(delta);
+
+				if (timelineAnimation.isFinished()) {
+					getStage().removeActor(this);
 				}
-			};
+			}
 
-			float outsideY = Gdx.graphics.getHeight() + window.height;
-			float insideY = Gdx.graphics.getHeight() - window.height + window.getStyle().titleFont.getLineHeight();
-
-			timelineAnimation = Builders.animation( //
-					Builders.timeline() //
-							.value(Builders.timelineValue(window, Scene2dConverters.actorPositionTypeConverter) //
-									.keyFrame(0f, new float[] { window.x, outsideY }, //
-											InterpolationFunctions.linear(), InterpolationFunctions.easeIn()) //
-									.keyFrame(1f, new float[] { window.x, insideY }) //
-									.keyFrame(4f, new float[] { window.x, insideY }, //
-											InterpolationFunctions.linear(), InterpolationFunctions.easeOut()) //
-									.keyFrame(5f, new float[] { window.x, outsideY }) //
-							) //
-					) //
-					.started(true) //
-					.delay(0f) //
-					.speed(2f) //
-					.build();
-
-		}
-
-		@Override
-		public void act(float delta) {
-			super.act(delta);
-			timelineAnimation.update(delta);
-		}
+		};
 
 	}
 
@@ -104,7 +96,17 @@ public class Scene2dToastPrototype extends GameStateImpl {
 
 		skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"), Gdx.files.internal("data/ui/uiskin.png"));
 
-		stage = new ToastStage(skin, "This is a toast implementation using scene2d\nwith multiple lines.", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+		// stage = new ToastStage(skin, "This is a toast implementation using scene2d\nwith multiple lines.", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+
+		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+		stage.addActor(toast("This is a toast implementation using scene2d\nwith multiple lines.", skin));
+
+		inputDevicesMonitor = new InputDevicesMonitorImpl<String>();
+		new LibgdxInputMappingBuilder<String>(inputDevicesMonitor, Gdx.input) {
+			{
+				monitorPointerDown("toast", 0);
+			}
+		};
 
 		Gdx.input.setInputProcessor(stage);
 	}
@@ -117,8 +119,9 @@ public class Scene2dToastPrototype extends GameStateImpl {
 		inputDevicesMonitor.update();
 
 		if (inputDevicesMonitor.getButton("toast").isReleased()) {
-			stage = new ToastStage(skin, "This is a toast implementation using scene2d \nwith multiple lines.", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-			Gdx.input.setInputProcessor(stage);
+			stage.addActor(toast("This is a toast implementation using scene2d\nwith multiple lines.", skin));
+			// stage = new ToastStage(skin, "This is a toast implementation using scene2d \nwith multiple lines.", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+			// Gdx.input.setInputProcessor(stage);
 		}
 
 	}
