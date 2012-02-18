@@ -18,7 +18,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.animation4j.gdx.Animation;
 import com.gemserk.commons.gdx.GameStateImpl;
-import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.camera.Camera;
 import com.gemserk.commons.gdx.camera.CameraRestrictedImpl;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
@@ -74,12 +73,12 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 			this.height = sprite.getHeight();
 		}
 
-		void update() {
+		void update(float delta) {
 
 			// velocity.y += -1 * 100f * GlobalTime.getDelta();
 
-			position.x += velocity.x * GlobalTime.getDelta();
-			position.y += velocity.y * GlobalTime.getDelta();
+			position.x += velocity.x * delta;
+			position.y += velocity.y * delta;
 
 			sprite.setRotation(angle);
 			sprite.setOrigin(width * center.x, height * center.y);
@@ -96,7 +95,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 				// remove this bomb...
 			}
 
-			float rotationAngle = 360f * GlobalTime.getDelta();
+			float rotationAngle = 360f * delta;
 
 			if (controller.left) {
 				this.angle += rotationAngle;
@@ -106,7 +105,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 				velocity.rotate(-rotationAngle);
 			}
 			
-			thrustEmitter.update(GlobalTime.getDelta());
+			thrustEmitter.update(delta);
 			thrustEmitter.setPosition(position.x, position.y);
 			
 		}
@@ -240,9 +239,9 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 			this.height = sprite.getHeight() * 1.5f;
 		}
 
-		void update() {
+		void update(float delta) {
 
-			animation.update(GlobalTime.getDelta());
+			animation.update(delta);
 			sprite = animation.getCurrentFrame();
 
 			sprite.setRotation(angle);
@@ -435,6 +434,8 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 	@Override
 	public void update() {
 		super.update();
+		
+		float delta = getDelta();
 
 		inputDevicesMonitor.update();
 
@@ -500,7 +501,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		for (int i = 0; i < bombs.size(); i++) {
 			SuperAngrySheepPrototype.Bomb bomb = bombs.get(i);
-			bomb.update();
+			bomb.update(delta);
 			if (bomb.deleted) {
 				// bombSound.stop(bomb.soundHandle);
 				bombsToDelete.add(bomb);
@@ -521,7 +522,7 @@ public class SuperAngrySheepPrototype extends GameStateImpl {
 
 		for (int i = 0; i < bombExplosions.size(); i++) {
 			BombExplosion bombExplosion = bombExplosions.get(i);
-			bombExplosion.update();
+			bombExplosion.update(delta);
 			if (bombExplosion.animation.isFinished())
 				bombExplosionsToDelete.add(bombExplosion);
 		}

@@ -43,6 +43,7 @@ import com.gemserk.prototypes.gui.DialogHideShowPrototype;
 import com.gemserk.prototypes.gui.FocusedControlPrototype;
 import com.gemserk.prototypes.gui.RequestUserDataPrototype;
 import com.gemserk.prototypes.gui.RequestUserDataUsingScenePrototype;
+import com.gemserk.prototypes.gui.Scene2dToastPrototype;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype;
 import com.gemserk.prototypes.kalleh.lighting.LightingPrototype2;
 import com.gemserk.prototypes.mail.FacebookTest;
@@ -73,6 +74,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			put("Gui.FocusedControlPrototype", new FocusedControlPrototype());
 			put("Gui.RequestUserDataPrototype", new RequestUserDataPrototype());
 			put("Gui.RequestUserDataUsingScenePrototype", new RequestUserDataUsingScenePrototype());
+			put("Gui.Scene2dToastPrototype", new Scene2dToastPrototype());
 			put("FrustumCullingPrototype", new FrustumCullingPrototype());
 			put("Artemis.SpriteUpdateSystemPerformanceTest", new SpriteUpdateSystemPerformanceTest());
 			// put("Artemis.UiPrototype", new ArtemisUiPrototype());
