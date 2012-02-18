@@ -13,6 +13,7 @@ import com.gemserk.animation4j.interpolator.function.InterpolationFunctions;
 import com.gemserk.animation4j.timeline.Builders;
 import com.gemserk.animation4j.timeline.TimelineAnimation;
 import com.gemserk.commons.gdx.GameStateImpl;
+import com.gemserk.commons.utils.RandomUtils;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.highscores.gui.RegisterUserListener;
@@ -31,8 +32,17 @@ public class Scene2dToastPrototype extends GameStateImpl {
 	InputDevicesMonitorImpl<String> inputDevicesMonitor;
 
 	private Skin skin;
+	
+	String[] texts = { // 
+			"This is a toast implementation using scene2d\nwith multiple lines.", // 
+			"And this one is a random toast.", // 
+			"Another random toast? nice huh?", //
+			"Toast engine for the win!!", //
+			"Some times Random sucks and you see the same toast\nmultiple times...", //
+			"Multiline toasts are also\navailable by adding \\n to the\ntext, however I should learn how to use text wrap.", //
+		};
 
-	Actor toast(final String text, final Skin skin) {
+	Actor toast(final String text, final float time, final Skin skin) {
 
 		return new Window("", skin) {
 
@@ -55,7 +65,7 @@ public class Scene2dToastPrototype extends GameStateImpl {
 
 				float outsideY = Gdx.graphics.getHeight() + height;
 				float insideY = Gdx.graphics.getHeight() - height + getStyle().titleFont.getLineHeight();
-				
+
 				y = outsideY;
 
 				timelineAnimation = Builders.animation( //
@@ -71,7 +81,7 @@ public class Scene2dToastPrototype extends GameStateImpl {
 						) //
 						.started(true) //
 						.delay(0f) //
-						.speed(2f) //
+						.speed(5f / time) //
 						.build();
 			}
 
@@ -99,7 +109,7 @@ public class Scene2dToastPrototype extends GameStateImpl {
 		// stage = new ToastStage(skin, "This is a toast implementation using scene2d\nwith multiple lines.", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-		stage.addActor(toast("This is a toast implementation using scene2d\nwith multiple lines.", skin));
+		stage.addActor(toast("This is a toast implementation using scene2d\nwith multiple lines.", 3f, skin));
 
 		inputDevicesMonitor = new InputDevicesMonitorImpl<String>();
 		new LibgdxInputMappingBuilder<String>(inputDevicesMonitor, Gdx.input) {
@@ -119,7 +129,7 @@ public class Scene2dToastPrototype extends GameStateImpl {
 		inputDevicesMonitor.update();
 
 		if (inputDevicesMonitor.getButton("toast").isReleased()) {
-			stage.addActor(toast("This is a toast implementation using scene2d\nwith multiple lines.", skin));
+			stage.addActor(toast(RandomUtils.random(texts), 3f, skin));
 			// stage = new ToastStage(skin, "This is a toast implementation using scene2d \nwith multiple lines.", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 			// Gdx.input.setInputProcessor(stage);
 		}
@@ -134,6 +144,8 @@ public class Scene2dToastPrototype extends GameStateImpl {
 
 	@Override
 	public void dispose() {
+		skin.dispose();
+		stage.dispose();
 		super.dispose();
 	}
 
