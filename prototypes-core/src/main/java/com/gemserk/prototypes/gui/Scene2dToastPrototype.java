@@ -46,7 +46,7 @@ public class Scene2dToastPrototype extends GameStateImpl {
 		// stage = new ToastStage(skin, "This is a toast implementation using scene2d\nwith multiple lines.", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-		stage.addActor(Actors.toast("This is a toast implementation using scene2d\nwith multiple lines.", 3f, skin));
+		stage.addActor(Actors.topToast("This is a toast implementation using scene2d\nwith multiple lines.", 3f, skin));
 
 		inputDevicesMonitor = new InputDevicesMonitorImpl<String>();
 		new LibgdxInputMappingBuilder<String>(inputDevicesMonitor, Gdx.input) {
@@ -66,7 +66,7 @@ public class Scene2dToastPrototype extends GameStateImpl {
 		inputDevicesMonitor.update();
 
 		if (inputDevicesMonitor.getButton("toast").isReleased()) {
-			stage.addActor(Actors.toast(RandomUtils.random(texts), 3f, skin));
+			stage.addActor(Actors.topToast(RandomUtils.random(texts), 3f, skin));
 			// stage = new ToastStage(skin, "This is a toast implementation using scene2d \nwith multiple lines.", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 			// Gdx.input.setInputProcessor(stage);
 		}
