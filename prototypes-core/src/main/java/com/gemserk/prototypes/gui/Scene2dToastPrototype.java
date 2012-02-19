@@ -8,7 +8,6 @@ import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.scene2d.Actors;
 import com.gemserk.commons.utils.RandomUtils;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
-import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 import com.gemserk.highscores.gui.RegisterUserListener;
 import com.gemserk.prototypes.Launcher;
 
@@ -43,17 +42,15 @@ public class Scene2dToastPrototype extends GameStateImpl {
 
 		skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"), Gdx.files.internal("data/ui/uiskin.png"));
 
-		// stage = new ToastStage(skin, "This is a toast implementation using scene2d\nwith multiple lines.", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-
-		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-		stage.addActor(Actors.topToast("This is a toast implementation using scene2d\nwith multiple lines.", 3f, skin));
-
-		inputDevicesMonitor = new InputDevicesMonitorImpl<String>();
-		new LibgdxInputMappingBuilder<String>(inputDevicesMonitor, Gdx.input) {
-			{
-				monitorPointerDown("toast", 0);
+		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false) {
+			@Override
+			public boolean touchUp(int x, int y, int pointer, int button) {
+				addActor(Actors.topToast(RandomUtils.random(texts), 3f, skin));
+				return super.touchUp(x, y, pointer, button);
 			}
 		};
+		
+		stage.addActor(Actors.topToast("This is a toast implementation using scene2d\nwith multiple lines.", 3f, skin));
 
 		Gdx.input.setInputProcessor(stage);
 	}
@@ -62,15 +59,6 @@ public class Scene2dToastPrototype extends GameStateImpl {
 	public void update() {
 		super.update();
 		stage.act(getDelta());
-
-		inputDevicesMonitor.update();
-
-		if (inputDevicesMonitor.getButton("toast").isReleased()) {
-			stage.addActor(Actors.topToast(RandomUtils.random(texts), 3f, skin));
-			// stage = new ToastStage(skin, "This is a toast implementation using scene2d \nwith multiple lines.", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-			// Gdx.input.setInputProcessor(stage);
-		}
-
 	}
 
 	@Override
