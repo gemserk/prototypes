@@ -96,7 +96,15 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 	Injector injector;
 
 	private static GameState delegate(GameState gameState) {
-		return new GameStateDelegateWithInternalStateImpl(new GameStateDelegateFixedTimestepImpl(gameState));
+		return stateBased(fixedTimeStep(gameState));
+	}
+	
+	private static GameState stateBased(GameState gameState) {
+		return new GameStateDelegateWithInternalStateImpl(gameState);
+	}
+
+	private static GameStateDelegateFixedTimestepImpl fixedTimeStep(GameState gameState) {
+		return new GameStateDelegateFixedTimestepImpl(gameState);
 	}
 
 	public static class LauncherGameState extends GameStateImpl {
@@ -163,8 +171,13 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 					injector.injectMembers(sourceGameState);
 					GameState gameState = delegate(sourceGameState);
 					if (gameState != null) {
-						launcher.setGameState(gameState, false);
-						launcher.currentGameState = gameState;
+						launcher.transition(gameState) //
+								.disposeCurrent(false) //
+								.leaveTime(0.25f) //
+								.enterTime(0.25f) //
+								.start();
+						// launcher.setGameState(gameState, false);
+						// launcher.currentGameState = gameState;
 						// launcher.transition(gameState).start();
 					}
 				}
@@ -214,9 +227,8 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 	// private ResourceManager<String> resourceManager;
 	private SpriteBatch spriteBatch;
 	private InputDevicesMonitorImpl<String> inputDevicesMonitor;
-	
+
 	public GameState launcherGameState;
-	public GameState currentGameState;
 
 	private BitmapFont bitmapFont;
 
@@ -235,7 +247,6 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 		injector.bind("launcher", this);
 
 		launcherGameState = delegate(injector.getInstance(LauncherGameState.class));
-		currentGameState = launcherGameState;
 
 		injector.injectMembers(launcherGameState);
 
@@ -259,7 +270,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 	// this.currentGameState = gameState;
 	// return new TransitionBuilder(this, new ScreenImpl(gameState));
 	// }
-	
+
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
@@ -280,10 +291,13 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			}
 
 			if (inputDevicesMonitor.getButton("back").isReleased()) {
-				if (currentGameState != launcherGameState) {
-					// transition(launcherGameState).disposeCurrent() //
-					// .restartScreen() //
-					// .start();
+				if (getGameState() != launcherGameState) {
+					
+					transition(launcherGameState) //
+						.disposeCurrent(true) //
+						.leaveTime(0.25f) //
+						.enterTime(0.5f) //
+						.start();
 
 					setGameState(launcherGameState, true);
 
