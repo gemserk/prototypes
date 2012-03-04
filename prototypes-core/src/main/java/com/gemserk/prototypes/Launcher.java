@@ -77,6 +77,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			put("Gui.RequestUserDataUsingScenePrototype", new RequestUserDataUsingScenePrototype());
 			put("Gui.Scene2dToastPrototype", new Scene2dToastPrototype());
 			put("Gui.Scene2dChangelogPrototype", new Scene2dChangelogPrototype());
+			// put("Gui.Scene2dPasswordTextFieldPrototype", new Scene2dPasswordTextFieldPrototype());
 			put("FrustumCullingPrototype", new FrustumCullingPrototype());
 			put("Artemis.SpriteUpdateSystemPerformanceTest", new SpriteUpdateSystemPerformanceTest());
 			// put("Artemis.UiPrototype", new ArtemisUiPrototype());
@@ -98,7 +99,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 	private static GameState delegate(GameState gameState) {
 		return stateBased(fixedTimeStep(gameState));
 	}
-	
+
 	private static GameState stateBased(GameState gameState) {
 		return new GameStateDelegateWithInternalStateImpl(gameState);
 	}
@@ -292,12 +293,12 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 			if (inputDevicesMonitor.getButton("back").isReleased()) {
 				if (getGameState() != launcherGameState) {
-					
+
 					transition(launcherGameState) //
-						.disposeCurrent(true) //
-						.leaveTime(0.25f) //
-						.enterTime(0.5f) //
-						.start();
+							.disposeCurrent(true) //
+							.leaveTime(0.25f) //
+							.enterTime(0.5f) //
+							.start();
 
 					setGameState(launcherGameState, true);
 

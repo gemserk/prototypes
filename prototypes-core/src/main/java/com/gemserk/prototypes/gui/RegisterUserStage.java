@@ -8,12 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.CustomTextField;
-import com.badlogic.gdx.scenes.scene2d.ui.CustomTextField.TextFieldFilter;
 import com.badlogic.gdx.scenes.scene2d.ui.FlickScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldFilter;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
@@ -53,7 +53,7 @@ public class RegisterUserStage extends Stage {
 		String rexexp = "^[a-zA-Z0-9]+";
 
 		@Override
-		public boolean acceptChar(CustomTextField customTextField, char key) {
+		public boolean acceptChar(TextField customTextField, char key) {
 			if (key == '\t')
 				return true;
 			if (!Pattern.matches(rexexp, Character.toString(key)))
@@ -64,7 +64,7 @@ public class RegisterUserStage extends Stage {
 
 	TextFieldFilter nameTextFieldFilter = new TextFieldFilter() {
 		@Override
-		public boolean acceptChar(CustomTextField customTextField, char key) {
+		public boolean acceptChar(TextField customTextField, char key) {
 			return customTextField.getText().length() < 30;
 		}
 	};
@@ -177,10 +177,10 @@ public class RegisterUserStage extends Stage {
 	Window window;
 	FlickScrollPane scrollPane;
 
-	CustomTextField passwordTextField;
-	CustomTextField confirmPasswordTextField;
-	CustomTextField nameTextField;
-	CustomTextField usernameTextField;
+	TextField passwordTextField;
+	TextField confirmPasswordTextField;
+	TextField nameTextField;
+	TextField usernameTextField;
 
 	TextButton cancelButton;
 	TextButton submitButton;
@@ -207,23 +207,25 @@ public class RegisterUserStage extends Stage {
 
 		TextFieldStyle textFieldStyle = skin.getStyle(TextFieldStyle.class);
 
-		usernameTextField = new CustomTextField("", textFieldStyle);
+		usernameTextField = new TextField("", textFieldStyle);
 		usernameTextField.setTextFieldFilter(usernameTextFieldFilter);
 
 		usernameErrorLabel = new Label(skin);
 		usernameErrorLabel.setColor(1f, 0f, 0f, 1f);
 
-		nameTextField = new CustomTextField("", textFieldStyle);
+		nameTextField = new TextField("", textFieldStyle);
 		nameTextField.setTextFieldFilter(nameTextFieldFilter);
 
 		nameErrorLabel = new Label(skin);
 		nameErrorLabel.setColor(1f, 0f, 0f, 1f);
 
-		passwordTextField = new CustomTextField("", textFieldStyle);
+		passwordTextField = new TextField("", textFieldStyle);
 		passwordTextField.setPasswordMode(true);
+		passwordTextField.setPasswordCharacter('*');
 
-		confirmPasswordTextField = new CustomTextField("", textFieldStyle);
+		confirmPasswordTextField = new TextField("", textFieldStyle);
 		confirmPasswordTextField.setPasswordMode(true);
+		confirmPasswordTextField.setPasswordCharacter('*');
 
 		passwordErrorLabel = new Label(skin);
 		passwordErrorLabel.setColor(1f, 0f, 0f, 1f);

@@ -2,6 +2,7 @@ package com.gemserk.prototypes.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.gemserk.commons.gdx.GameStateImpl;
@@ -30,14 +31,14 @@ public class Scene2dChangelogPrototype extends GameStateImpl {
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
 		String[] texts = { "Changes version 1.3", //
-				"    - Removed OpenFeint, changed to use our highscores server again.", //
+				"    - Removed OpenFeint, changed to use our highscores server again.d OpenFeint, changed to use our highscores server again.d OpenFeint, changed to use our highscores server again.", //
 				"    - Added new dialogs to notify when there is a new version available.", //
 				"    - Fixed some bugs.", //
 		};
 
 		Gdx.input.setInputProcessor(stage);
 
-		stage.addActor(Actors.twoOptionsDialog(texts, new DialogListener() {
+		Actor twoOptionsDialog = Actors.threeOptionsDialog(texts, new DialogListener() {
 
 			@Override
 			public void optionSelected(int option) {
@@ -48,6 +49,12 @@ public class Scene2dChangelogPrototype extends GameStateImpl {
 							.enterTime(0.5f) //
 							.start();
 				} else if (option == 1) {
+					System.out.println("show again next time maybe...!!");
+					launcher.transition(launcher.launcherGameState) //
+							.leaveTime(0.25f) //
+							.enterTime(0.5f) //
+							.start();
+				} else if (option == 2) {
 					System.out.println("disable future notifications!!");
 					launcher.transition(launcher.launcherGameState) //
 							.leaveTime(0.25f) //
@@ -56,7 +63,9 @@ public class Scene2dChangelogPrototype extends GameStateImpl {
 				}
 			}
 
-		}, "New version available", "Update now", "Dismiss", skin));
+		}, "New version available", "Update now", "Later", "Dismiss", skin);
+		
+		stage.addActor(twoOptionsDialog);
 
 	}
 

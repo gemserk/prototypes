@@ -51,7 +51,7 @@
 	<properties>
 		<compiler.version>1.6</compiler.version>
 		<commons.gdx.version>0.0.8-SNAPSHOT</commons.gdx.version>
-		<gdx.version>0.9.3-SNAPSHOT</gdx.version>
+		<gdx.version>0.9.3-a-SNAPSHOT</gdx.version>
 	</properties>
 
 	<build>
