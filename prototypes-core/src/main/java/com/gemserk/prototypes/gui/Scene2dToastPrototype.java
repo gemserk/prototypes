@@ -51,10 +51,10 @@ public class Scene2dToastPrototype extends GameStateImpl {
 		};
 		
 		stage.addActor(Actors.topToast("This is a toast implementation using scene2d\nwith multiple lines.", 3f, skin));
-
 		Gdx.input.setInputProcessor(stage);
+		
 	}
-
+	
 	@Override
 	public void update() {
 		super.update();

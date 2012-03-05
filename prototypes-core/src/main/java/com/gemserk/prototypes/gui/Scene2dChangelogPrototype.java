@@ -45,20 +45,20 @@ public class Scene2dChangelogPrototype extends GameStateImpl {
 				if (option == 0) {
 					System.out.println("update game!!");
 					launcher.transition(launcher.launcherGameState) //
-							.leaveTime(0.25f) //
-							.enterTime(0.5f) //
+							.fadeOut(0.25f) //
+							.fadeIn(0.5f) //
 							.start();
 				} else if (option == 1) {
 					System.out.println("show again next time maybe...!!");
 					launcher.transition(launcher.launcherGameState) //
-							.leaveTime(0.25f) //
-							.enterTime(0.5f) //
+							.fadeOut(0.25f) //
+							.fadeIn(0.5f) //
 							.start();
 				} else if (option == 2) {
 					System.out.println("disable future notifications!!");
 					launcher.transition(launcher.launcherGameState) //
-							.leaveTime(0.25f) //
-							.enterTime(0.5f) //
+							.fadeOut(0.25f) //
+							.fadeIn(0.5f) //
 							.start();
 				}
 			}

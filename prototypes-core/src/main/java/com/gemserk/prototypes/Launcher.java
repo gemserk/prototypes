@@ -174,8 +174,8 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 					if (gameState != null) {
 						launcher.transition(gameState) //
 								.disposeCurrent(false) //
-								.leaveTime(0.25f) //
-								.enterTime(0.25f) //
+								.fadeOut(0.25f) //
+								.fadeIn(0.25f) //
 								.start();
 						// launcher.setGameState(gameState, false);
 						// launcher.currentGameState = gameState;
@@ -199,7 +199,8 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 		@Override
 		public void pause() {
 			super.pause();
-			Gdx.input.setInputProcessor(null);
+			if (Gdx.input.getInputProcessor() == stage)
+				Gdx.input.setInputProcessor(null);
 		}
 
 		@Override
@@ -296,8 +297,8 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 					transition(launcherGameState) //
 							.disposeCurrent(true) //
-							.leaveTime(0.25f) //
-							.enterTime(0.5f) //
+							.fadeOut(0.25f) //
+							.fadeIn(0.5f) //
 							.start();
 
 					setGameState(launcherGameState, true);
