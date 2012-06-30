@@ -74,8 +74,12 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 		@Override
 		public void draw(SpriteBatch batch, float parentAlpha) {
 			float t = 0f;
+			float a = 1f;
+			float adiff = a / trajectoryPointCount;
 			float width = this.width;
 			float height = this.height;
+			float widthDiff = width / trajectoryPointCount;
+			float heightDiff = height / trajectoryPointCount;
 
 			float timeSeparation = this.timeSeparation;
 			
@@ -86,10 +90,16 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 				float x = this.x + projectileEquation.getX(t);
 				float y = this.y + projectileEquation.getY(t);
 
+				this.color.a = a;
+
 				batch.setColor(this.color);
 				batch.draw(trajectorySprite, x, y, width, height);
 
+				a -= adiff;
 				t += timeSeparation;
+
+				width -= widthDiff;
+				height -= heightDiff;
 			}
 		}
 
@@ -142,7 +152,7 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 		stage.draw();
 		
 		spriteBatch.begin();
-		bitmapFont.draw(spriteBatch, "LEFT and RIGHT keys to change the power", Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.9f);
+		bitmapFont.draw(spriteBatch, "LEFT and RIGHT keys to change the start velocity", Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.9f);
 		bitmapFont.draw(spriteBatch, "UP and DOWN keys to change the angle", Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.85f);
 		bitmapFont.draw(spriteBatch, "5 and 6 to switch fixed horizontal distance between points (" + controller.fixedHorizontalDistance + ")", Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.8f);
 		spriteBatch.end();
