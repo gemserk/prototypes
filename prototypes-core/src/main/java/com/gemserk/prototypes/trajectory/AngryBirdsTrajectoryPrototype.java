@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -42,6 +43,8 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 
 		public float power = 50f;
 		public float angle = 0f;
+		
+		public boolean fixedHorizontalDistance = false; 
 
 	}
 
@@ -78,7 +81,10 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 			float widthDiff = width / trajectoryPointCount;
 			float heightDiff = height / trajectoryPointCount;
 
-			timeSeparation = projectileEquation.getTForGivenX(15f);
+			float timeSeparation = this.timeSeparation;
+			
+			if (controller.fixedHorizontalDistance) 
+				timeSeparation = projectileEquation.getTForGivenX(15f);
 
 			for (int i = 0; i < trajectoryPointCount; i++) {
 				float x = this.x + projectileEquation.getX(t);
@@ -108,11 +114,13 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 	private ShapeRenderer shapeRenderer;
 	private Controller controller;
 	private Stage stage;
+	private BitmapFont bitmapFont;
 
 	@Override
 	public void init() {
 		spriteBatch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
+		bitmapFont = new BitmapFont();
 
 		float gravity = -10f;
 
@@ -142,6 +150,12 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 
 		stage.act(deltaTime);
 		stage.draw();
+		
+		spriteBatch.begin();
+		bitmapFont.draw(spriteBatch, "LEFT and RIGHT keys to change the start velocity", Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.9f);
+		bitmapFont.draw(spriteBatch, "UP and DOWN keys to change the start velocity", Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.85f);
+		bitmapFont.draw(spriteBatch, "5 and 6 to switch fixed horizontal distance between points (" + controller.fixedHorizontalDistance + ")", Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.8f);
+		spriteBatch.end();
 
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
 			controller.angle += 15f * Gdx.graphics.getDeltaTime();
@@ -162,6 +176,14 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 			controller.power -= 10f * Gdx.graphics.getDeltaTime();
 		}
+		
+		if (Gdx.input.isKeyPressed(Keys.NUM_5)) {
+			controller.fixedHorizontalDistance = false;
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.NUM_6)) {
+			controller.fixedHorizontalDistance = true;
+		}
 
 	}
 
@@ -169,6 +191,8 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 	public void dispose() {
 		spriteBatch.dispose();
 		shapeRenderer.dispose();
+		stage.dispose();
+		bitmapFont.dispose();
 	}
 
 }
