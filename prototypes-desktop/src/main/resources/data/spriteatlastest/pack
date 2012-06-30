@@ -1,0 +1,19 @@
+
+spriteatlastest1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+something
+  rotate: false
+  xy: 2, 2
+  size: 97, 93
+  orig: 128, 110
+  offset: 10, 6
+  index: -1
+something2
+  rotate: true
+  xy: 2, 97
+  size: 181, 42
+  orig: 200, 64
+  offset: 10, 15
+  index: -1

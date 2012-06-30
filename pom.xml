@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.gemserk.prototypes.prototypes</groupId>
 	<artifactId>prototypes</artifactId>
@@ -46,11 +46,11 @@
 		<module>prototypes-core</module>
 		<module>prototypes-android</module>
 		<module>prototypes-desktop</module>
-	</modules>
+  </modules>
 
 	<properties>
 		<compiler.version>1.6</compiler.version>
-		<commons.gdx.version>0.0.8-SNAPSHOT</commons.gdx.version>
+		<commons.gdx.version>0.0.9-SNAPSHOT</commons.gdx.version>
 		<gdx.version>0.9.3-a-SNAPSHOT</gdx.version>
 	</properties>
 

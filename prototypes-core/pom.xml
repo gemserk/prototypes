@@ -6,9 +6,11 @@
 		<artifactId>prototypes</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.gemserk.games.prototypes</groupId>
+	
+	<groupId>com.gemserk.prototypes.prototypes</groupId>
 	<artifactId>prototypes-core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	
 	<packaging>jar</packaging>
 
 	<name>Gemserk's Prototypes - Core</name>

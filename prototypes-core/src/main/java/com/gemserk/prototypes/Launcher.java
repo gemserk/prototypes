@@ -55,8 +55,10 @@ import com.gemserk.prototypes.pixmap.PixmapCollisionPrototype;
 import com.gemserk.prototypes.pixmap.PixmapToTexturePrototype;
 import com.gemserk.prototypes.pixmap.performance.PixmapPerformancePrototype;
 import com.gemserk.prototypes.pixmap.reload.ReloadPixmapTestGameState;
+import com.gemserk.prototypes.spriteatlas.SpriteAtlasBugPrototype;
 import com.gemserk.prototypes.superangrysheep.SuperAngrySheepPrototype;
 import com.gemserk.prototypes.texture.DrawToTexturePrototype;
+import com.gemserk.prototypes.trajectory.AngryBirdsTrajectoryPrototype;
 
 public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
@@ -64,6 +66,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 	public static final Map<String, GameState> gameStates = new HashMap<String, GameState>() {
 		{
+			put("AngryBirds.Trajectory", new AngryBirdsTrajectoryPrototype());
 			put("Lighting", new LightingPrototype());
 			put("Lighting2", new LightingPrototype2());
 			put("PixmapCollision", new PixmapCollisionPrototype());
@@ -92,6 +95,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			put("Polygons.ConvexHull2dPrototype", new ConvexHull2dPrototype());
 			put("Polygons.PixmapConvexHull2dPrototype", new PixmapConvexHull2dPrototype());
 			put("Camera.CameraParallaxPrototype", new CameraParallaxPrototype());
+			put("SpriteAtlas.Test", new SpriteAtlasBugPrototype());
 			// put("Commons.CameraFrustumCullingPrototype", new CameraFrustumCullingPrototype());
 		}
 	};
