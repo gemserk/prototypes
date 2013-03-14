@@ -132,8 +132,8 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 			float t = 0f;
 			float a = 1f;
 			float adiff = a / trajectoryPointCount;
-			float width = this.width;
-			float height = this.height;
+			float width = this.getWidth();
+			float height = this.getHeight();
 			float widthDiff = width / trajectoryPointCount;
 			float heightDiff = height / trajectoryPointCount;
 
@@ -143,12 +143,12 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 				timeSeparation = projectileEquation.getTForGivenX(15f);
 
 			for (int i = 0; i < trajectoryPointCount; i++) {
-				float x = this.x + projectileEquation.getX(t);
-				float y = this.y + projectileEquation.getY(t);
+				float x = this.getX() + projectileEquation.getX(t);
+				float y = this.getY() + projectileEquation.getY(t);
 
-				this.color.a = a;
+				this.getColor().a = a;
 
-				batch.setColor(this.color);
+				batch.setColor(this.getColor());
 				batch.draw(trajectorySprite, x, y, width, height);
 
 				a -= adiff;
@@ -158,9 +158,9 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 				height -= heightDiff;
 			}
 		}
-
+		
 		@Override
-		public Actor hit(float x, float y) {
+		public Actor hit(float x, float y, boolean touchable) {
 			return null;
 		}
 
@@ -224,10 +224,10 @@ public class AngryBirdsTrajectoryPrototype extends GameStateImpl {
 
 		TrajectoryActor trajectoryActor = new TrajectoryActor(controller, gravity, trajectorySprite);
 
-		trajectoryActor.x = 128f;
-		trajectoryActor.y = 50 + slingshotSprite.getHeight() * 0.7f;
-		trajectoryActor.width = 10f;
-		trajectoryActor.height = 10f;
+		trajectoryActor.setX(128f);
+		trajectoryActor.setY(50 + slingshotSprite.getHeight() * 0.7f);
+		trajectoryActor.setWidth(10f);
+		trajectoryActor.setHeight(10f);
 
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		stage.addActor(trajectoryActor);

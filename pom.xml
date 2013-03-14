@@ -50,8 +50,8 @@
 
 	<properties>
 		<compiler.version>1.6</compiler.version>
-		<commons.gdx.version>0.0.9-SNAPSHOT</commons.gdx.version>
-		<gdx.version>0.9.3-a-SNAPSHOT</gdx.version>
+		<commons.gdx.version>0.0.11-SNAPSHOT</commons.gdx.version>
+		<gdx.version>0.9.8-SNAPSHOT</gdx.version>
 	</properties>
 
 	<build>

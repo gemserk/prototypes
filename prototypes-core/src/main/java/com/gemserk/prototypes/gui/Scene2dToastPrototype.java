@@ -2,6 +2,7 @@ package com.gemserk.prototypes.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.gemserk.commons.gdx.GameStateImpl;
@@ -40,7 +41,7 @@ public class Scene2dToastPrototype extends GameStateImpl {
 		gl = Gdx.graphics.getGL10();
 		Gdx.graphics.getGL10().glClearColor(0f, 0f, 0f, 1f);
 
-		skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"), Gdx.files.internal("data/ui/uiskin.png"));
+		skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"), new TextureAtlas(Gdx.files.internal("data/ui/uiskin.atlas")));
 
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false) {
 			@Override

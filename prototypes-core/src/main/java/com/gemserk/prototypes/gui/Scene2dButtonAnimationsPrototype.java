@@ -13,15 +13,15 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.tablelayout.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.resources.LibgdxResourceBuilder;
 import com.gemserk.commons.gdx.scene2d.actions.ScaleOnFocusAction;
-import com.gemserk.commons.gdx.scene2d.ui.LabelImageButton;
 import com.gemserk.highscores.gui.RegisterUserListener;
 import com.gemserk.prototypes.Launcher;
 import com.gemserk.resources.ResourceManager;
@@ -62,11 +62,9 @@ public class Scene2dButtonAnimationsPrototype extends GameStateImpl {
 			@Override
 			public void act(float delta) {
 				super.act(delta);
-				Actor touchFocus = getTouchFocus(0);
-
-				if (touchFocus == null)
-					return;
-
+//				Actor touchFocus = getTouchFocus(0);
+//				if (touchFocus == null)
+//					return;
 			}
 		};
 
@@ -75,11 +73,12 @@ public class Scene2dButtonAnimationsPrototype extends GameStateImpl {
 		Sprite sprite = resourceManager.getResourceValue("button");
 
 		Label label = new Label("HOLA", new LabelStyle(new BitmapFont(), Color.BLACK));
-		ImageButton button = new LabelImageButton(new NinePatch(sprite), label);
+		// ImageButton button = new LabelImageButton(new NinePatch(sprite), label);
+		ImageButton button = new ImageButton(new NinePatchDrawable(new NinePatch(sprite)));
 
-		button.getImageCell().expand().fill().align(Align.CENTER);
-		center(button, stage.width() * 0.25f, stage.height() * 0.5f, 0f, 0f);
-		button.action(new ScaleOnFocusAction());
+		button.getImageCell().expand().fill().align(Align.center);
+		center(button, stage.getWidth() * 0.25f, stage.getHeight() * 0.5f, 0f, 0f);
+		button.addAction(new ScaleOnFocusAction());
 
 		//
 		// label.x = button.width * 0.5f;
@@ -88,17 +87,17 @@ public class Scene2dButtonAnimationsPrototype extends GameStateImpl {
 
 		stage.addActor(button);
 
-		ImageButton button2 = new ImageButton(new NinePatch(sprite));
-		button2.getImageCell().expand().fill().align(Align.CENTER);
-		center(button2, stage.width() * 0.75f, stage.height() * 0.5f, 0f, 0f);
-		button2.action(new ScaleOnFocusAction());
+		ImageButton button2 = new ImageButton(new NinePatchDrawable(new NinePatch(sprite)));
+		button2.getImageCell().expand().fill().align(Align.center);
+		center(button2, stage.getWidth() * 0.75f, stage.getHeight() * 0.5f, 0f, 0f);
+		button2.addAction(new ScaleOnFocusAction());
 
 		stage.addActor(button2);
 	}
 
 	public void center(Actor actor, float x, float y, float cx, float cy) {
-		actor.x = x - actor.width * cx;
-		actor.y = y - actor.height * cy;
+		actor.setX(x - actor.getWidth() * cx);
+		actor.setY(y - actor.getHeight() * cy);
 	}
 
 	@Override

@@ -11,16 +11,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer10;
+import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.FlickScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.gemserk.animation4j.converters.Converters;
 import com.gemserk.animation4j.gdx.converters.LibgdxConverters;
 import com.gemserk.commons.gdx.ApplicationListenerGameStateBasedImpl;
@@ -28,6 +30,7 @@ import com.gemserk.commons.gdx.GameState;
 import com.gemserk.commons.gdx.GameStateDelegateFixedTimestepImpl;
 import com.gemserk.commons.gdx.GameStateDelegateWithInternalStateImpl;
 import com.gemserk.commons.gdx.GameStateImpl;
+import com.gemserk.commons.gdx.graphics.ImmediateModeRendererUtils;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
@@ -64,6 +67,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 	public static boolean processGlobalInput = true;
 
+	@SuppressWarnings("serial")
 	public static final Map<String, GameState> gameStates = new HashMap<String, GameState>() {
 		{
 			put("AngryBirds.Trajectory", new AngryBirdsTrajectoryPrototype());
@@ -127,17 +131,17 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 		public void init() {
 			gl = Gdx.graphics.getGL10();
 
-			Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"), Gdx.files.internal("data/ui/uiskin.png"));
+			Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"), new TextureAtlas(Gdx.files.internal("data/ui/uiskin.atlas")));
 
 			stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
-			Window window = new Window("Gemserk's Prototypes Launcher", skin.getStyle(WindowStyle.class), "window");
+			Window window = new Window("Gemserk's Prototypes Launcher", skin);
 
-			window.width = Gdx.graphics.getWidth() * 0.85f;
-			window.height = Gdx.graphics.getHeight() * 0.85f;
+			window.setWidth(Gdx.graphics.getWidth() * 0.85f);
+			window.setHeight(Gdx.graphics.getHeight() * 0.85f);
 
-			window.x = Gdx.graphics.getWidth() * 0.5f - window.width * 0.5f;
-			window.y = Gdx.graphics.getHeight() * 0.5f - window.height * 0.5f;
+			window.setX(Gdx.graphics.getWidth() * 0.5f - window.getWidth() * 0.5f);
+			window.setY(Gdx.graphics.getHeight() * 0.5f - window.getHeight() * 0.5f);
 
 			stage.addActor(window);
 
@@ -149,30 +153,30 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 			final List list = new List(items, skin);
 
-			FlickScrollPane scrollPane = new FlickScrollPane(list);
+			ScrollPane scrollPane = new ScrollPane(list);
 			// ScrollPane scrollPane = new ScrollPane(flickScrollPane, skin);
 
-			scrollPane.width = window.width * 0.75f;
-			scrollPane.height = window.height * 0.5f;
+			scrollPane.setWidth(window.getWidth() * 0.75f);
+			scrollPane.setHeight(window.getHeight() * 0.5f);
 
-			scrollPane.x = window.width * 0.5f - scrollPane.width * 0.5f;
-			scrollPane.y = window.height * 0.35f;
+			scrollPane.setX(window.getWidth() * 0.5f - scrollPane.getWidth() * 0.5f);
+			scrollPane.setY(window.getHeight() * 0.35f);
 
 			window.addActor(scrollPane);
 
 			TextButton button = new TextButton("Start", skin);
 			// button.setText("Start");
 
-			button.width = window.width * 0.2f;
-			button.height = window.height * 0.1f;
+			button.setWidth(window.getWidth() * 0.2f);
+			button.setHeight(window.getHeight() * 0.1f);
 
-			button.x = window.width * 0.5f - button.width * 0.5f;
-			button.y = scrollPane.y - 60f;
+			button.setX(window.getWidth() * 0.5f - button.getWidth() * 0.5f);
+			button.setY(scrollPane.getY() - 60f);
 
-			button.setClickListener(new ClickListener() {
-
+			button.addListener(new ClickListener() {
+				
 				@Override
-				public void click(Actor arg0, float arg1, float arg2) {
+				public void clicked(InputEvent event, float x, float y) {
 					String selection = list.getSelection();
 					GameState sourceGameState = gameStates.get(selection);
 					injector.injectMembers(sourceGameState);
@@ -243,6 +247,8 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 	@Override
 	public void create() {
 
+		ImmediateModeRendererUtils.setRenderer(new ImmediateModeRenderer10());
+		
 		Converters.register(Color.class, LibgdxConverters.color());
 		Converters.register(Vector2.class, LibgdxConverters.vector2());
 

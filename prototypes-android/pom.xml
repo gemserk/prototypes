@@ -7,9 +7,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.gemserk.prototypes.prototypes</groupId>
 	<artifactId>prototypes-android</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>apk</packaging>
 
 	<name>Gemserk's Prototypes - Android</name>
