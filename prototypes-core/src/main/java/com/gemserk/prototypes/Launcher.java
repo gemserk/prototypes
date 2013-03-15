@@ -59,6 +59,7 @@ import com.gemserk.prototypes.pixmap.PixmapToTexturePrototype;
 import com.gemserk.prototypes.pixmap.performance.PixmapPerformancePrototype;
 import com.gemserk.prototypes.pixmap.reload.ReloadPixmapTestGameState;
 import com.gemserk.prototypes.spriteatlas.SpriteAtlasBugPrototype;
+import com.gemserk.prototypes.superangrysheep.SpriteScissorsPrototype;
 import com.gemserk.prototypes.superangrysheep.SuperAngrySheepPrototype;
 import com.gemserk.prototypes.texture.DrawToTexturePrototype;
 import com.gemserk.prototypes.trajectory.AngryBirdsTrajectoryPrototype;
@@ -100,6 +101,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 			put("Polygons.PixmapConvexHull2dPrototype", new PixmapConvexHull2dPrototype());
 			put("Camera.CameraParallaxPrototype", new CameraParallaxPrototype());
 			put("SpriteAtlas.Test", new SpriteAtlasBugPrototype());
+			put("SpriteScissorsPrototype", new SpriteScissorsPrototype());
 			// put("Commons.CameraFrustumCullingPrototype", new CameraFrustumCullingPrototype());
 		}
 	};
@@ -121,7 +123,6 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 	public static class LauncherGameState extends GameStateImpl {
 
 		private Stage stage;
-		private GL10 gl;
 
 		Launcher launcher;
 
@@ -129,8 +130,6 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 		@Override
 		public void init() {
-			gl = Gdx.graphics.getGL10();
-
 			Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"), new TextureAtlas(Gdx.files.internal("data/ui/uiskin.atlas")));
 
 			stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -198,7 +197,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 			Gdx.input.setInputProcessor(stage);
 
-			Gdx.graphics.getGL10().glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClearColor(0, 0, 0, 1);
 		}
 
 		@Override
@@ -222,16 +221,14 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 
 		@Override
 		public void render() {
-			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			stage.draw();
 		}
 
 		@Override
 		public void resize(int width, int height) {
 			super.resize(width, height);
-
 			System.out.println(MessageFormat.format("resizing: {0}x{1}", width, height));
-
 		}
 
 	}
@@ -247,7 +244,7 @@ public class Launcher extends ApplicationListenerGameStateBasedImpl {
 	@Override
 	public void create() {
 
-		ImmediateModeRendererUtils.setRenderer(new ImmediateModeRenderer10());
+		ImmediateModeRendererUtils.setRenderer(new ImmediateModeRenderer20(false, true, 2));
 		
 		Converters.register(Color.class, LibgdxConverters.color());
 		Converters.register(Vector2.class, LibgdxConverters.vector2());

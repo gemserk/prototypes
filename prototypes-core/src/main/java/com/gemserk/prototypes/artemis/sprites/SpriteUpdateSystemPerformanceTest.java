@@ -4,7 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -72,7 +72,6 @@ public class SpriteUpdateSystemPerformanceTest extends GameStateImpl {
 
 	}
 
-	private GL10 gl;
 	// private OrthographicCamera orthographicCamera;
 
 	ResourceManager<String> resourceManager;
@@ -91,8 +90,6 @@ public class SpriteUpdateSystemPerformanceTest extends GameStateImpl {
 
 	@Override
 	public void init() {
-		gl = Gdx.graphics.getGL10();
-
 		// orthographicCamera = new OrthographicCamera();
 
 		resourceManager = new ResourceManagerImpl<String>();
@@ -171,7 +168,7 @@ public class SpriteUpdateSystemPerformanceTest extends GameStateImpl {
 
 	@Override
 	public void render() {
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		worldWrapper.render();
 		if (box2dDebugEnabled)
 			box2dDebugRenderer.render(physicsWorld, worldCamera.getCombinedMatrix());

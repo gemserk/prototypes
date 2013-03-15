@@ -61,7 +61,7 @@ public class DesktopApplication {
 		config.width = arguments.width;
 		config.height = arguments.height;
 		config.fullscreen = false;
-		config.useGL20 = false;
+		config.useGL20 = true;
 		config.useCPUSynch = true;
 		config.forceExit = true;
 		config.vSyncEnabled = true;
